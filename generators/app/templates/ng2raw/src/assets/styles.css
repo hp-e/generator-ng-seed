@@ -1,0 +1,160 @@
+
+html {    
+    font-family: 'Roboto', arial, sans-serif;
+}
+body {
+  padding: 0px; 
+  margin: 0em;
+  background: #fff;
+}
+
+.intro {
+  font-family: 'Roboto', arial, sans-serif;
+  font-size: 50px;
+  text-align: center;  
+}
+
+.page-container {
+  /*display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;*/
+  display: block;
+  width: 100%;    
+  
+  min-height: 100wh;
+}
+.page-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  
+}
+
+header {
+  padding: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  background: #FF9800;
+  height: 60px;  
+  font-family: 'Roboto Mono', arial, sans-serif;
+}
+.page-header {
+  /*background: #2D2735;*/
+  color:#fff;
+  display: flex;
+  font-size: 30px;
+  
+}
+
+.header-item {  
+  flex: 1 1 0px;    
+  text-align: center;  
+  /*vertical-align: middle;*/
+  /*align-items: center;  */
+  /*align-content: center;*/
+}
+
+.header-item.logo {  
+   text-align: left;
+}
+
+.header-item.nav {  
+  text-align: right;
+}
+
+.page-footer {  
+  color:#000;  
+  padding: 10px;
+  flex: 1 1 auto;
+  align-self: flex-end;
+  font-family: 'Roboto Mono', arial, sans-serif;
+}
+
+.page-content {
+  text-align: left; 
+  background: white;
+  padding: 10px;
+  flex: 1 1 auto;  
+  align-items: center;
+  
+}
+
+
+.left-sidebar {
+  background: #fff;
+  padding: 10px;
+  flex: 0 0 200px;
+ font-family: 'Roboto Condensed', arial, sans-serif;
+}
+
+.right-sidebar {
+  background: #fff;
+  padding: 10px;
+  flex: 0 0 200px;
+}
+
+table {   
+  border-collapse:collapse; 
+  border-spacing:0;
+}
+td {padding: 0.25em 0.75em;}
+thead {
+ font-weight: bold;    
+}
+thead  {   
+  /*border: 1px solid black;*/
+  border-bottom: 1px solid darkgrey;    
+}
+
+tbody>tr.border {
+  border-top: 1px solid #EFEFEF;  
+}
+@media all and (min-width: 600px) {
+  .aside { flex: 1 1 auto; }
+}
+
+@media all and (min-width: 800px) {
+  .page-content    { flex: 3 0px; }
+  .left-sidebar { order: 1; } 
+  .page-content    { order: 2; }
+  .right-sidebar { order: 3; }
+  .page-footer  { order: 4; }
+}
+
+
+.alert {
+  border: 1px solid #F44336; 
+  background: #EF9A9A;
+  font-family: 'Roboto Mono';
+  color: #fff;
+  font-weight: bold;
+  padding: 20px;
+  margin: 10px;
+}
+
+.info {
+  border: 1px solid #2196F3; 
+  background: #BBDEFB;
+  font-family: 'Roboto Condensed';
+  color: #000;  
+  padding: 20px;
+  margin: 10px;
+}
+
+.code {
+  border: 1px solid #9E9E9E; 
+  background: #EEEEEE;
+  font-family: arial;
+  color: #000;  
+  padding: 15px;
+  margin: 15px;
+}
+
+.widget {
+  border: 1px solid #33691E; 
+  background: #DCEDC8;
+  font-family: arial;
+  color: #000;  
+  padding: 15px;
+  margin: 15px;
+}

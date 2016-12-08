@@ -1,0 +1,32 @@
+<h1>Name: {{company.companyName}}</h1>
+
+<p>
+<label>Navn: </label><br/> <input type="text" [(ngModel)]="company.companyName">
+</p>
+<p><label for="">Org.nr:</label><br/><input type="text" [(ngModel)]="company.orgNo"></p>
+<p><label for="">Adresse:</label><br/><input type="text" [(ngModel)]="company.address"></p>
+<button (click)=save()>Lagre</button>
+
+<h3>Json- innhold:</h3>
+<pre class="code">{{company | json}}</pre>
+<p>
+    <i>Mellom strekene er &lt;avento-person-table&gt; "taggen" brukt for å liste ut personer knyttet til bedriften</i> definert
+    med: <code>&lt;avento-person-table [companyId]="id"&gt; &lt;/avento-person-table&gt;</code>
+</p>
+
+<hr />
+    <!--
+        Husk å bruke [] rundt de egendefinerte attributtene. I dette tilfellet companyId. Id er en egenskap som ligger i CompanyEditComponent og settes som et @input() parameter
+    -->
+    <avento-person-table [companyId]="id"></avento-person-table>
+
+<hr />
+<i>Her fortsetter &lt;avento-edit-company&gt; "taggen"</i>
+
+<div class="info">
+    <p>Denne komponenten henter data basert på url. Den bruker :id (siste del av url) til å hente korrekt bedrift og hvilke
+        personer som er knyttet til bedriften</p>
+    <p>Prøv å endre <strong><i>localhost:port{{this.router.url}}</i></strong> og verdien {{id}} til noe annet f.eks: {{id +1}}
+        eller {{id === 1 ? id +2 : id -1}}</p>
+
+</div>
