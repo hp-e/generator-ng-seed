@@ -1,11 +1,11 @@
 {
-  "name": "generator-avento-code",
+  "name": "generator-ng-seed",
   "version": "0.0.0",
-  "description": "A Yeoman generator for scaffolding a default Avento Angular2 project",
+  "description": "A Yeoman generator for scaffolding an Angular project",
   "homepage": "",
   "author": {
     "name": "Hans-Petter Eitvet",
-    "email": "hans-petter.eitvet@avento.no",
+    "email": "hpephoto@gmail.com",
     "url": ""
   },
   "files": [
@@ -42,7 +42,7 @@
       "mocha": true
     }
   },
-  "repository": "/generator-avento-code",
+  "repository": "/generator-ng-seed",
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp"
