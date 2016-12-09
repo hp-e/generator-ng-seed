@@ -2,6 +2,7 @@
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
+var _ = require('lodash');
 
 module.exports = yeoman.Base.extend({
   init: function () {
@@ -11,10 +12,39 @@ module.exports = yeoman.Base.extend({
   prompting: function () {
     // Have Yeoman greet the user.
     this.log(yosay(
-      'Welcome to this fantastic ' + chalk.red('avento-code') + ' generator!'
+      'Welcome to this fantastic ' + chalk.red('Angular - Seed') + ' generator!'
     ));
-
+    
+    this.log("We will now ask a bunch of questions so that we can scaffold a really nice application for you");
+    this.log("")
     var prompts = [
+      {
+                type: 'checkbox',
+                name: 'jslibs',
+                message: 'Which JS libraries would you like to include?',
+                choices: [
+                    {
+                        name: 'lodash',
+                        value: 'lodash',
+                        checked: true
+                    },
+                    {
+                        name: 'Moment.js',
+                        value: 'momentjs',
+                        checked: true
+                    },
+                    {
+                        name: 'Angular-UI Utils',
+                        value: 'angularuiutils',
+                        checked: true
+                    },
+                    {
+                        name: 'Highcharts',
+                        value: 'highchart',
+                        checked: true
+                    }
+                ]
+            },
       //   {
       //   type: 'list',
       //   name: 'type',
@@ -78,14 +108,7 @@ module.exports = yeoman.Base.extend({
         default: false
       }
     ];
-
-    // return this.prompt(prompts, function (props) {
-    //   this.type = props.type;
-    //   this.ui = props.ui;
-    //   this.appName = props.appName;
-    //   //done();
-    // }.bind(this));
-    //}
+    
 
     return this.prompt(prompts).then(function (props) {
       // To access props later use this.props.someAnswer;
@@ -129,6 +152,9 @@ module.exports = yeoman.Base.extend({
     this.copy(root + 'webpack.config.js', 'webpack.config.js');
     this.copy(root + 'README.md', 'README.md');
 
+    // config
+    this.copy(root + 'config/prod.config.js', 'config/prod.config.js');
+
     // src files
     this.copy(root + 'src/vendor.browser.ts', 'src/vendor.browser.ts');
     this.copy(root + 'src/polyfills.browser.ts', 'src/polyfills.browser.ts');
@@ -139,13 +165,20 @@ module.exports = yeoman.Base.extend({
 
     // src/assets files
     this.copy(root + 'src/assets/styles.css', 'src/assets/styles.css');
-
+    
+    
     // src/app files
-    this.copy(root + 'src/app/app.settings.ts', 'src/app/app.settings.ts');
-    this.copy(root + 'src/app/app.routes.ts', 'src/app/app.routes.ts');
-    this.copy(root + 'src/app/app.module.ts', 'src/app/app.module.ts');
-    this.copy(root + 'src/app/app.component.ts', 'src/app/app.component.ts');
-    this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.html'), this.destinationPath('src/app/app.component.html'), args);
+    this.copy(root + 'src/app/App.Settings.ts', 'src/app/App.Settings.ts');
+    this.copy(root + 'src/app/App.routes.ts', 'src/app/App.Routes.ts');
+    this.copy(root + 'src/app/App.module.ts', 'src/app/App.Module.ts');
+    this.copy(root + 'src/app/App.component.ts', 'src/app/App.Component.ts');
+    this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.html'), this.destinationPath('src/app/App.Component.html'), args);
+
+    // shared
+    this.copy(root + 'src/app/shared/_PageNotFound.ts', 'src/app/shared/PageNotFound.ts');
+    
+    // core
+    this.copy(root + 'src/app/core/rxjs-extensions.ts', 'src/app/core/rxjs-extensions.ts');
 
     // scr/app/home files
     this.copy(root + 'src/app/home/home.component.html', 'src/app/home/home.component.html');
