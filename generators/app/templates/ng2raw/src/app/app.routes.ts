@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, Routes, RouterModule } from '@angular/router';
-import {HomeComponent} from './home/Home.Component';
-import { PageNotFound} from './shared/PageNotFound';
+import {HomeComponent} from './home/home.component';
+import { PageNotFound} from './shared/page-not-found';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},

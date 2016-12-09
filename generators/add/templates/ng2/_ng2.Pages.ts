@@ -3,5 +3,5 @@
 // export * from './pages/your.component';
 // ...
 
-export * from './pages/<%= singularName %>.Index.Page';
-export * from './pages/<%= singularName %>.Edit.Page';
+export * from './pages/<%= singularKebabName %>.index.page';
+export * from './pages/<%= singularKebabName %>.edit.page';

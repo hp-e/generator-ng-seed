@@ -1,5 +1,5 @@
 {
-  "name": "<%= appName %>",
+  "name": "<%= appNameKebab %>",
   "version": "<%= version %>",
   "description": "<%= description %>",
   "scripts": {

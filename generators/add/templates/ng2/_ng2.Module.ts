@@ -5,13 +5,13 @@ import { HttpModule } from '@angular/http'; // used in the CompanyService to get
 import { RouterModule } from '@angular/router'; // used by the Company Router to create routes, but also to use router parameters
 
 // components and directives
-import {  }  from './<%= singularName %>.Components';
+import {  }  from './<%= singularKebabName %>.components';
 
 // services
-import { <%= singularName %>Service} from './<%= singularName %>.Service';
+import { <%= singularName %>Service} from './<%= singularKebabName %>.service';
 
 // routing
-import { <%= singularName %>RoutingModule} from "./<%= singularName %>.Routing.Module";
+import { <%= singularName %>RoutingModule} from "./<%= singularKebabName %>.routing.module";
 
 @NgModule({
 

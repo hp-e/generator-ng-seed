@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/observable';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import { AppSettings } from '../app.settings';
 
-import { <%= singularName %> } from './<%= singularName %>.Models';
+import { <%= singularName %> } from './<%= singularKebabName %>.models';
 
 @Injectable()
 export class <%= singularName %>Service {

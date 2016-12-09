@@ -142,10 +142,11 @@ module.exports = yeoman.Base.extend({
       developer: "Hans-Petter Eitvet",
       port: this.props.port,
       appName: this.props.appName,
+      appNameKebab: _.kebabCase(this.props.appName),
       version: "1.0.0",
       description: this.props.description
     }
-
+    
     // root files
     this.fs.copyTpl(this.templatePath(root + '_package.json'), this.destinationPath('package.json'), args);
     this.fs.copy(this.templatePath(root + 'tsconfig.json'), this.destinationPath('tsconfig.json'));
@@ -168,14 +169,14 @@ module.exports = yeoman.Base.extend({
     
     
     // src/app files
-    this.copy(root + 'src/app/App.Settings.ts', 'src/app/App.Settings.ts');
-    this.copy(root + 'src/app/App.routes.ts', 'src/app/App.Routes.ts');
-    this.copy(root + 'src/app/App.module.ts', 'src/app/App.Module.ts');
-    this.copy(root + 'src/app/App.component.ts', 'src/app/App.Component.ts');
-    this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.html'), this.destinationPath('src/app/App.Component.html'), args);
+    this.copy(root + 'src/app/App.Settings.ts', 'src/app/app.settings.ts');
+    this.copy(root + 'src/app/App.routes.ts', 'src/app/app.routes.ts');
+    this.copy(root + 'src/app/App.module.ts', 'src/app/app.module.ts');
+    this.copy(root + 'src/app/App.component.ts', 'src/app/app.component.ts');
+    this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.html'), this.destinationPath('src/app/app.component.html'), args);
 
     // shared
-    this.copy(root + 'src/app/shared/_PageNotFound.ts', 'src/app/shared/PageNotFound.ts');
+    this.copy(root + 'src/app/shared/_PageNotFound.ts', 'src/app/shared/page-not-found.ts');
     
     // core
     this.copy(root + 'src/app/core/rxjs-extensions.ts', 'src/app/core/rxjs-extensions.ts');
