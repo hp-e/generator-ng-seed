@@ -142,7 +142,7 @@ module.exports = yeoman.Base.extend({
       developer: "Hans-Petter Eitvet",
       port: this.props.port,
       appName: this.props.appName,
-      appNameKebab: _.kebabCase(this.props.appName),
+      appNameKebab: _.kebabCase(this.props.appName),      
       version: "1.0.0",
       description: this.props.description
     }
