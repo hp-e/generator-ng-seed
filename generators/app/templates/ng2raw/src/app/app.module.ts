@@ -9,9 +9,9 @@ import { LocationStrategy, HashLocationStrategy,PathLocationStrategy } from '@an
 import './core/rxjs-extensions';
 
 // feature modules - our own
-import { HomeComponent } from './home/home.component';
-import { AppSettings } from './app.settings';
-import { PageNotFound } from './pageNotFound';
+import { HomeComponent } from './home/Home.Component';
+import { AppSettings } from './App.Settings';
+import { PageNotFound } from './shared/PageNotFound';
 
 // User defined modules
 // Here we list modules we have created and that needs to be improtet dere. A module is imported 
