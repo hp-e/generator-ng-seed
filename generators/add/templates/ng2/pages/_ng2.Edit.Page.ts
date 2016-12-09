@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
     //moduleId: module.id,
     selector: '<%= singularLowerName %>-index',
-    templateUrl: '<%= singularName %>.Index.Page.html',
-    stylesUrl: ['<%= singularName %>.Index.Page.css']
+    templateUrl: '<%= singularName %>.Edit.Page.html',
+    stylesUrl: ['<%= singularName %>.Edit.Page.css']
 })
-export class <%= singularName %>IndexPage implements OnInit {
+export class <%= singularName %>EditPage implements OnInit {
     constructor() { }
 
     ngOnInit() { }
