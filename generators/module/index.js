@@ -19,7 +19,7 @@ module.exports = yeoman.Base.extend({
     var prompts = [
       {
         name: 'className',
-        message: 'What is the class name ?',
+        message: 'What is the (singular) class name (need more than one? enter class names separated by SPACE)?',
         require: true,
       },
       // {
