@@ -31,7 +31,7 @@ import "font-awesome/css/font-awesome.css";
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,    
+    HttpModule,        
     //viktig at denne modulen lastes før AppRoutingModule. 
     //AppRoutingModule har en "catch all" som vil trigges før routingen som er definert i 
      
