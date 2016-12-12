@@ -104,7 +104,7 @@ module.exports = yeoman.Base.extend({
     
     if (!this.options['skip-install']) {
       this.log("Download dependencies: ")
-      this.installDependencies();      
+      this.npmInstall();      
     }
 
   },
