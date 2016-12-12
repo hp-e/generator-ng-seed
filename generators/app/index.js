@@ -195,8 +195,19 @@ module.exports = yeoman.Base.extend({
     this.copy(root + 'src/app/App.routes.ts', 'src/app/app.routes.ts');
     this.fs.copyTpl(this.templatePath(root + 'src/app/App.module.ts'), this.destinationPath('src/app/app.module.ts'), args);
     this.copy(root + 'src/app/App.component.ts', 'src/app/app.component.ts');
-    this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.html'), this.destinationPath('src/app/app.component.html'), args);
+    
+    switch (args.front) {
+      case 'mdl':
+          this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.mdl.html'), 
+            this.destinationPath('src/app/app.component.html'), args);
+        break;
+      default:
+        this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.html'), 
+          this.destinationPath('src/app/app.component.html'), args);
 
+        break;
+    }
+    
     // shared
     this.copy(root + 'src/app/shared/_PageNotFound.ts', 'src/app/shared/page-not-found.ts');
 
@@ -207,6 +218,6 @@ module.exports = yeoman.Base.extend({
     this.copy(root + 'src/app/home/home.component.html', 'src/app/home/home.component.html');
     this.copy(root + 'src/app/home/home.component.ts', 'src/app/home/home.component.ts');
     this.copy(root + 'src/app/home/home.component.css', 'src/app/home/home.component.css');
-
+    
   }
 });
