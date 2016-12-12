@@ -3,26 +3,12 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 var _ = require('lodash');
-var ejs = require('ejs');
+//var ejs = require('ejs');
 
 module.exports = yeoman.Base.extend({
   constructor: function(){
         yeoman.Base.apply(this, arguments);
-        // this.appnameInit = "Angular2 App";
-        // this.argument('appnameInit', { type: String, required: false });
-        // this.appnameInit = _.kebabCase(this.appnameInit);
         
-        // this.option('libs', {
-        //    desc: 'Optionally includes all jslibs from jslibs list.',
-        //    type: Boolean,
-        //    default: false 
-        // });
-
-        // this.option('i', {
-        //    desc: 'Optionally download and install all packages. If omitted, npm install is required.',
-        //    type: Boolean,
-        //    default: false 
-        // });
     },
   
   init: function () {
@@ -91,31 +77,14 @@ module.exports = yeoman.Base.extend({
             name: 'None',
             value: 'none'
           },
-          // {
-          //   name: 'Angular Material (Alpha 11)',
-          //   value: 'md2'
-          // },
+          
           {
             name: 'Material Design Lite (1.2.1)',
             value: 'mdl'
-          },
-          // {
-          //   name: 'Bootstrap (3.3.6)',
-          //   value: 'bs3'
-          // }
-        ],
-        // when: function (answers) {
-        //   return answers.type === 'ng2';
-        // }
+          }
+        ],        
 
-      },
-      
-      // {
-      //   type: 'confirm',
-      //   name: 'downloadModules',
-      //   message: 'Do you want to download node modules now?',
-      //   default: false
-      // }
+      },     
     ];
 
 
@@ -129,15 +98,6 @@ module.exports = yeoman.Base.extend({
 
   writing: function () {
     this._writeNg2App();
-
-    // console.log("writing: ", this.props.type)
-    // switch (this.props.type) {
-
-    //   case 'ng2':
-    //     this._writeNg2App();
-    //     break;
-    // }
-
   },
 
   install: function () {
