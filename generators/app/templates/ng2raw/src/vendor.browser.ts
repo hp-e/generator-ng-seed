@@ -28,6 +28,7 @@ import "lodash";
 //import files for Material Design Lite;
 import "material-design-lite/material.js";
 import "material-design-lite/material.css";
+import "material-design-lite/dist/material.blue-green.min.css";
 <% } %>
 <% if (front === 'md2') { %>
 //import files for Angular Material 2;
