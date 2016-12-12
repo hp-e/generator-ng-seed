@@ -1,8 +1,7 @@
 {
   "name": "generator-ng-seed",
-  "version": "0.1.1",
-  "description": "A Yeoman generator for scaffolding an Angular project with Typescript and webpack",
-  "homepage": "",
+  "version": "0.1.2",
+  "description": "A Yeoman generator for scaffolding an Angular project with Typescript and webpack",  
   "author": {
     "name": "Hans-Petter Eitvet",
     "email": "hpephoto@gmail.com",
@@ -49,7 +48,12 @@
       "mocha": true
     }
   },
-  "repository": "/generator-ng-seed",
+  "homepage": "https://github.com/hp-e/generator-ng-seed/wiki",
+  "bugs": "https://github.com/hp-e/generator-ng-seed/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hp-e/generator-ng-seed.git"
+  },  
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp"
