@@ -1,0 +1,41 @@
+    var vendor = this.fs.read(this.templatePath(root + 'src/vendor.browser.ts'));
+
+    // vendor += '\n\n//import files for Font Awesome';
+    // vendor += '\nimport "font-awesome/css/font-awesome.css"';
+    
+    // vendor += '\n\n//import files for Angular Material (part 1)';
+    // vendor += '\n\n//hammerjs is necessary for the Angular Material 2';
+    // vendor += '\nimport "hammerjs";';  
+
+    // vendor += '\n\n//import files for Font Awesome';
+    // vendor += '\nimport "font-awesome/css/font-awesome.css"';
+    
+    // vendor += '\n\n//import files for Lodash';
+    // vendor += '\nimport "font-awesome/css/font-awesome.css"';
+
+
+    var data = {
+      name: "test",
+      addFontAwesome: true,
+      addLodash: true,
+      addMoment: false,
+      front: 'mdl'
+  };
+
+    //var vendor = ejs.render(vendor, data);
+
+    //this.log(v);
+
+    
+    // src files
+    //this.fs.write(this.destinationPath('src/vendor.browser.ts'), vendor);
+
+    // var nodeJson = this.fs.readJSON(this.templatePath(root + '_package.json'));
+    // nodeJson.dependencies["font-awesome"] = "4.7.0";
+    //this.log(json);
+    // root files
+    //this.fs.writeJSON('package.json', nodeJson);
+
+
+    //loaders
+    "awesome-typescript-loader": "^3.0.0-beta.10",

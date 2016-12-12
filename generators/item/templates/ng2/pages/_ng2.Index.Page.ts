@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
     //moduleId: module.id,
     selector: '<%= singularKebabName %>-index',
     templateUrl: '<%= singularKebabName %>.index.page.html',
-    stylesUrl: ['<%= singularKebabName %>.index.page.css']
+    styleUrls: ['<%= singularKebabName %>.index.page.css']
 })
-export class <%= singularName %>IndexPage implements OnInit {
+export class <%= singularName %>IndexPage implements OnInit, OnDestroy {
     constructor() { }
 
     ngOnInit() { }
+    ngOnDestroy() { }
 }

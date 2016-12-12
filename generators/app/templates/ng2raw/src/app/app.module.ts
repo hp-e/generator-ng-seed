@@ -13,6 +13,11 @@ import { HomeComponent } from './home/home.component';
 import { AppSettings } from './app.settings';
 import { PageNotFound } from './shared/page-not-found';
 
+<% if (addFontAwesome === true) { %>
+//import files for Font Awesome;
+import "font-awesome/css/font-awesome.css";
+<% } %>
+
 // User defined modules
 // Here we list modules we have created and that needs to be improtet dere. A module is imported 
 // and we do not need to declare the component in the AppModule. 

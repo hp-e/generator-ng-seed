@@ -83,7 +83,11 @@ module.exports = yeoman.Base.extend({
     //models
     this.fs.copyTpl(this.templatePath(root + 'models/' + '_ng2.Model.ts'), this.destinationPath(destRoot + 'models/' + args.singularKebabName + '.model.ts'), args);
 
-    //pages
+    //components
+    this.fs.copyTpl(this.templatePath(root + 'components/' + '_ng2.Component.ts'), this.destinationPath(destRoot + 'components/' + args.singularKebabName + '.component.ts'), args);
+    this.fs.copyTpl(this.templatePath(root + 'components/' + '_ng2.Component.html'), this.destinationPath(destRoot + 'components/' + args.singularKebabName + '.component.html'), args);
+
+    //pages    
     this.fs.copyTpl(this.templatePath(root + 'pages/' + '_ng2.Index.Page.ts'), this.destinationPath(destRoot + 'pages/' + args.singularKebabName + '.index.page.ts'), args);
     this.fs.copyTpl(this.templatePath(root + 'pages/' + '_ng2.Index.Page.html'), this.destinationPath(destRoot + 'pages/' + args.singularKebabName + '.index.page.html'), args);
     this.fs.copyTpl(this.templatePath(root + 'pages/' + '_ng2.Index.Page.css'), this.destinationPath(destRoot + 'pages/' + args.singularKebabName + '.index.page.css'), args);
