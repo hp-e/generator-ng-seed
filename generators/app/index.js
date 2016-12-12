@@ -56,28 +56,28 @@ module.exports = yeoman.Base.extend({
           {
             name: 'lodash',
             value: 'lodash',
-            checked: false
+            checked: true
           },
           {
             name: 'Font-Awesome',
             value: 'fontawesome',
-            checked: false
+            checked: true
           },
-          {
-            name: 'Material Design Icons',
-            value: 'mdicons',
-            checked: false
-          },
-          {
-            name: 'Highcharts',
-            value: 'highchart',
-            checked: false
-          },
-          {
-            name: 'Moment.js',
-            value: 'momentjs',
-            checked: false
-          }
+          // {
+          //   name: 'Material Design Icons',
+          //   value: 'mdicons',
+          //   checked: false
+          // },
+          // {
+          //   name: 'Highcharts',
+          //   value: 'highchart',
+          //   checked: false
+          // },
+          // {
+          //   name: 'Moment.js',
+          //   value: 'momentjs',
+          //   checked: false
+          // }
         ]
       },
 
@@ -91,18 +91,18 @@ module.exports = yeoman.Base.extend({
             name: 'None',
             value: 'none'
           },
+          // {
+          //   name: 'Angular Material (Alpha 11)',
+          //   value: 'md2'
+          // },
           {
-            name: 'Angular Material (Alpha 11)',
-            value: 'md2'
-          },
-          {
-            name: 'Angular Material Lite (1.2.1)',
+            name: 'Material Design Lite (1.2.1)',
             value: 'mdl'
           },
-          {
-            name: 'Bootstrap (3.3.6)',
-            value: 'bs3'
-          }
+          // {
+          //   name: 'Bootstrap (3.3.6)',
+          //   value: 'bs3'
+          // }
         ],
         // when: function (answers) {
         //   return answers.type === 'ng2';
@@ -172,7 +172,8 @@ module.exports = yeoman.Base.extend({
     
     this.fs.copyTpl(this.templatePath(root + '_package.json'), this.destinationPath('package.json'), args);
     this.fs.copy(this.templatePath(root + 'tsconfig.json'), this.destinationPath('tsconfig.json'));
-    this.copy(root + 'webpack.config.js', 'webpack.config.js');
+    this.fs.copyTpl(this.templatePath(root + 'webpack.config.js'), this.destinationPath('webpack.config.js'), args);
+    
     this.copy(root + 'README.md', 'README.md');
 
     // config
