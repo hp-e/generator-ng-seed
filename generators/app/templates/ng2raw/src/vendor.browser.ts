@@ -34,7 +34,7 @@ import "material-design-lite/material.css";
 // Keep in mind that Angular Material is still in Alpha and you should
 // use this in a production application. If you want Material Design in
 // the project you can use Material Design Lite
-import "@material/misc";
+
 <% } %>
 <% if (front === 'bs3') { %>
 //import files for Bootstrap v3;
