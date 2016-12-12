@@ -10,23 +10,14 @@ module.exports = yeoman.Base.extend({
 
   },
 
-  prompting: function () {
-    // Have Yeoman greet the user.
-    // this.log(yosay(
-    //   'Welcome to this fantastic ' + chalk.red('Angular - Seed') + ' generator!'
-    // ));
+  prompting: function () {    
 
     var prompts = [
       {
         name: 'className',
         message: 'What is the (singular) class name (need more than one? enter class names separated by SPACE)?',
         require: true,
-      },
-      // {
-      //   name: 'classNamePlural',
-      //   message: 'What is the plural class name ?',
-      //   require: true, 
-      // }
+      }
     ];
 
 
