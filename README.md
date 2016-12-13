@@ -1,10 +1,16 @@
-[Yeoman](http://yeoman.io) generator for angular with typescript projects.
+# A [Yeoman](http://yeoman.io) generator for scaffolding an Angular project with Typescript and webpack.
+The goal of this generator is to create a very simple scaffolding for an Angular project.
+
+Given the 6 month main release schedule for Angular we will try to mirror that in this generator.
+e.g. When Angular 3 is in production you will be able to select either 2 or 3 as the basis for your application. 
+
+NB! Version 1 of Angular is not and will not be supported in this generator.
 
 ## Getting Started
 
 First of all you will need the yeoman cli for this generator. If you don't have it installed do that now.
 
-```
+```cmd 
 $ npm install -g yo
 ```
 
@@ -12,22 +18,22 @@ $ npm install -g yo
 
 To install this generator from npm, run:
 
-```
+```cmd
 $ npm install -g generator-ng-seed
 ```
 
 Finally, initiate the generator:
-```
+```cmd
 $ yo ng-seed
 ```
 
 or to download dependencies later
-```
+```cmd
 $ yo ng-seed --skip-install
 ```
 
 to skip all questions and only create the minimum files required to run a simple angular2 project
-```
+```cmd
 $ yo ng-seed --easy-peasy
 ```
 
@@ -111,24 +117,24 @@ moduleName = company
 generator-ng-seed/
  ├──src/                       
  │   ├──app/                   
- │   │   ├──company/                             * a simple test of components in app.ts
- │   │   │   ├──components/                * a simple end-to-end test for /
- │   │   │   │   ├──company.component.html                * a simple end-to-end test for /
- │   │   │   │   └──company.component.ts                * a simple end-to-end test for /
- │   │   │   ├──models/                * a simple end-to-end test for /
- │   │   │   │   └──company.model.ts                * a simple end-to-end test for /
- │   │   │   ├──pages/                * a simple end-to-end test for /
- │   │   │   │   ├──company.component.html                * a simple end-to-end test for /
- │   │   │   │   └──company.component.ts                * a simple end-to-end test for /
- │   │   │   ├──company.module.ts                * a simple end-to-end test for /
- │   │   │   ├──company.routing.module.ts        * a simple end-to-end test for /
- │   │   │   ├──company.service.ts        * a simple end-to-end test for /
- │   │   │   ├──company.pages.ts        * a simple end-to-end test for /
- │   │   │   ├──company.models.ts        * a simple end-to-end test for /
- │   │   │   └──company.components.ts        * a simple end-to-end test for /
+ │   │   ├──company/                             
+ │   │   │   ├──components/                      
+ │   │   │   │   ├──company.component.html       
+ │   │   │   │   └──company.component.ts         
+ │   │   │   ├──models/                          
+ │   │   │   │   └──company.model.ts             
+ │   │   │   ├──pages/                           
+ │   │   │   │   ├──company.component.html       
+ │   │   │   │   └──company.component.ts         
+ │   │   │   ├──company.module.ts                
+ │   │   │   ├──company.routing.module.ts        
+ │   │   │   ├──company.service.ts               
+ │   │   │   ├──company.pages.ts                 
+ │   │   │   ├──company.models.ts               
+ │   │   │   └──company.components.ts            
 ```
 
-A combined name like companyManager will look like this 
+using a name like companyManager will look like this 
 ```
 moduleName = companyManager
 generator-ng-seed/

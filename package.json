@@ -3,13 +3,14 @@
   "version": "0.1.2",
   "description": "A Yeoman generator for scaffolding an Angular project with Typescript and webpack",  
   "author": {
-    "name": "Hans-Petter Eitvet",
-    "email": "hpephoto@gmail.com",
+    "name": "Hans-Petter Eitvet",    
     "url": ""
   },
   "files": [
     "generators/app",
-    "generators/module"
+    "generators/module",
+    "generators/component",
+    "generators/page"
   ],
   "main": "generators/index.js",
   "keywords": [   
@@ -18,7 +19,8 @@
     "angular",
     "angular2",
     "webpack",
-    "generators"
+    "generators",
+    "scaffold"
   ],
   "dependencies": {
     "chalk": "^1.0.0",
