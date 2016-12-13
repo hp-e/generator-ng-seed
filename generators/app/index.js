@@ -132,9 +132,11 @@ module.exports = yeoman.Base.extend({
     
     this.fs.copyTpl(this.templatePath(root + '_package.json'), this.destinationPath('package.json'), args);
     this.fs.copy(this.templatePath(root + 'tsconfig.json'), this.destinationPath('tsconfig.json'));
+    this.fs.copy(this.templatePath(root + '.gitignore'), this.destinationPath('.gitignore'));
     this.fs.copyTpl(this.templatePath(root + 'webpack.config.js'), this.destinationPath('webpack.config.js'), args);
     
     this.copy(root + 'README.md', 'README.md');
+    this.copy(root + 'CHANGELOG.md', 'CHANGELOG.md');
 
     // config
     this.copy(root + 'config/prod.config.js', 'config/prod.config.js');
