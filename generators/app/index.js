@@ -39,7 +39,7 @@ module.exports = yeoman.Base.extend({
   prompting: function () {
     // Have Yeoman greet the user.
     this.log(yosay(
-      'Welcome to this fantastic ' + chalk.red('Angular - Seed') + ' generator!'
+      'Welcome to this fantastic ' + chalk.cyan('Angular - Seed') + ' generator!'
     ));
 
     if (this.options['easy-peasy']) {

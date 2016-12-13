@@ -2,9 +2,7 @@
 
 ## Getting Started
 
-### Get to know Yeoman.
-
-He's a cool guy. He wears a top hat, lives in your computer, and waits for you to tell him what kind of application you wish to create. He lives in the [npm](https://npmjs.org) package repository. You only have to ask for him once, then he packs up and moves into your hard drive. *Make sure you clean up, he likes new and shiny things.*
+First of all you will need the yeoman cli for this generator. If you don't have it installed do that now.
 
 ```
 $ npm install -g yo
@@ -12,63 +10,69 @@ $ npm install -g yo
 
 ### Run the generator
 
-To install generator-ng-seed from npm, run:
+To install this generator from npm, run:
 
 ```
 $ npm install -g generator-ng-seed
 ```
 
-Finally, initiate the generator and download packages in one go:
+Finally, initiate the generator:
 ```
 $ yo ng-seed
 ```
 
-or to download packages later
+or to download dependencies later
 ```
 $ yo ng-seed --skip-install
 ```
 
 to skip all questions and only create the minimum files required to run a simple angular2 project
-or to download packages later
 ```
 $ yo ng-seed --easy-peasy
 ```
 
-Tell it what to name your project, libraries to include and frontend framework to use. 
-
 ## File structure
+The generator produce the following output. This structure is loosly based on the angular2-seed from the angular team.
 
 ```
 generator-ng-seed/
- ├──src/                       * our source files that will be compiled to javascript
- |   ├──main.ts                * our entry file for our browser environment
+ ├──config/                       
+ |   ├──prod.config.js                     
+ ├──src/                       
+ |   ├──main.browser.ts                     //this is the starting point for the application
  │   │
- |   ├──index.html             * Index.html: where we generate our index page
+ |   ├──index.html                          //
+ |   ├──favicon.ico             
  │   │
- |   ├──polyfills.ts           * our polyfills file
+ |   ├──polyfills.browser.ts                //
+ |   ├──vendor.browser.ts                   // third pary libraries can be imported to this file
  │   │
- │   ├──app/                   * WebApp: folder
- │   │   ├──app.spec.ts        * a simple test of components in app.ts
- │   │   ├──app.e2e.ts        * a simple end-to-end test for /
- │   │   └──app.ts             * App.ts: a simple version of our App component components
+ │   ├──app/                   
+ │   │   ├──core/  
+ │   │   │   └──rxjs-extensions.ts          
+ │   │   ├──home/        
+ │   │   │   ├──home.component.css          
+ │   │   │   ├──home.component.html        
+ │   │   │   └──home.component.ts          
+ │   │   ├──shared/        
+ │   │   │   page-not-found.ts          
+ │   │   ├──app.component.html        
+ │   │   ├──app.component.ts        
+ │   │   ├──app.module.ts        
+ │   │   ├──app.routes.ts        
+ │   │   └──app.settings.ts             
  │   │
- │   └──assets/                * static assets are served here
- │       ├──icon/              * our list of icons from www.favicon-generator.org
- │       ├──service-worker.js  * ignore this. Web App service worker that's not complete yet
- │       ├──robots.txt         * for search engines to crawl your website
- │       └──human.txt          * for humans to know who the developers are
+ │   └──assets/                      
+ │       └──styles.css                      
  │
- ├──spec-bundle.js             * ignore this magic that sets up our angular 2 testing environment
- ├──karma.config.js            * karma config for our unit tests
- ├──protractor.config.js       * protractor config for our end-to-end tests
+ ├──.gitignore             
+ ├──.yo.rc.json             
+ ├──CHANGELOG.md            
+ ├──README.md             
  │
- ├──tsconfig.json              * config that webpack uses for typescript
- ├──typings.json               * our typings manager
- ├──package.json               * what npm uses to manage it's dependencies
- │
- ├──webpack.config.js          * our development webpack config
- ├──webpack.test.config.js     * our testing webpack config
- └──webpack.prod.config.js     * our production webpack config
+ ├──tsconfig.json                          
+ ├──package.json                
+ └──webpack.config.js     
 ```
 
 ### Enjoy!
@@ -88,41 +92,6 @@ $ npm run build
 ```
 
 ## Sub generators
-
-### Page
-
-### Component
-In this sub generator a module is a directory in the src/app directory. It consists of a <name>.module.ts, router, pages, components.
-You will be asked for a name for the module. This should be written in singular form (e.g company not companies). Where appropriate we 
-will fint the plural form. Separate word with upper case (companyManager, companyContact etc)
-
-To run the module sub generator:
-```
-$ yo ng-seed:component 
-```
-1. Select the module/directory where the component(s) should be created 
-2. Enter the component name(s). 
-
-For each component name the following will be generated in the selected module components directory:
-```
-selected module = company
-componentName = companyList
-
-generator-ng-seed/
- ├──src/                       
- │   ├──app/                   
- │   │   ├──company/                             * a simple test of components in app.ts
- │   │   │   ├──components/                * a simple end-to-end test for /
- │   │   │   │   ├──company-list.component.html                * a simple end-to-end test for /
- │   │   │   │   ├──company-list.component.css                * a simple end-to-end test for /
- │   │   │   │   └──company-list.component.ts                * a simple end-to-end test for /
- 
-```
-
-to only create the component file and using an inline style add --inline option
-```
-$ yo ng-seed:component --inline
-```
 
 ### Module
 In this sub generator a module is a directory in the src/app directory. It consists of a <name>.module.ts, router, pages, components.
@@ -181,6 +150,66 @@ generator-ng-seed/
  │   │   │   ├──company-manager.models.ts        
  │   │   │   └──company-manager.components.ts      
 ```
+### Page
+To run the page sub generator:
+```
+$ yo ng-seed:page 
+```
+1. Select the module/directory where the page(s) should be created 
+2. Enter the page name(s). 
+
+For each page name the following will be generated in the selected module pages directory:
+```
+selected module = company
+PageName = companyDetail
+
+generator-ng-seed/
+ ├──src/                       
+ │   ├──app/                   
+ │   │   ├──company/                            
+ │   │   │   ├──pages/                     
+ │   │   │   │   ├──company-detail.page.html      
+ │   │   │   │   ├──company-detail.page.css       
+ │   │   │   │   └──company-detail.page.ts        
+ 
+```
+
+to only create the page file using an inline style add the --inline option
+```
+$ yo ng-seed:page --inline
+```
+
+### Component
+
+To run the component sub generator:
+```
+$ yo ng-seed:component 
+```
+1. Select the module/directory where the component(s) should be created 
+2. Enter the component name(s). 
+
+For each component name the following will be generated in the selected module components directory:
+```
+selected module = company
+componentName = companyList
+
+generator-ng-seed/
+ ├──src/                       
+ │   ├──app/                   
+ │   │   ├──company/                                    
+ │   │   │   ├──components/                             
+ │   │   │   │   ├──company-list.component.html         
+ │   │   │   │   ├──company-list.component.css          
+ │   │   │   │   └──company-list.component.ts           
+ 
+```
+
+to only create the component file and using an inline style add --inline option
+```
+$ yo ng-seed:component --inline
+```
+
+
 
 ## License
 
