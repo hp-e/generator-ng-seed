@@ -45,13 +45,13 @@ generator-ng-seed/
  ├──config/                       
  |   ├──prod.config.js                     
  ├──src/                       
- |   ├──main.browser.ts                     //this is the starting point for the application
+ │   ├──main.browser.ts                     //this is the starting point for the application
  │   │
- |   ├──index.html                          //
- |   ├──favicon.ico             
+ │   ├──index.html                          //
+ │   ├──favicon.ico             
  │   │
- |   ├──polyfills.browser.ts                //
- |   ├──vendor.browser.ts                   // third pary libraries can be imported to this file
+ │   ├──polyfills.browser.ts                //
+ │   ├──vendor.browser.ts                   // third pary libraries can be imported to this file
  │   │
  │   ├──app/                   
  │   │   ├──core/  
@@ -98,6 +98,14 @@ $ npm run build
 ```
 
 ## Sub generators
+
+The following sub generator has been implemented
+
+|  Generator | Description  |
+| -|-|
+| module|  [Read more](generators/module/readme.md) |
+| page|  [Read more](generators/page/readme.md) |
+| component|  [Read more](generators/component/readme.md) |
 
 ### Module
 In this sub generator a module is a directory in the src/app directory. It consists of a <name>.module.ts, router, pages, components.
