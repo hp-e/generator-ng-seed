@@ -11,7 +11,7 @@ $ yo ng-seed:module
 
 When asked for class name you can enter more than one module name. Each module must be separated by a SPACE
 
-#### File structure for the module
+### File structure for the module
 ```
 moduleName = company
 generator-ng-seed/

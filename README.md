@@ -101,11 +101,9 @@ $ npm run build
 
 The following sub generator has been implemented
 
-|  Generator | Description  |
-| -|-|
-| module|  [Read more](generators/module/readme.md) |
-| page|  [Read more](generators/page/readme.md) |
-| component|  [Read more](generators/component/readme.md) |
+* module  [Read more](generators/module/readme.md)
+* page  [Read more](generators/page/readme.md)
+* component  [Read more](generators/component/readme.md)
 
 ### Module
 In this sub generator a module is a directory in the src/app directory. It consists of a <name>.module.ts, router, pages, components.
@@ -117,81 +115,15 @@ To run the module sub generator:
 $ yo ng-seed:module 
 ```
 
-When asked for class name you can enter more than one module name. Each module must be separated by a SPACE
+[Read more](generators/module/readme.md)
 
-#### File structure for the module
-```
-moduleName = company
-generator-ng-seed/
- ├──src/                       
- │   ├──app/                   
- │   │   ├──company/                             
- │   │   │   ├──components/                      
- │   │   │   │   ├──company.component.html       
- │   │   │   │   └──company.component.ts         
- │   │   │   ├──models/                          
- │   │   │   │   └──company.model.ts             
- │   │   │   ├──pages/                           
- │   │   │   │   ├──company.component.html       
- │   │   │   │   └──company.component.ts         
- │   │   │   ├──company.module.ts                
- │   │   │   ├──company.routing.module.ts        
- │   │   │   ├──company.service.ts               
- │   │   │   ├──company.pages.ts                 
- │   │   │   ├──company.models.ts               
- │   │   │   └──company.components.ts            
-```
-
-using a name like companyManager will look like this 
-```
-moduleName = companyManager
-generator-ng-seed/
- ├──src/                       
- │   ├──app/                   
- │   │   ├──company-manager/                             
- │   │   │   ├──components/                
- │   │   │   │   ├──company-manager.component.html               
- │   │   │   │   └──company-manager.component.ts                
- │   │   │   ├──models/               
- │   │   │   │   └──company-manager.model.ts                
- │   │   │   ├──pages/                
- │   │   │   │   ├──company-manager.component.html  
- │   │   │   │   └──company-manager.component.ts    
- │   │   │   ├──company-manager.module.ts          
- │   │   │   ├──company-manager.routing.module.ts  
- │   │   │   ├──company-manager.service.ts        
- │   │   │   ├──company-manager.pages.ts        
- │   │   │   ├──company-manager.models.ts        
- │   │   │   └──company-manager.components.ts      
-```
 ### Page
 To run the page sub generator:
 ```
 $ yo ng-seed:page 
 ```
-1. Select the module/directory where the page(s) should be created 
-2. Enter the page name(s). 
 
-For each page name the following will be generated in the selected module pages directory:
-```
-selected module = company
-PageName = companyDetail
-
-generator-ng-seed/
- ├──src/                       
- │   ├──app/                   
- │   │   ├──company/                            
- │   │   │   ├──pages/                     
- │   │   │   │   ├──company-detail.page.html      
- │   │   │   │   ├──company-detail.page.css       
- │   │   │   │   └──company-detail.page.ts        
- 
-```
-
-to only create the page file using an inline style add the --inline option
-```
-$ yo ng-seed:page --inline
-```
+[Read more](generators/page/readme.md)
 
 ### Component
 
@@ -199,31 +131,8 @@ To run the component sub generator:
 ```
 $ yo ng-seed:component 
 ```
-1. Select the module/directory where the component(s) should be created 
-2. Enter the component name(s). 
 
-For each component name the following will be generated in the selected module components directory:
-```
-selected module = company
-componentName = companyList
-
-generator-ng-seed/
- ├──src/                       
- │   ├──app/                   
- │   │   ├──company/                                    
- │   │   │   ├──components/                             
- │   │   │   │   ├──company-list.component.html         
- │   │   │   │   ├──company-list.component.css          
- │   │   │   │   └──company-list.component.ts           
- 
-```
-
-to only create the component file and using an inline style add --inline option
-```
-$ yo ng-seed:component --inline
-```
-
-
+[Read more](generators/component/readme.md)
 
 ## License
 
