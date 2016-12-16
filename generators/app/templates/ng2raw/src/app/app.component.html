@@ -1,39 +1,6 @@
-<div class="page-container">
+<h1><%= appName %></h1>
 
-  <header>
-    <div class="page-header">
-      <div class="header-item logo">
-        <%= appName %>
-      </div>
+<strong><a [routerLink]="['/']">Home</a><br/>   </strong>
 
-    </div>
-  </header>
-  <div class="page-wrapper">
-    <aside class="left-sidebar">
-      <h3>
-        Meny
-      </h3>
-      <nav> 
-        <a [routerLink]="['/']">Hjem</a><br/>        
-      </nav>      
-    </aside>
-    <article class="page-content">
-      <router-outlet></router-outlet>
-    </article>
-  </div>
-  <footer class="page-footer">
-    Footer: © 2016
-  </footer>
-
-</div>
-
-<!--
-
-<main>
-	
-</main>-->
-
-<!--
-<footer>
-  © 2016
-</footer>-->
+<h4>router outlet</h4>
+<router-outlet></router-outlet>
