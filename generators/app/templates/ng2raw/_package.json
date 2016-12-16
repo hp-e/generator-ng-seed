@@ -15,6 +15,7 @@
     "@types/node": "^6.0.48",
     <% if (front === 'mdl') { %>"@types/material-design-lite": "^1.1.14", <% } %>
     <% if (addLodash === true) { %>"@types/lodash": "^4.14.43", <% } %>
+    <% if (front === 'md2') { %>"@types/hammerjs": "^2.0.33", <% } %>
     "angular2-template-loader": "^0.6.0",    
     "url-loader": "^0.5.7",
     "file-loader": "0.9.0", 
@@ -49,6 +50,8 @@
     <% if (addFontAwesome === true) { %>"font-awesome": "~4.7.0", <% } %>
     <% if (addLodash === true) { %>"lodash": "~4.17.2", <% } %>
     <% if (front === 'mdl') { %>"material-design-lite": "~1.2.1", <% } %>
+    <% if (front === 'md2') { %>"@angular/material": "2.0.0-alpha.11", <% } %>
+    <% if (front === 'md2') { %>"hammerjs": "^2.0.8", <% } %>
     <% if (addMaterialDesignIcons === true) { %>"material-design-icons": "~3.0.1", <% } %>
     "rxjs": "5.0.0-rc.4",
     "zone.js": "~0.7.2"

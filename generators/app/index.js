@@ -72,8 +72,10 @@ module.exports = yeoman.Base.extend({
           message: 'Which UI framework would you like to use?',
           default: 'none',
           choices: [
-            { name: 'None', value: 'none' },            
-            { name: 'Material Design Lite (1.2.1)', value: 'mdl'  }
+            { name: 'None', value: 'none'},            
+            { name: 'Material Design Lite (1.2.1)', value: 'mdl'},
+            { name: 'Angular Material 2.0.0 (alpha.11)', value: 'md2'},            
+            { name: 'Simple flexbox layout', value: 'flex'},            
           ],        
 
         },     
@@ -101,7 +103,7 @@ module.exports = yeoman.Base.extend({
 
     if (!this.options['skip-install']) {
       this.log("Download dependencies: ")
-      this.npmInstall();      
+      //this.npmInstall();      
     }
 
   },
@@ -112,7 +114,6 @@ module.exports = yeoman.Base.extend({
     
     if (!this.options['easy-peasy'] && this.props) {
         this.args = {
-          developer: "Hans-Petter Eitvet",
           port: this.props.port,
           appName: this.props.appName,
           appNameKebab: _.kebabCase(this.props.appName),
@@ -120,9 +121,9 @@ module.exports = yeoman.Base.extend({
           description: "",
           addFontAwesome: _.includes(this.props.jslibs, 'fontawesome'),
           addLodash: _.includes(this.props.jslibs, 'lodash'),
-          addMoment: _.includes(this.props.jslibs, 'momentjs'),
-          addHighchart: _.includes(this.props.jslibs, 'highchart'),
-          addMaterialDesignIcons: _.includes(this.props.jslibs, 'mdicons'),
+          addMoment: false, //_.includes(this.props.jslibs, 'momentjs'),
+          addHighchart: false, //_.includes(this.props.jslibs, 'highchart'),
+          addMaterialDesignIcons: this.props.ui === 'md2' ? true : false,//_.includes(this.props.jslibs, 'mdicons'),
           front: this.props.ui,
           ngVersion: 'ng2'
         }
@@ -156,7 +157,7 @@ module.exports = yeoman.Base.extend({
     this.fs.copyTpl(this.templatePath(root + 'src/index.html'), this.destinationPath('src/index.html'), this.args);
 
     // src/assets files
-    this.copy(root + 'src/assets/styles.css', 'src/assets/styles.css');
+    
 
     // src/app files
     this.copy(root + 'src/app/App.Settings.ts', 'src/app/app.settings.ts');
@@ -165,13 +166,29 @@ module.exports = yeoman.Base.extend({
     this.copy(root + 'src/app/App.component.ts', 'src/app/app.component.ts');
     
     switch (this.args.front) {
+      case 'none':
+          this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.html'), this.destinationPath('src/app/app.component.html'), this.args);
+
+          this.copy(root + 'src/assets/styles-none.css', 'src/assets/styles.css');
+        break;
       case 'mdl':
-          this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.mdl.html'), 
-            this.destinationPath('src/app/app.component.html'), this.args);
+          this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.mdl.html'), this.destinationPath('src/app/app.component.html'), this.args);
+
+          this.copy(root + 'src/assets/styles-mdl.css', 'src/assets/styles.css');
+        break;
+      case 'md2':
+        this.copy(root + 'src/assets/styles-md2.css', 'src/assets/styles.css');
+        this.copy(root + 'src/assets/main-theme.scss', 'src/assets/main-theme.scss');
+
+        this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.md2.html'), this.destinationPath('src/app/app.component.html'), this.args);
+
+        break;
+      case 'flex':
+          this.copy(root + 'src/assets/styles-flex.css', 'src/assets/styles.css');
+          this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.html'), this.destinationPath('src/app/app.component.html'), this.args);
         break;
       default:
-        this.fs.copyTpl(this.templatePath(root + 'src/app/app.component.html'), 
-          this.destinationPath('src/app/app.component.html'), this.args);
+        this.fs.copyTpl(this.templatePath(root + 'src/app/app.component-flex.html'), this.destinationPath('src/app/app.component.html'), this.args);
 
         break;
     }
