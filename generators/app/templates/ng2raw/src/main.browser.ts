@@ -3,7 +3,9 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {AppModule} from './app/app.module';
 import {enableProdMode} from '@angular/core';
 
-//Hvis dette skal kjøres i produksjon så kommenter ut neste linje
+// when the application is production ready, 
+// uncomment the line below. This will activate 
+// the production mode.
 //enableProdMode();
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
