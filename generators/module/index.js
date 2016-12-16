@@ -44,7 +44,10 @@ module.exports = yeoman.Base.extend({
       var properPlural = plural[0].toUpperCase() + plural.substr(1);
       //var route = 
       var args = {
-
+        className: className,
+        classNameLower: className.toLowerCase(),
+        fileName: _.kebabCase(plural),
+        port: 3000, // need to read from config,
         singularLowerName: className.toLowerCase(),
         singularName: className,
         pluralLowerName: plural,
@@ -63,6 +66,7 @@ module.exports = yeoman.Base.extend({
     var root = "ng2/";
     var destRoot = "src/app/" + args.singularKebabName + '/';
     // root files
+    this.fs.copyTpl(this.templatePath(root + '_readme.md'), this.destinationPath(destRoot + 'readme.md'), args);
     this.fs.copyTpl(this.templatePath(root + '_ng2.Service.ts'), this.destinationPath(destRoot + args.singularKebabName + '.service.ts'), args);
     this.fs.copyTpl(this.templatePath(root + '_ng2.Module.ts'), this.destinationPath(destRoot + args.singularKebabName + '.module.ts'), args);
     this.fs.copyTpl(this.templatePath(root + '_ng2.Routing.Module.ts'), this.destinationPath(destRoot + args.singularKebabName + '.routing.module.ts'), args);
