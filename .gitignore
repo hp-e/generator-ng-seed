@@ -3,3 +3,5 @@ coverage
 .vscode
 .editorconfig
 typings
+npm-debug.log
+nouse*
