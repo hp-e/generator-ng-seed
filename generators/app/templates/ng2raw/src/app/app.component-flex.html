@@ -1,0 +1,28 @@
+<div class="page-container">
+
+  <header>
+    <div class="page-header">
+      <div class="header-item logo">
+        <%= appName %>
+      </div>
+
+    </div>
+  </header>
+  <div class="page-wrapper">
+    <aside class="left-sidebar">
+      <h3>
+        Navigation
+      </h3>
+      <nav> 
+        <a [routerLink]="['/']">Home</a><br/>        
+      </nav>      
+    </aside>
+    <article class="page-content">
+      <router-outlet></router-outlet>
+    </article>
+  </div>
+  <footer class="page-footer">
+    Footer: © 2016
+  </footer>
+
+</div>
