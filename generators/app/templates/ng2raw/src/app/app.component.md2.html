@@ -1,56 +1,36 @@
-<div>
-  <md-toolbar color="primary">    
-    <h1><%= appName %></h1>
-    <button md-icon-button [md-menu-trigger-for]="menu">
+<md-toolbar color="primary">
+  <h1>
+    <%= appName %>
+  </h1>
+  <button md-icon-button [md-menu-trigger-for]="menu">
       <md-icon>more_vert</md-icon>
     </button>
-  </md-toolbar>
+</md-toolbar>
 
-  <md-menu x-position="before" #menu="mdMenu">
-    <button md-menu-item (click)="openDialog()">Settings</button>
-    <button md-menu-item (click)="isDarkTheme=!isDarkTheme">Toggle theme</button>
-    <button md-menu-item>Help</button>
-  </md-menu>
-</div>
-
-<md-sidenav-layout class="demo-sidenav-layout">
-  <md-sidenav #start2 opened mode="side">
-    <md-nav-list>
-      <h3 md-subheader>Navigation</h3>
-      <md-list-item>
-        <a md-line href="...">Home</a>
-        <button md-icon-button (click)="showInfo(link)">
-          <md-icon>info</md-icon>
-        </button>
-      </md-list-item>
-    </md-nav-list>
-  </md-sidenav>
-
-  <div class="demo-sidenav-content">
-    <router-outlet></router-outlet>
-    <!--<button md-button (click)="start2.toggle()">Toggle Start Side Drawer</button>-->
-
-    <!--<md-tab-group class="md-primary">
-      <md-tab label="Oppsummering">
-        <simple-chart-example></simple-chart-example>
-      </md-tab>
-      <md-tab label="Arbeidstimer">
-        <workhour-list></workhour-list>
-      </md-tab>
-      <md-tab label="Prosjekter">
-        <project-cards></project-cards>
-      </md-tab>
-      <md-tab label="Diverse">
-        
-      </md-tab>
-    </md-tab-group>-->
-  </div>
-</md-sidenav-layout>
-
+<md-menu x-position="before" #menu="mdMenu">
+  <button md-menu-item (click)="openDialog()">Settings</button>
+  <button md-menu-item (click)="isDarkTheme=!isDarkTheme">Toggle theme</button>
+  <button md-menu-item>Help</button>
+</md-menu>
 
 <main>
+  <md-sidenav-layout class="sidenav-layout">
+    <md-sidenav #start2 opened mode="side">
+      <md-nav-list>
+        <h3 md-subheader>Navigation</h3>
+        <md-list-item>
+          <a md-line href="...">Home</a>
+          <button md-icon-button (click)="showInfo(link)">
+          <md-icon>info</md-icon>
+        </button>
+        </md-list-item>
+      </md-nav-list>
+    </md-sidenav>
 
-
+    <div class="sidenav-content">
+      <router-outlet></router-outlet>
+    </div>
+  </md-sidenav-layout>
 </main>
 
 <footer>

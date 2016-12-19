@@ -9,6 +9,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
      "types": [
+       <% if (front==='md2') { %> "hammerjs", <% } %>
        "core-js",
        "node"
      ]

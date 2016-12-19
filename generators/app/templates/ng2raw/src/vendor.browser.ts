@@ -33,10 +33,10 @@ import "material-design-lite/dist/material.blue-green.min.css";
 // keep in mind that Angular Material is still in Alpha and you should
 // avoid using it a production application. If you want Material Design in
 // the project you can use Material Design Lite
-import 'hammerJs';
+import "hammerJs";
 <% } %>
 <% if (front === 'bs3') { %>
-//import files for Bootstrap v3;
+// import files for Bootstrap v3;
 import "bootstrap";
 <% } %>
 <% if (front === 'bs4') { %>
@@ -51,8 +51,8 @@ import "lodash";
 // import files for highcharts;
 // in the src/app/app.module.ts a package called 'angular2-highcharts' is imported
 // this package is a ng2 wrapper for the highcharts
-import 'highcharts';
+import "highcharts";
 <% } %>
-//-------------------------------------------------------------------
+// -------------------------------------------------------------------
 // for other vendors for example jQuery, Lodash, angular2-jwt import them here
 // also see src/typings.d.ts as you also need to run `typings install x` where `x` is your module
