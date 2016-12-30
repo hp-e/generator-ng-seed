@@ -57,6 +57,7 @@ module.exports = yeoman.Base.extend({
       includeLinting: true,
       includeInternationalization: false,
       includePlaygroundModule: false,
+      includeContent: false,
       taskRunner: "none",
       moduleBundler: "webpack1",
       environment: "none"
@@ -93,6 +94,7 @@ module.exports = yeoman.Base.extend({
           message: 'Application Configuration:',
           choices: [
             { name: 'Include Linting (tslint.json)', value: 'tslint', checked: this.args.includeLinting },
+            //{ name: 'Include Content', value: 'includeContent', checked: this.args.includeContent },
             //{ name: 'Playground Module', value: 'playground', checked: this.args.includePlaygroundModule },
             // { name: 'Testing with Karma', value: 'karma', checked: this.args.includeTesting },
             // { name: 'Internationalization', value: 'i18i', checked: this.args.includeInternationalization },
@@ -207,10 +209,11 @@ module.exports = yeoman.Base.extend({
               addMaterialDesignIcons: props.ui === 'md2' ? true : _.includes(props.jslibs, 'mdicons'),
               front: props.ui,
               ngVersion: 'ng2',
-              includeTesting: _.includes(props.appConfig, 'karma'),
+              //includeTesting: _.includes(props.appConfig, 'karma'),
               includeLinting: _.includes(props.appConfig, 'tslint'),
-              includeInternationalization: _.includes(props.appConfig, 'i18i'),
-              includePlaygroundModule: _.includes(props.appConfig, 'playground'),
+              //includeInternationalization: _.includes(props.appConfig, 'i18i'),
+              //includePlaygroundModule: _.includes(props.appConfig, 'playground'),
+              //includeContent: _.includes(props.appConfig, 'includeContent'),,
               taskRunner: props.taskrunner,
               moduleBundler: props.bundler,
               environment: props.env

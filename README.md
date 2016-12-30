@@ -1,11 +1,8 @@
 # A [Yeoman](http://yeoman.io) generator for scaffolding an Angular project with Typescript and webpack.
-The goal of this generator is to create a very simple scaffolding for an Angular project.
+The goal of this generator is to provide a very simple scaffolding tool for an Angular project.
 
-I would like to avoid calling it Angular 2 or 3 etc. I strongly belive it should refer an Angular project without
-the version number.
-
-Given the 6 month main release schedule for Angular I will try to mirror that in this generator.
-e.g. When Angular 4 is in production (march 2017) you will be able to select either 2 or 4 as the basis for your application. 
+**Supported Angular versions:**
+* Angular 2.x
 
 NB! Version 1 of Angular is not and will not be supported in this generator.
 
@@ -35,9 +32,9 @@ or to download dependencies later
 $ yo ng-seed --skip-install
 ```
 
-to skip all questions and only create the minimum files required to run a simple angular2 project
+or to skip all questions and only create the minimum files required to run a simple angular2 project
 ```cmd
-$ yo ng-seed --easy-peasy
+$ yo ng-seed --q
 ```
 
 ## File structure
