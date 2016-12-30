@@ -1,16 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/observable';
-import { Headers, Http, Response, RequestOptions } from '@angular/http';
-import { AppSettings } from '../app.settings';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/observable";
+import { Headers, Http, Response, RequestOptions } from "@angular/http";
+import { AppSettings } from "../app.settings";
 
-import { <%= singularName %> } from './<%= singularKebabName %>.models';
+import { <%= singularName %> } from "./<%= singularKebabName %>.models";
 
 @Injectable()
 export class <%= singularName %>Service {
 
-    constructor(private http: Http, private settings: AppSettings) {
-
-    }
+    constructor(private http: Http, private settings: AppSettings){}
 
     private extractData(res: Response) {
         let body = res.json();
@@ -23,7 +21,7 @@ export class <%= singularName %>Service {
         if (error instanceof Response) {
             const body = error.json() || '';
             const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+            errMsg = `${error.status} - ${error.statusText || ""} ${err}`;
         } else {
             errMsg = error.message ? error.message : error.toString();
         }

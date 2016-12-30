@@ -58,8 +58,8 @@ module.exports = yeoman.Base.extend({
       //   require: true,
       // },
       {
-        name: 'pageName',
-        message: 'What is the page name (need more than one? enter names separated by SPACE)?',
+        name: 'modelName',
+        message: 'What is the model name?',
         require: true,
       }
     ];
@@ -79,7 +79,7 @@ module.exports = yeoman.Base.extend({
   _writeNg2App: function () {
     
 
-    var subs = this.props.pageName.split(' ');
+    var subs = this.props.modelName.split(' ');
 
     for (var i = 0; i < subs.length; i++) {
       var name = subs[i];
@@ -101,28 +101,24 @@ module.exports = yeoman.Base.extend({
   _writeNg2SubPage(args ) {
     var root = "ng2/";
     var destRoot = this.destinationPath("src/app/" + args.moduleName);
-    var pageRoot = this.destinationPath(destRoot + '/pages/');
-    var pagesFile = this.destinationPath(destRoot + '/' + args.moduleName + '.pages.ts');
+    var pageRoot = this.destinationPath(destRoot + '/models/');
+    var pagesFile = this.destinationPath(destRoot + '/' + args.moduleName + '.models.ts');
 
     this.log(destRoot);
     if (fileSys.existsSync(destRoot)) {        
                 
-        if (this.options['inline']) {          
-           this.fs.copyTpl(this.templatePath(root + '_ng2.page-inline.ts'), this.destinationPath(pageRoot + args.pageName + '.page.ts'), args);
-        } else {            
-          this.fs.copyTpl(this.templatePath(root + '_ng2.page.ts'), this.destinationPath(pageRoot + args.pageName + '.page.ts'), args);
-          this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(pageRoot + args.pageName + '.page.css'), args);
-          this.fs.copyTpl(this.templatePath(root + '_ng2.page.html'), this.destinationPath(pageRoot + args.pageName + '.page.html'), args);    
-        }
                 
-        var pagesFilePath = destRoot + '/' + args.moduleName + '.pages.ts'        
-        var content = `\nexport * from './pages/${args.pageName}.page';`
+          this.fs.copyTpl(this.templatePath(root + '_ng2.model.ts'), this.destinationPath(pageRoot + args.pageName + '.model.ts'), args);
+          
+        
+                
+        var pagesFilePath = destRoot + '/' + args.moduleName + '.models.ts'        
+        var content = `\nexport * from "./models/${args.pageName}.model";`
 
         fileSys.appendFile(pagesFile, content, (err) => {
           if (err) {
             this.log(err);
           }
-
         });
             
     } else {

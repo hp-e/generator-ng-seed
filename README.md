@@ -1,8 +1,11 @@
 # A [Yeoman](http://yeoman.io) generator for scaffolding an Angular project with Typescript and webpack.
 The goal of this generator is to create a very simple scaffolding for an Angular project.
 
-Given the 6 month main release schedule for Angular we will try to mirror that in this generator.
-e.g. When Angular 3 is in production you will be able to select either 2 or 3 as the basis for your application. 
+I would like to avoid calling it Angular 2 or 3 etc. I strongly belive it should refer an Angular project without
+the version number.
+
+Given the 6 month main release schedule for Angular I will try to mirror that in this generator.
+e.g. When Angular 4 is in production (march 2017) you will be able to select either 2 or 4 as the basis for your application. 
 
 NB! Version 1 of Angular is not and will not be supported in this generator.
 

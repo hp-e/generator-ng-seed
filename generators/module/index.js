@@ -46,7 +46,7 @@ module.exports = yeoman.Base.extend({
       var args = {
         className: className,
         classNameLower: className.toLowerCase(),
-        fileName: _.kebabCase(plural),
+        fileName: _.kebabCase(singular),
         port: 3000, // need to read from config,
         singularLowerName: className.toLowerCase(),
         singularName: className,

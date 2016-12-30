@@ -1,1 +1,1 @@
-export * from './models/<%= singularKebabName %>.model';
+export * from "./models/<%= singularKebabName %>.model";
