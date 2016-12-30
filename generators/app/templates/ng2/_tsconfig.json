@@ -8,8 +8,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-     "types": [
-       <% if (front==='md2') { %> "hammerjs", <% } %>
+     "types": [       
        "core-js",
        "node"
      ]

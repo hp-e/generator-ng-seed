@@ -14,31 +14,31 @@ module.exports = yeoman.Base.extend({
       default: false
     });
 
-    this.option('options-min', {
-      desc: 'Uses a minimum setup, no libraries, no ui, no automatic download - no questions asked. Just scaffolding',
-      type: Boolean,
-      default: false
-    });
+    // this.option('options-min', {
+    //   desc: 'Uses a minimum setup, no libraries, no ui, no automatic download - no questions asked. Just scaffolding',
+    //   type: Boolean,
+    //   default: false
+    // });
 
-    this.option('options-all', {
-      desc: 'Uses a minimum setup, no libraries, no ui, no automatic download - no questions asked. Just scaffolding',
-      type: Boolean,
-      default: false
-    });
+    // this.option('options-all', {
+    //   desc: 'Uses a minimum setup, no libraries, no ui, no automatic download - no questions asked. Just scaffolding',
+    //   type: Boolean,
+    //   default: false
+    // });
 
-    this.option('options-default', {
-      desc: 'Uses a minimum setup, no libraries, no ui, no automatic download - no questions asked. Just scaffolding',
-      type: Boolean,
-      default: false
-    });
+    // this.option('options-default', {
+    //   desc: 'Uses a minimum setup, no libraries, no ui, no automatic download - no questions asked. Just scaffolding',
+    //   type: Boolean,
+    //   default: false
+    // });
 
-    this.option('style-mdl', {
-      desc: 'Include Material Design Lite (latest stable version)',
-      type: Boolean,
-      default: false
-    });
+    // this.option('style-mdl', {
+    //   desc: 'Include Material Design Lite (latest stable version)',
+    //   type: Boolean,
+    //   default: false
+    // });
 
-    var appName = "Angular2 Application"
+    var appName = "Angular Application"
     //defaults
     this.args = {
       port: 3000,
@@ -70,17 +70,19 @@ module.exports = yeoman.Base.extend({
   prompting: function () {
     // Have Yeoman greet the user.
     this.log(yosay(
-      'Welcome to this fantastic ' + chalk.cyan('Angular - Seed') + ' generator!'
+      'Welcome to this ' + chalk.cyan('Angular - Seed') + ' generator!'
     ));
 
     if (this.options['q']) {
       this.log("Quickstart is selected. We will use default settings - remember to run npm install... Enjoy");
       return;
     } else {
+
       this.log("We will now ask a bunch of questions ");
       this.log("so that we can scaffold a really nice application for you");
       this.log("");
 
+      
       var prompts = [
         { name: 'appName', message: 'What is your application name?', default: this.args.appName },
         { name: 'port', message: 'Please specify the port you want the localhost to use?', default: this.args.port },
@@ -91,9 +93,9 @@ module.exports = yeoman.Base.extend({
           message: 'Application Configuration:',
           choices: [
             { name: 'Include Linting (tslint.json)', value: 'tslint', checked: this.args.includeLinting },
-            { name: 'Playground Module', value: 'playground', checked: this.args.includePlaygroundModule },
-            { name: 'Testing with Karma', value: 'karma', checked: this.args.includeTesting },
-            { name: 'Internationalization', value: 'i18i', checked: this.args.includeInternationalization },
+            //{ name: 'Playground Module', value: 'playground', checked: this.args.includePlaygroundModule },
+            // { name: 'Testing with Karma', value: 'karma', checked: this.args.includeTesting },
+            // { name: 'Internationalization', value: 'i18i', checked: this.args.includeInternationalization },
             
           ]
         },
@@ -112,18 +114,18 @@ module.exports = yeoman.Base.extend({
         },
 
         //Module bundler
-        {
-          type: 'list',
-          name: 'taskrunner',
-          message: 'Please select a task runner?',
-          default: this.args.taskRunner,
-          choices: [
-            { name: 'None', value: 'none' },
-            { name: 'Gulp', value: 'gulp' },
-            { name: 'Grunt', value: 'grunt' },
-          ],
+        // {
+        //   type: 'list',
+        //   name: 'taskrunner',
+        //   message: 'Please select a task runner?',
+        //   default: this.args.taskRunner,
+        //   choices: [
+        //     { name: 'None', value: 'none' },
+        //     { name: 'Gulp', value: 'gulp' },
+        //     //{ name: 'Grunt', value: 'grunt' },
+        //   ],
 
-        },
+        // },
 
         //Module bundler
         {
@@ -134,9 +136,9 @@ module.exports = yeoman.Base.extend({
           choices: [
             { name: 'None', value: 'none' },
             { name: 'Webpack 1 (latest stable)', value: 'webpack1' },
-            { name: 'Webpack 2 (2.0.l-RC3)', value: 'webpack2' },
-            { name: 'SystemJs', value: 'systemjs' },
-            { name: 'Rollup', value: 'rollup' },
+            //{ name: 'Webpack 2 (2.2.0-rc.3)', value: 'webpack2' },
+            // { name: 'SystemJs', value: 'systemjs' },
+            // { name: 'Rollup', value: 'rollup' },
           ],
 
         },
@@ -172,10 +174,25 @@ module.exports = yeoman.Base.extend({
         // },
       ];
 
+      if (!this.options['q'] && !this.options['skip-install']) {
+          var installNpm = {
+            type    : 'confirm',
+            name    : 'npmInstall',
+            default : false,
+            message : 'Would you like us to run npm install?'
+          }
+
+          prompts.push(installNpm);
+      }
+
 
       return this.prompt(prompts).then(function (props) {
         // To access props later use this.props.someAnswer;
         //this.props = props;
+        //this.log(props.npmInstall);
+
+        this.options['skip-install'] = !props.npmInstall
+        
         if (!this.options['q']) {
           this.args = {
               port: props.port,
@@ -217,60 +234,16 @@ module.exports = yeoman.Base.extend({
     }
 
     if (!this.options['skip-install']) {
-      this.log("Download dependencies: ")
-      //this.npmInstall();      
+      this.log("");
+      this.log(chalk.cyan("Download dependencies... please wait"));
+      this.npmInstall();      
     }
 
   },
 
 
   _writeNg2App: function () {
-    var root = "ng2/";
-
-    // if (!this.options['q']) {
-
-    //   this.args = {
-    //   port: 3000,
-    //   appName: appName,
-    //   appNameKebab: _.kebabCase(appName),
-    //   version: "1.0.0",
-    //   description: "",
-    //   addFontAwesome: false,
-    //   addLodash: false,
-    //   addMoment: false,
-    //   addHighchart: false,
-    //   addMaterialDesignIcons: false,
-    //   front: 'none',
-    //   ngVersion: 'ng2',
-    //   includeTesting: false,
-    //   includeLinting: true,
-    //   includeInternationalization: false,
-    //   taskRunner: "none",
-    //   moduleBundler: "webpack1",
-    //   environment: "none"
-    // }
-
-    //   this.args = {
-    //     port: this.props.port,
-    //     appName: this.props.appName,
-    //     appNameKebab: _.kebabCase(this.props.appName),
-    //     version: "1.0.0",
-    //     description: "",
-    //     addFontAwesome: _.includes(this.props.jslibs, 'fontawesome'),
-    //     addLodash: _.includes(this.props.jslibs, 'lodash'),
-    //     addMoment: false, //_.includes(this.props.jslibs, 'momentjs'),
-    //     addHighchart: false, //_.includes(this.props.jslibs, 'highchart'),
-    //     addMaterialDesignIcons: this.props.ui === 'md2' ? true : false,//_.includes(this.props.jslibs, 'mdicons'),
-    //     front: this.props.ui,
-    //     ngVersion: 'ng2',
-    //     includeTesting: _.includes(this.props.jslibs, 'lodash'),
-    //     includeLinting: _.includes(this.props.jslibs, 'lodash'),
-    //     includeInternationalization: false,
-    //     taskRunner: "none",
-    //     moduleBundler: "webpack1",
-    //     environment: "none"
-    //   }
-    // }
+    var root = "ng2/";    
 
     this.config.set('ngVersion', this.args.ngVersion);
     this.config.set('appName', this.args.appName);
@@ -284,11 +257,14 @@ module.exports = yeoman.Base.extend({
     // files with specific configuration
     // package.json
     this._writePackageFile(root);
+    
+    //tsconfig
+    this._writeTsConfigFile(root);
+    
+    if (this.args.includeLinting) {
+      this.copy(root + '_tslint.json', 'tslint.json');
+    }
 
-    // this.fs.copyTpl(this.templatePath(root + '_package.json'), this.destinationPath('package.json'), this.args);
-    this.fs.copyTpl(this.templatePath(root + 'tsconfig.json'), this.destinationPath('tsconfig.json'), this.args);
-    //this.fs.copy(this.templatePath(root + 'tsconfig.json'), this.destinationPath('tsconfig.json'));
-    //this.fs.copy(this.templatePath(root + '.gitignore'), this.destinationPath('.gitignore'));
     this.fs.copyTpl(this.templatePath(root + '_webpack.config.js'), this.destinationPath('webpack.config.js'), this.args);
 
     this.copy(root + 'README.md', 'README.md');
@@ -447,27 +423,38 @@ module.exports = yeoman.Base.extend({
       packageJson.dependencies['material-design-icons'] = '~3.0.1';
     }
 
-    //this.log(packageJson);
-    
-    //packageJSON.devDependencies.sort(); 
-    // packageJSON.dependencies = packageJSON.dependencies.sort();
-    // packageJSON.scripts = packageJSON.scripts.sort();
-
     this.fs.writeJSON('package.json', packageJson);
     //this.fs.copyTpl(this.templatePath(root + '_package.json'), this.destinationPath('package.json'), this.args);
   },
 
   _writeTsConfigFile: function (root) {
     // read json file and add content based on options
-    var configJson = this.fs.readJSON(this.templatePath(root + 'tsconfig.json'));
+    var configJson = this.fs.readJSON(this.templatePath(root + '_tsconfig.json'));
+    var types = configJson.compilerOptions.types;
 
+    if (this.args.addLodash) {
+      configJson.compilerOptions.types.push('lodash');
+    }
 
+    if (this.args.addMoment) {
+      configJson.compilerOptions.types.push('moment');
+    }
+    
+    if (this.args.addHighchart) {
+      configJson.compilerOptions.types.push('highcharts');
+    }
 
-    this.log(configJson);
-
+    switch (this.args.front) {
+      case "mdl":
+        configJson.compilerOptions.types.push('material-design-lite');        
+        break;
+      case "md2":
+        configJson.compilerOptions.types.push('hammerjs');        
+        break;
+    }
 
     this.fs.writeJSON('tsconfig.json', configJson);
-    //this.fs.copyTpl(this.templatePath(root + '_package.json'), this.destinationPath('package.json'), this.args);
+    
   },
 
   _writeMaterialDesignLiteFiles: function (root) {
