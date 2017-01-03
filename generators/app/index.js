@@ -83,7 +83,7 @@ module.exports = yeoman.Base.extend({
       this.log("so that we can scaffold a really nice application for you");
       this.log("");
 
-      
+
       var prompts = [
         { name: 'appName', message: 'What is your application name?', default: this.args.appName },
         { name: 'port', message: 'Please specify the port you want the localhost to use?', default: this.args.port },
@@ -98,7 +98,7 @@ module.exports = yeoman.Base.extend({
             //{ name: 'Playground Module', value: 'playground', checked: this.args.includePlaygroundModule },
             // { name: 'Testing with Karma', value: 'karma', checked: this.args.includeTesting },
             // { name: 'Internationalization', value: 'i18i', checked: this.args.includeInternationalization },
-            
+
           ]
         },
         // Libraries
@@ -177,14 +177,14 @@ module.exports = yeoman.Base.extend({
       ];
 
       if (!this.options['q'] && !this.options['skip-install']) {
-          var installNpm = {
-            type    : 'confirm',
-            name    : 'npmInstall',
-            default : false,
-            message : 'Would you like us to run npm install?'
-          }
+        var installNpm = {
+          type: 'confirm',
+          name: 'npmInstall',
+          default: false,
+          message: 'Would you like us to run npm install?'
+        }
 
-          prompts.push(installNpm);
+        prompts.push(installNpm);
       }
 
 
@@ -194,32 +194,32 @@ module.exports = yeoman.Base.extend({
         //this.log(props.npmInstall);
 
         this.options['skip-install'] = !props.npmInstall
-        
+
         if (!this.options['q']) {
           this.args = {
-              port: props.port,
-              appName: props.appName,
-              appNameKebab: _.kebabCase(props.appName),
-              version: "1.0.0",
-              description: "",
-              addFontAwesome: _.includes(props.jslibs, 'fontawesome'),
-              addLodash: _.includes(props.jslibs, 'lodash'),
-              addMoment: _.includes(props.jslibs, 'momentjs'),
-              addHighchart: _.includes(props.jslibs, 'highchart'),
-              addMaterialDesignIcons: props.ui === 'md2' ? true : _.includes(props.jslibs, 'mdicons'),
-              front: props.ui,
-              ngVersion: 'ng2',
-              //includeTesting: _.includes(props.appConfig, 'karma'),
-              includeLinting: _.includes(props.appConfig, 'tslint'),
-              //includeInternationalization: _.includes(props.appConfig, 'i18i'),
-              //includePlaygroundModule: _.includes(props.appConfig, 'playground'),
-              //includeContent: _.includes(props.appConfig, 'includeContent'),,
-              taskRunner: props.taskrunner,
-              moduleBundler: props.bundler,
-              environment: props.env
+            port: props.port,
+            appName: props.appName,
+            appNameKebab: _.kebabCase(props.appName),
+            version: "1.0.0",
+            description: "",
+            addFontAwesome: _.includes(props.jslibs, 'fontawesome'),
+            addLodash: _.includes(props.jslibs, 'lodash'),
+            addMoment: _.includes(props.jslibs, 'momentjs'),
+            addHighchart: _.includes(props.jslibs, 'highchart'),
+            addMaterialDesignIcons: props.ui === 'md2' ? true : _.includes(props.jslibs, 'mdicons'),
+            front: props.ui,
+            ngVersion: 'ng2',
+            //includeTesting: _.includes(props.appConfig, 'karma'),
+            includeLinting: _.includes(props.appConfig, 'tslint'),
+            //includeInternationalization: _.includes(props.appConfig, 'i18i'),
+            //includePlaygroundModule: _.includes(props.appConfig, 'playground'),
+            //includeContent: _.includes(props.appConfig, 'includeContent'),,
+            taskRunner: props.taskrunner,
+            moduleBundler: props.bundler,
+            environment: props.env
           }
         }
-        
+
 
 
       }.bind(this));
@@ -239,14 +239,14 @@ module.exports = yeoman.Base.extend({
     if (!this.options['skip-install']) {
       this.log("");
       this.log(chalk.cyan("Download dependencies... please wait"));
-      this.npmInstall();      
+      this.npmInstall();
     }
 
   },
 
 
   _writeNg2App: function () {
-    var root = "ng2/";    
+    var root = "ng2/";
 
     this.config.set('ngVersion', this.args.ngVersion);
     this.config.set('appName', this.args.appName);
@@ -260,26 +260,31 @@ module.exports = yeoman.Base.extend({
     // files with specific configuration
     // package.json
     this._writePackageFile(root);
-    
+
     //tsconfig
     this._writeTsConfigFile(root);
-    
+
     if (this.args.includeLinting) {
       this.copy(root + '_tslint.json', 'tslint.json');
     }
 
-    this.fs.copyTpl(this.templatePath(root + '_webpack.config.js'), this.destinationPath('webpack.config.js'), this.args);
+    if (this.args.moduleBundler === 'webpack1') {
+      //if (this.args.moduleBundler === 'none')
+      this.fs.copyTpl(this.templatePath(root + '_webpack.config.js'), this.destinationPath('webpack.config.js'), this.args);
+      // config
+      this.copy(root + 'config/prod.config.js', 'config/prod.config.js');
+
+
+    }
 
     this.copy(root + 'README.md', 'README.md');
     this.copy(root + 'CHANGELOG.md', 'CHANGELOG.md');
 
-    // config
-    this.copy(root + 'config/prod.config.js', 'config/prod.config.js');
 
 
-    this.fs.copyTpl(this.templatePath(root + 'src/vendor.browser.ts'), this.destinationPath('src/vendor.browser.ts'), this.args);
-    this.fs.copyTpl(this.templatePath(root + 'src/main.browser.ts'), this.destinationPath('src/main.browser.ts'), this.args);
-    this.copy(root + 'src/polyfills.browser.ts', 'src/polyfills.browser.ts');
+    this.fs.copyTpl(this.templatePath(root + 'src/vendor.browser.ts'), this.destinationPath('src/vendor.ts'), this.args);
+    this.fs.copyTpl(this.templatePath(root + 'src/main.browser.ts'), this.destinationPath('src/main.ts'), this.args);
+    this.copy(root + 'src/polyfills.browser.ts', 'src/polyfills.ts');
     //this.copy(root + 'src/main.browser.ts', 'src/main.browser.ts');
     this.copy(root + 'src/custom-typings.d.ts', 'src/custom-typings.d.ts');
     this.copy(root + 'src/favicon.ico', 'src/favicon.ico');
@@ -360,28 +365,28 @@ module.exports = yeoman.Base.extend({
     }
 
     if (this.args.moduleBundler === 'webpack1' || this.args.moduleBundler === 'webpack2') {
-        packageJson.devDependencies["angular2-template-loader"] = "^0.6.0";
-        packageJson.devDependencies["url-loader"] = "^0.5.7";
-        packageJson.devDependencies["file-loader"] = "0.9.0";
-        packageJson.devDependencies["awesome-typescript-loader"] = "^3.0.0-beta.17";
-        packageJson.devDependencies["css-loader"] = "^0.26.1";
-        packageJson.devDependencies["node-sass"] = "^3.13.0";
-        packageJson.devDependencies["raw-loader"] = "^0.5.1";
-        packageJson.devDependencies["sass-loader"] = "^4.0.2";
-        packageJson.devDependencies["strip-loader"] = "^0.1.2";
-        packageJson.devDependencies["style-loader"] = "^0.13.1";
-        packageJson.devDependencies["to-string-loader"] = "^1.1.5";
+      packageJson.devDependencies["angular2-template-loader"] = "^0.6.0";
+      packageJson.devDependencies["url-loader"] = "^0.5.7";
+      packageJson.devDependencies["file-loader"] = "0.9.0";
+      packageJson.devDependencies["awesome-typescript-loader"] = "^3.0.0-beta.17";
+      packageJson.devDependencies["css-loader"] = "^0.26.1";
+      packageJson.devDependencies["node-sass"] = "^3.13.0";
+      packageJson.devDependencies["raw-loader"] = "^0.5.1";
+      packageJson.devDependencies["sass-loader"] = "^4.0.2";
+      packageJson.devDependencies["strip-loader"] = "^0.1.2";
+      packageJson.devDependencies["style-loader"] = "^0.13.1";
+      packageJson.devDependencies["to-string-loader"] = "^1.1.5";
 
-        packageJson.scripts["build"] = "webpack --inline --colors --progress --display-error-details --display-cached";
-        packageJson.scripts["watch"] = "npm run build -- --watch";
-        packageJson.scripts["server"] = `webpack-dev-server --hot --inline --colors --progress --display-error-details --display-cached --port ${this.args.port}  --content-base src`;
-        packageJson.scripts["start"] = "npm run server";
+      packageJson.scripts["build"] = "webpack --inline --colors --progress --display-error-details --display-cached";
+      packageJson.scripts["watch"] = "npm run build -- --watch";
+      packageJson.scripts["server"] = `webpack-dev-server --hot --inline --colors --progress --display-error-details --display-cached --port ${this.args.port}  --content-base src`;
+      packageJson.scripts["start"] = "npm run server";
 
     }
     switch (this.args.taskRunner) {
-      case "gulp":        
+      case "gulp":
         break;
-      case "grunt":        
+      case "grunt":
         break;
     }
 
@@ -442,22 +447,22 @@ module.exports = yeoman.Base.extend({
     if (this.args.addMoment) {
       configJson.compilerOptions.types.push('moment');
     }
-    
+
     if (this.args.addHighchart) {
       configJson.compilerOptions.types.push('highcharts');
     }
 
     switch (this.args.front) {
       case "mdl":
-        configJson.compilerOptions.types.push('material-design-lite');        
+        configJson.compilerOptions.types.push('material-design-lite');
         break;
       case "md2":
-        configJson.compilerOptions.types.push('hammerjs');        
+        configJson.compilerOptions.types.push('hammerjs');
         break;
     }
 
     this.fs.writeJSON('tsconfig.json', configJson);
-    
+
   },
 
   _writeMaterialDesignLiteFiles: function (root) {

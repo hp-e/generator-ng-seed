@@ -5,13 +5,13 @@ and is ready to use in the application
 
 ## How to implement to main module 
 To import the code for the module and then use it in this project you need to 
-import the module in the src/app.module.ts 
+import the module into the src/app.module.ts 
 
 1. Open the src/app.module.ts
 2. in the top section where all the imports are, enter (or copy this string): 
 
 ```typescript
-import { <%= className %>Module } from './<%= classNameLower %>/<%= fileName %>.module';
+import { <%= className %>Module } from './<%= singularKebabName %>/<%= fileName %>.module';
 ```
 
 3. Then, in the @ngModule annotation and the 'imports' array, add the <%= className %>Module. It should be added before the AppRoutingModule.

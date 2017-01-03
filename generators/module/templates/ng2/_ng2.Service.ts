@@ -2,9 +2,9 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/observable";
 import { Headers, Http, Response, RequestOptions } from "@angular/http";
 import { AppSettings } from "../app.settings";
-
+<% if (!skipModels) { %>
 import { <%= singularName %> } from "./<%= singularKebabName %>.models";
-
+<% } %>
 @Injectable()
 export class <%= singularName %>Service {
 
