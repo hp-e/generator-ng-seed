@@ -153,7 +153,7 @@ module.exports = yeoman.Base.extend({
           choices: [
             { name: 'None', value: 'none' },
             { name: 'Material Design Lite (1.2.1)', value: 'mdl' },
-            { name: 'Angular Material 2.0.0 (alpha.11)', value: 'md2' },
+            { name: 'Angular Material 2.0.0 (beta.1)', value: 'md2' },
             { name: 'Simple flexbox layout', value: 'flex' },
           ],
 
