@@ -8,7 +8,7 @@ To import the code for the module and then use it in this project you need to
 import the module in the src/app.module.ts 
 
 1. Open the src/app.module.ts
-2. in the top section where all the imports are enter (or copy this string): 
+2. in the top section where all the imports are, enter (or copy this string): 
 
 ```typescript
 import { <%= className %>Module } from './<%= classNameLower %>/<%= fileName %>.module';
