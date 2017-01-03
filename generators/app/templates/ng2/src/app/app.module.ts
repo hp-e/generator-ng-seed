@@ -19,8 +19,7 @@ import "font-awesome/css/font-awesome.css";
 <% } %>
 
 // user defined modules
-// here we list modules we have created and that needs to be improtet dere. A module is imported 
-// and we do not need to declare the component in the AppModule. 
+// here we list modules we have created and that needs to be imported. 
 
 @NgModule({
   declarations: [
