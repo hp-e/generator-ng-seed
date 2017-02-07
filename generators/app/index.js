@@ -138,7 +138,7 @@ module.exports = yeoman.Base.extend({
           choices: [
             { name: 'None', value: 'none' },
             { name: 'Webpack 1 (latest stable)', value: 'webpack1' },
-            //{ name: 'Webpack 2 (2.2.0-rc.3)', value: 'webpack2' },
+            { name: 'Webpack 2 (2.2.0-rc.3)', value: 'webpack2' },
             // { name: 'SystemJs', value: 'systemjs' },
             // { name: 'Rollup', value: 'rollup' },
           ],

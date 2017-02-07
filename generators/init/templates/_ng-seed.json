@@ -1,0 +1,71 @@
+{
+    "moduleBundler": "webpack",
+    "uiFramework": "none",    
+    "styleType": "scss",
+    "fileNameCasing": "kebab",
+    "folderNameCasing": "kebab",
+    "rootPath": "src/app",
+    "selectorPrefix": "app-",
+    "connections": {
+        "server": "",
+        "database": "",
+        "userid": "",
+        "password": ""
+    },
+    "module": {
+        "filePostfix": ".module",
+        "classNamePostfix": "Module",
+        "addIndexPage": false,
+        "addComponent": false,
+        "addRouting": false,
+        "addModel": false,
+        "addService": true,
+        "useBarrelFile": true,
+        "barrelFilePostfix": ".exports"
+    },
+    "component": {
+        "useSelectorPrefix": true,
+        "filePostfix": ".component",
+        "subDirectory": "components",
+        "addTemplateFile": true,
+        "addStyleFile": false,
+        "classNamePostfix": "Component"
+    },
+    "model": {
+        "filePostfix": ".model",
+        "subDirectory": "models",
+        "classNamePostfix": "Model"        
+    },
+    "service": {
+        "filePostfix": ".service",
+        "subDirectory": "services",
+        "classNamePostfix": "Service"
+    },
+    "page": {
+        "useSelectorPrefix": true,
+        "filePostfix": ".page",
+        "subDirectory": "pages",
+        "addTemplateFile": true,
+        "addStyleFile": false,
+        "classNamePostfix": "Page"        
+    },
+    "directive": {
+        "useSelectorPrefix": true,
+        "filePostfix": ".directive",
+        "subDirectory": "directives",
+        "addTemplateFile": false,
+        "addStyleFile": false,
+        "classNamePostfix": "Directive"
+    },  
+    "pipe": {
+        "useSelectorPrefix": false,
+        "filePostfix": ".pipe",
+        "subDirectory": "pipes",
+        "classNamePostfix": "Pipe"
+    },    
+    "testing": {
+        "platform": "jasmine",
+        "filePostfix": ".spec",
+        "location": "same"
+    }
+}

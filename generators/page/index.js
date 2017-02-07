@@ -10,8 +10,26 @@ var path = require("path");
 module.exports = yeoman.Base.extend({
     constructor: function(){
         yeoman.Base.apply(this, arguments);
+
+        this.argument('subpath', { type: String, required: false });
+        //this.subpath = _.kebabCase(this.className);
+        let sp = this.subpath && this.subpath.length > 0 ? this.subpath : "";
+        this.rootPath = "src/app/" + sp + "/";
+
         this.option('inline', {
            desc: 'uses inline template and style',
+           type: Boolean,
+           default: false 
+        });
+
+        this.option('scss', {
+           desc: 'adds a scss layout file for the component',
+           type: Boolean,
+           default: false 
+        });
+
+        this.option('css', {
+           desc: 'adds a css layout file for the component',
            type: Boolean,
            default: false 
         });
@@ -40,7 +58,9 @@ module.exports = yeoman.Base.extend({
 
   prompting: function () {    
       
-      var folders = this._getDirectories(this.destinationPath("src/app/"));
+      var sp = this.subpath && this.subpath.length > 0 ? this.subpath : "";
+
+      var folders = this._getDirectories(this.destinationPath(this.rootPath));
                  
       
       //this.log(folders);
@@ -51,15 +71,10 @@ module.exports = yeoman.Base.extend({
         message: 'Please select the module to add the pages to',
         require: true,
         choices: folders    
-        },      
-      // {
-      //   name: 'moduleName',
-      //   message: 'What is the name of the parent folder for the new page (src/app/<folder> must exists)',
-      //   require: true,
-      // },
+        },            
       {
         name: 'pageName',
-        message: 'What is the page name (need more than one? enter names separated by SPACE)?',
+        message: 'What is the page name(s) (separate more with SPACE)?',
         require: true,
       }
     ];
@@ -85,12 +100,18 @@ module.exports = yeoman.Base.extend({
       var name = subs[i];
       
       var page = _.camelCase(name);
-      
+      var kebabPageName = _.kebabCase(page); 
       var pageName = page[0].toUpperCase() + page.substr(1); 
+
+      var styleExt = this.options['scss'] ? 'scss' : 'css';
+      var stylePage = kebabPageName + '.page.' + styleExt;  
+
       var args = {
         moduleName: this.props.moduleName,
-        pageName: _.kebabCase(page),
-        className: pageName,                        
+        pageName: kebabPageName, //_.kebabCase(page),
+        className: pageName,          
+        addStyle: this.options['css'] || this.options['scss'],
+        stylePage: stylePage              
       }
 
       this._writeNg2SubPage(args);
@@ -100,7 +121,7 @@ module.exports = yeoman.Base.extend({
 
   _writeNg2SubPage(args ) {
     var root = "ng2/";
-    var destRoot = this.destinationPath("src/app/" + args.moduleName);
+    var destRoot = this.destinationPath(this.rootPath + args.moduleName);
     var pageRoot = this.destinationPath(destRoot + '/pages/');
     var pagesFile = this.destinationPath(destRoot + '/' + args.moduleName + '.pages.ts');
 
@@ -110,12 +131,17 @@ module.exports = yeoman.Base.extend({
         if (this.options['inline']) {          
            this.fs.copyTpl(this.templatePath(root + '_ng2.page-inline.ts'), this.destinationPath(pageRoot + args.pageName + '.page.ts'), args);
         } else {            
-          this.fs.copyTpl(this.templatePath(root + '_ng2.page.ts'), this.destinationPath(pageRoot + args.pageName + '.page.ts'), args);
-          this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(pageRoot + args.pageName + '.page.css'), args);
+          this.fs.copyTpl(this.templatePath(root + '_ng2.page.ts'), this.destinationPath(pageRoot + args.pageName + '.page.ts'), args);          
           this.fs.copyTpl(this.templatePath(root + '_ng2.page.html'), this.destinationPath(pageRoot + args.pageName + '.page.html'), args);    
+
+          if (this.options['css']) {
+            this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(pageRoot + args.pageName + '.page.css'), args);
+          } else if (this.options['scss']) {
+            this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(pageRoot + args.pageName + '.page.scss'), args);
+          }
         }
                 
-        var pagesFilePath = destRoot + '/' + args.moduleName + '.pages.ts'        
+        var pagesFilePath = destRoot + '/' + args.moduleName + '.exports.ts'        
         var content = `\nexport * from './pages/${args.pageName}.page';`
 
         fileSys.appendFile(pagesFile, content, (err) => {

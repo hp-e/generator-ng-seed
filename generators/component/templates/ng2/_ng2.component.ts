@@ -1,11 +1,12 @@
 import {Component, OnInit, OnDestroy, OnChanges, SimpleChanges} from '@angular/core';
 
 @Component({
-  selector: '<%= pageName %>',
-  styleUrls: ['./<%= pageName %>.component.css'],
-  templateUrl: './<%= pageName %>.component.html'
+  selector: '<%= prefix%><%= pageName %>',  
+  <% if (addTemplate) { %>templateUrl: './<%= fileName %>.html',<% } else { %>template: ``,<% } %>
+  <% if (addStyle) { %>styleUrls: ['./<%= stylePage %>']<% } else { %>styles: [``]<% } %>
+  
 })
-export class <%= className %>Component implements OnInit, OnDestroy, OnChanges {
+export class <%= className %><%= classPostfix %> implements OnInit, OnDestroy, OnChanges {
 
   constructor() { }
   ngOnInit() { }

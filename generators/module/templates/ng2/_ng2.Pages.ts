@@ -1,2 +1,2 @@
 
-export * from "./pages/<%= singularKebabName %>.index.page";
+export * from "./pages/<%= singularKebabName %>-index.page";

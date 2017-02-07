@@ -10,6 +10,12 @@ var path = require("path");
 module.exports = yeoman.Base.extend({
     constructor: function(){
         yeoman.Base.apply(this, arguments);
+
+        this.argument('subpath', { type: String, required: false });
+        let sp = this.subpath && this.subpath.length > 0 ? this.subpath : "";
+
+        this.rootPath = "src/app/" + sp + "/";
+
         this.option('inline', {
            desc: 'uses inline template and style',
            type: Boolean,
@@ -40,10 +46,8 @@ module.exports = yeoman.Base.extend({
 
   prompting: function () {    
       
-      var folders = this._getDirectories(this.destinationPath("src/app/"));
-                 
-      
-      //this.log(folders);
+      var folders = this._getDirectories(this.destinationPath(this.rootPath));
+
       var prompts = [
         {
         type: 'list',
@@ -99,10 +103,10 @@ module.exports = yeoman.Base.extend({
   },
 
   _writeNg2SubPage(args ) {
-    var root = "ng2/";
-    var destRoot = this.destinationPath("src/app/" + args.moduleName);
-    var pageRoot = this.destinationPath(destRoot + '/models/');
-    var pagesFile = this.destinationPath(destRoot + '/' + args.moduleName + '.models.ts');
+    let root = "ng2/";
+    let destRoot = this.destinationPath(this.rootPath + args.moduleName);
+    let pageRoot = this.destinationPath(destRoot + '/models/');
+    let pagesFile = this.destinationPath(destRoot + '/' + args.moduleName + '.models.ts');
 
     this.log(destRoot);
     if (fileSys.existsSync(destRoot)) {        

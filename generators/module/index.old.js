@@ -12,40 +12,66 @@ module.exports = yeoman.Base.extend({
     this.argument('inputName', { type: String, required: true });
     //this.className = _.kebabCase(this.className);
 
-    this.option('p', {
+    this.option('skip-pages', {
       desc: 'If true, the pages folder and pages files will not be created',
       type: Boolean,
       default: false
     });
 
-   
-    this.option('c', {
+    this.option('sp', {
+      desc: 'If true, the pages folder and pages files will not be created',
+      type: Boolean,
+      default: false
+    });
+
+    this.option('skip-components', {
       desc: 'If true, the components folder and components file will not be created',
       type: Boolean,
       default: false
     });
 
-    
-   
-    this.option('m', {
+    this.option('sc', {
+      desc: 'If true, the components folder and components file will not be created',
+      type: Boolean,
+      default: false
+    });
+
+    this.option('skip-models', {
       desc: 'If true, the models folder and models file will not be created',
       type: Boolean,
       default: false
     });
 
-    this.option('r', {
+    this.option('sm', {
+      desc: 'If true, the models folder and models file will not be created',
+      type: Boolean,
+      default: false
+    });
+
+    this.option('skip-routing', {
       desc: 'If true, the routing file will not be created',
       type: Boolean,
       default: false
     });
 
-
-    this.option('all', {
-      desc: 'If true, page, component, routing and model will be created',
+    this.option('sr', {
+      desc: 'If true, the routing file will not be created',
       type: Boolean,
       default: false
     });
-    
+
+    this.option('skip-all', {
+      desc: 'If true, either pages, components, routing or models will be created',
+      type: Boolean,
+      default: false
+    });
+
+    this.option('sa', {
+      desc: 'If true, either pages, components, routing or models will be created',
+      type: Boolean,
+      default: false
+    });
+
   },
 
   prompting: function () {
@@ -54,7 +80,7 @@ module.exports = yeoman.Base.extend({
     var prompts = [
       {
         name: 'inputName',
-        message: 'What is the SINGULAR class name?',
+        message: 'What is the (singular) class name (need more than one? enter class names separated by SPACE)?',
         require: true,
       }
     ];
@@ -73,15 +99,6 @@ module.exports = yeoman.Base.extend({
 
   _writeNg2App: function () {
 
-    let defaultConfigPath = this.destinationPath('ng-seed.json');
-    
-    if (!fileSys.existsSync(defaultConfigPath)) {
-      defaultConfigPath = path.join(__dirname, '..', 'init', 'templates', '_ng-seed.json');
-      this.composeWith('ng-seed:init');
-    }
-
-    let internalConfig = this.fs.readJSON(defaultConfigPath);
-
     let path = this.inputName.split('/');
     let hasPath = path.length > 1;
 
@@ -99,14 +116,11 @@ module.exports = yeoman.Base.extend({
         
     let subs = className.split(',');
     
-    let addPage = this.options['p'] || this.options['all'] ? true : false;
-    let addModel = this.options['m'] || this.options['all'] ? true : false;
-    let addComponent = this.options['c'] || this.options['all'] ? true : false;
-    let addRouting = this.options['r'] || this.options['all'] ? true : false;
+    let skipPages = this.options['skip-pages'] || this.options['sp'] || this.options['skip-all'] || this.options['sa'] ? true : false;
+    let skipModels = this.options['skip-models'] || this.options['sm'] || this.options['skip-all'] || this.options['sa'] ? true : false;
+    let skipComponents = this.options['skip-components'] || this.options['sc'] || this.options['skip-all'] || this.options['sa'] ? true : false;
+    let skipRouting = this.options['skip-routing'] || this.options['sr'] || this.options['skip-all'] || this.options['sa'] ? true : false;
     
-    let moduleFilePostfix = internalConfig.module.filePostfix ? internalConfig.module.filePostfix : ".module" ;
-    let classNamePostfix = internalConfig.module.classNamePostfix ? internalConfig.module.filePostfix : "Module";
-
     for (var i = 0; i < subs.length; i++) {
       let name = subs[i];
 
@@ -128,10 +142,10 @@ module.exports = yeoman.Base.extend({
         singularKebabName: _.kebabCase(singular),
         pluralKebabName: _.kebabCase(plural),
         singularCamel: singular,
-        skipPages: addPage,
-        skipModels: addModel,
+        skipPages: skipPages,
+        skipModels: skipModels,
         skipComponents: skipComponents,
-        skipRouting: addRouting || addPage
+        skipRouting: skipRouting || skipPages
       }
 
       //this.log(args);
