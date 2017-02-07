@@ -9,7 +9,7 @@ module.exports = yeoman.Base.extend({
   constructor: function () {
     yeoman.Base.apply(this, arguments);
     this.option('q', {
-      desc: 'uses bare minimum, no libraries, no ui, no automatic download - no questions asked. Just scaffolding',
+      desc: 'setup only, no libraries, no ui, no automatic download - no questions asked. Just scaffolding',
       type: Boolean,
       default: false
     });
