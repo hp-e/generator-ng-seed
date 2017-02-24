@@ -14,7 +14,7 @@ module.exports = yeoman.Base.extend({
         this.argument('subpath', { type: String, required: true });
         this.argument('moduleName', { type: String, required: true });
 
-        console.log("moduleName: " + this.moduleName);
+        //console.log("moduleName: " + this.moduleName);
         //this.subpath = _.kebabCase(this.className);
         let sp = this.subpath && this.subpath.length > 0 ? this.subpath : "";
         this.rootPath = "src/app/" + sp + "/";
@@ -280,7 +280,7 @@ module.exports = yeoman.Base.extend({
     },
 
     _writeService(rootPath, moduleName, serviceNames) {
-        console.log("Service", rootPath, moduleName, serviceNames);
+        //console.log("Service", rootPath, moduleName, serviceNames);
         let services = serviceNames.split(' ');
 
 
