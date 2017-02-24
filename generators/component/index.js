@@ -11,174 +11,100 @@ module.exports = yeoman.Base.extend({
   constructor: function () {
     yeoman.Base.apply(this, arguments);
 
-    this.argument('subpath', { type: String, required: false });
-    let sp = this.subpath && this.subpath.length > 0 ? this.subpath : "";
+    this.argument('inputName', { type: String, required: true });
 
-    this.rootPath = "src/app/" + sp + "/";
-
-    this.option('inline', {
-      desc: 'uses inline template and style (overrides default settings)',
+    this.option('tpl', {      
       type: Boolean,
       default: false
     });
 
-    this.option('s', {
-      desc: 'adds a layout file for the component (overrides default settings)',
+    this.option('css', {
+      desc: 'adds a css layout file for the component',
       type: Boolean,
       default: false
     });
 
-    this.option('t', {
-      desc: 'adds a template file for the component (overrides default settings)',
+    this.option('scss', {
+      desc: 'adds a css layout file for the component',
       type: Boolean,
       default: false
     });
+
+    // this.option('p', {
+    //     type: Boolean,
+    //     default: true
+    // });
   },
 
-  init: function () {
-
-  },
-
-  _getDirectories: function (p) {
-    let folderItems = [];
-    var files = fileSys.readdirSync(p).filter(function (file) {
-      return fileSys.statSync(path.join(p, file)).isDirectory();
-    });
-
-    files.forEach((file) => {
-      var folderItem = {
-        name: file,
-        value: file
-      }
-      folderItems.push(folderItem);
-    });
-
-    return folderItems;
-  },
-
-  prompting: function () {
-
-    var folders = this._getDirectories(this.destinationPath(this.rootPath));
-
-    var prompts = [
-      {
-        type: 'list',
-        name: 'moduleName',
-        message: 'Please select the module to add the pages to',
-        require: true,
-        choices: folders
-      },
-      // {
-      //   name: 'moduleName',
-      //   message: 'What is the name of the parent folder for the new page (src/app/<folder> must exists)',
-      //   require: true,
-      // },
-      {
-        name: 'pageName',
-        message: 'What is the component name (need more than one? enter names separated by SPACE)?',
-        require: true,
-      }
-    ];
-
-    return this.prompt(prompts).then(function (props) {
-      // To access props later use this.props.someAnswer;
-      this.props = props;
-    }.bind(this));
-
-
-  },
-
-  writing: function () {
-    this._writeNg2App();
-  },
-
-  _writeNg2App: function () {
-
+  configuring() {
     let defaultConfigPath = this.destinationPath('ng-seed.json');
-    let currentPath = path.join(__dirname, '..', 'init', 'templates', '_ng-seed.json');
 
     if (!fileSys.existsSync(defaultConfigPath)) {
-      defaultConfigPath = currentPath;
+      defaultConfigPath = path.join(__dirname, '..', 'init', 'templates', '_ng-seed.json');
       this.composeWith('ng-seed:init');
     }
 
     let internalConfig = this.fs.readJSON(defaultConfigPath);
 
-    var subs = this.props.pageName.split(' ');
+    let path = this.inputName.split('/');
+    let hasPath = path.length > 1;
 
-    let styleExt = '.' + internalConfig.styleType;
-    let selectorPrefix = internalConfig.component.useSelectorPrefix && internalConfig.selectorPrefix ? internalConfig.selectorPrefix : "";
-    let addStyle = !internalConfig.component.addStyleFile ? this.options['s'] : internalConfig.component.addStyleFile;
-    let addTemplate = !internalConfig.component.addTemplateFile ? this.options['t'] : internalConfig.component.addTemplateFile;
+    let moduleName = path[path.length - 1];
 
-    for (var i = 0; i < subs.length; i++) {
-      var name = subs[i];
+    let pathName = "";
+    let max = path.length - 1;
 
-      var page = _.camelCase(name);
-      var kebabPageName = _.kebabCase(page);
-      var pageName = page[0].toUpperCase() + page.substr(1);
-
-      let fileName = kebabPageName + internalConfig.component.filePostfix;
-
-      let stylePage = fileName + styleExt;
-
-
-      var args = {
-        moduleName: this.props.moduleName,
-        pageName: kebabPageName, //_.kebabCase(page),
-        className: pageName,
-        classPostfix: internalConfig.component.classNamePostfix,
-        addStyle: addStyle,
-        styleExt: styleExt,
-        addTemplate: addTemplate,
-        stylePage: stylePage,
-        fileName: fileName,
-        prefix: selectorPrefix
-      }
-
-      this._writeNg2SubPage(args);
-
+    for (var i = 0; i < max; i++) {
+      pathName = pathName + path[i] + "/";
     }
+
+    // let addPage = this.options['p'] || this.options['all'] ? true : false;
+    // let addModel = this.options['m'] || this.options['all'] ? true : false;
+    // let addComponent = this.options['c'] || this.options['all'] ? true : false;
+    // let addRouting = this.options['r'] || this.options['all'] ? true : false;
+
+    let moduleFilePostfix = internalConfig.module.filePostfix ? internalConfig.module.filePostfix : ".module";
+    let moduleNamePostfix = internalConfig.module.classNamePostfix ? internalConfig.module.filePostfix : "Module";
+
+    let singular = _.camelCase(moduleName);
+    let plural = pluralize(moduleName); // _.camelCase(name) + 's';
+    let className = singular[0].toUpperCase() + singular.substr(1); // _.startCase(singular); // singular.replace(' ', '');
+    let properPlural = plural[0].toUpperCase() + plural.substr(1);
+    //let route = 
+    let settings = {
+      path: pathName,
+      modulePath: pathName + _.kebabCase(singular) + '/',
+      className: className,
+      classNameLower: className.toLowerCase(),
+      fileName: _.kebabCase(singular),
+      port: 3000, // need to read from config,
+      singularLowerName: className.toLowerCase(),
+      singularName: className,
+      pluralLowerName: plural.toLowerCase(),
+      pluralName: properPlural,
+      singularKebabName: _.kebabCase(singular),
+      pluralKebabName: _.kebabCase(plural),
+      singularCamel: singular,
+      skipRouting: false,
+      addService: !this.options['s'],
+      lazyLoading: this.options['lazy']
+    }
+
+    this.internalConfig = internalConfig;
+    this.args = settings;
+
   },
-
-  _writeNg2SubPage(args) {
-        
-    var root = "ng2/";
-    var destRoot = this.destinationPath(this.rootPath + args.moduleName);
-    var pageRoot = this.destinationPath(destRoot + '/components/');
-    var pagesFile = this.destinationPath(destRoot + '/' + args.moduleName + '.exports.ts');
-
-    this.log(destRoot);
-    if (fileSys.existsSync(destRoot)) {
-      let useInline = this.options['inline'] || (!args.addStyle && !args.addTemplate)
-
-      if (this.options['inline']) {
-        args.addStyle = false;
-        args.addTemplate = false;
-      }
-
-      this.fs.copyTpl(this.templatePath(root + '_ng2.component.ts'), this.destinationPath(pageRoot + args.fileName + '.ts'), args);
-
-      if (args.addTemplate) {
-        this.fs.copyTpl(this.templatePath(root + '_ng2.component.html'), this.destinationPath(pageRoot + args.fileName + '.html'), args);
-      }
-
-      if (args.addStyle) {
-        this.fs.copyTpl(this.templatePath(root + '_ng2.component.css'), this.destinationPath(pageRoot + args.fileName + args.styleExt), args);
-      }
-
-      var content = `\nexport * from './components/${args.fileName}';`
-
-      fileSys.appendFile(pagesFile, content, (err) => {
-        if (err) {
-          this.log(err);
-        }
-      });
-
-    } else {
-      this.log("module does not exists");
-      //throw;
-    }
+  writing() {
+    this.options['p'] = false;
+    this.options['m'] = false;
+    this.options['s'] = false;
+    this.options['d'] = false;
+    this.options['c'] = true;
+    this.composeWith(require.resolve('../item'), { args: [this.args.modulePath, this.args.singularKebabName], options: this.options });
+  },
+  end() {  
+          
   }
+
 
 });

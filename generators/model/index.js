@@ -8,127 +8,103 @@ var fileSys = require('fs');
 var path = require("path");
 
 module.exports = yeoman.Base.extend({
-    constructor: function(){
-        yeoman.Base.apply(this, arguments);
+  constructor: function () {
+    yeoman.Base.apply(this, arguments);
 
-        this.argument('subpath', { type: String, required: false });
-        let sp = this.subpath && this.subpath.length > 0 ? this.subpath : "";
+    this.argument('inputName', { type: String, required: true });
 
-        this.rootPath = "src/app/" + sp + "/";
+    this.option('tpl', {      
+      type: Boolean,
+      default: false
+    });
 
-        this.option('inline', {
-           desc: 'uses inline template and style',
-           type: Boolean,
-           default: false 
-        });
-    },
-  
-  init: function () {
+    this.option('css', {
+      desc: 'adds a css layout file for the component',
+      type: Boolean,
+      default: false
+    });
 
+    this.option('scss', {
+      desc: 'adds a css layout file for the component',
+      type: Boolean,
+      default: false
+    });
+
+    // this.option('p', {
+    //     type: Boolean,
+    //     default: true
+    // });
   },
 
-  _getDirectories: function(p) {      
-      let folderItems = [];
-      var files = fileSys.readdirSync(p).filter(function(file) {
-        return fileSys.statSync(path.join(p, file)).isDirectory();
-      });     
+  configuring() {
+    let defaultConfigPath = this.destinationPath('ng-seed.json');
 
-      files.forEach((file) => {
-        var folderItem = {
-          name: file,
-          value: file
-        }          
-          folderItems.push(folderItem);
-      });               
+    if (!fileSys.existsSync(defaultConfigPath)) {
+      defaultConfigPath = path.join(__dirname, '..', 'init', 'templates', '_ng-seed.json');
+      this.composeWith('ng-seed:init');
+    }
 
-      return folderItems;
+    let internalConfig = this.fs.readJSON(defaultConfigPath);
+
+    let path = this.inputName.split('/');
+    let hasPath = path.length > 1;
+
+    let moduleName = path[path.length - 1];
+
+    let pathName = "";
+    let max = path.length - 1;
+
+    for (var i = 0; i < max; i++) {
+      pathName = pathName + path[i] + "/";
+    }
+
+    // let addPage = this.options['p'] || this.options['all'] ? true : false;
+    // let addModel = this.options['m'] || this.options['all'] ? true : false;
+    // let addComponent = this.options['c'] || this.options['all'] ? true : false;
+    // let addRouting = this.options['r'] || this.options['all'] ? true : false;
+
+    let moduleFilePostfix = internalConfig.module.filePostfix ? internalConfig.module.filePostfix : ".module";
+    let moduleNamePostfix = internalConfig.module.classNamePostfix ? internalConfig.module.filePostfix : "Module";
+
+    let singular = _.camelCase(moduleName);
+    let plural = pluralize(moduleName); // _.camelCase(name) + 's';
+    let className = singular[0].toUpperCase() + singular.substr(1); // _.startCase(singular); // singular.replace(' ', '');
+    let properPlural = plural[0].toUpperCase() + plural.substr(1);
+    //let route = 
+    let settings = {
+      path: pathName,
+      modulePath: pathName + _.kebabCase(singular) + '/',
+      className: className,
+      classNameLower: className.toLowerCase(),
+      fileName: _.kebabCase(singular),
+      port: 3000, // need to read from config,
+      singularLowerName: className.toLowerCase(),
+      singularName: className,
+      pluralLowerName: plural.toLowerCase(),
+      pluralName: properPlural,
+      singularKebabName: _.kebabCase(singular),
+      pluralKebabName: _.kebabCase(plural),
+      singularCamel: singular,
+      skipRouting: false,
+      addService: !this.options['s'],
+      lazyLoading: this.options['lazy']
+    }
+
+    this.internalConfig = internalConfig;
+    this.args = settings;
+
   },
-
-  prompting: function () {    
-      
-      var folders = this._getDirectories(this.destinationPath(this.rootPath));
-
-      var prompts = [
-        {
-        type: 'list',
-        name: 'moduleName',
-        message: 'Please select the module to add the pages to',
-        require: true,
-        choices: folders    
-        },      
-      // {
-      //   name: 'moduleName',
-      //   message: 'What is the name of the parent folder for the new page (src/app/<folder> must exists)',
-      //   require: true,
-      // },
-      {
-        name: 'modelName',
-        message: 'What is the model name?',
-        require: true,
-      }
-    ];
-
-    return this.prompt(prompts).then(function (props) {
-      // To access props later use this.props.someAnswer;
-      this.props = props;
-    }.bind(this));
-    
-    
+  writing() {
+    this.options['p'] = false;
+    this.options['m'] = true;
+    this.options['s'] = false;
+    this.options['d'] = false;
+    this.options['c'] = false;
+    this.composeWith(require.resolve('../item'), { args: [this.args.modulePath, this.args.singularKebabName], options: this.options });
   },
-
-  writing: function () {
-    this._writeNg2App();
-  },
-
-  _writeNg2App: function () {
-    
-
-    var subs = this.props.modelName.split(' ');
-
-    for (var i = 0; i < subs.length; i++) {
-      var name = subs[i];
-      
-      var page = _.camelCase(name);
-      
-      var pageName = page[0].toUpperCase() + page.substr(1); 
-      var args = {
-        moduleName: this.props.moduleName,
-        pageName: _.kebabCase(page),
-        className: pageName,                        
-      }
-
-      this._writeNg2SubPage(args);
-    
-    }    
-  },
-
-  _writeNg2SubPage(args ) {
-    let root = "ng2/";
-    let destRoot = this.destinationPath(this.rootPath + args.moduleName);
-    let pageRoot = this.destinationPath(destRoot + '/models/');
-    let pagesFile = this.destinationPath(destRoot + '/' + args.moduleName + '.models.ts');
-
-    this.log(destRoot);
-    if (fileSys.existsSync(destRoot)) {        
-                
-                
-          this.fs.copyTpl(this.templatePath(root + '_ng2.model.ts'), this.destinationPath(pageRoot + args.pageName + '.model.ts'), args);
+  end() {  
           
-        
-                
-        var pagesFilePath = destRoot + '/' + args.moduleName + '.models.ts'        
-        var content = `\nexport * from "./models/${args.pageName}.model";`
-
-        fileSys.appendFile(pagesFile, content, (err) => {
-          if (err) {
-            this.log(err);
-          }
-        });
-            
-    } else {
-        this.log("module does not exists");
-        //throw;
-    }        
   }
+
 
 });

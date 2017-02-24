@@ -12,6 +12,7 @@
     "generators/model",
     "generators/component",
     "generators/page",
+    "generators/service",
     "generators/init",
     "generators/version"
   ],

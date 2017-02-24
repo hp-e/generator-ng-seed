@@ -43,29 +43,7 @@ somthing like this...
 })
 ```
 
-## How to lazy load the module 
-To lazy load this module do the following
-
-1. Open the src/app.routes.ts
-2. locate the routes const: 
-
-```typescript
-export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full'},  
-  { path: 'home', component: HomeComponent},  
-  // enter this:
-  { path: '<%= pluralLowerName %>', loadChildren: 'app/<%= path %><%= singularKebabName %>/<%= singularKebabName %>.module#<%= className %>Module', pathMatch: 'full' },
-  //----
-  { path: '**', pathMatch: 'full', component: PageNotFound },
-];
-
-```
-
-<% if (!lazyLoading) { %>
-Make sure you import the CommonModule from @angular/common instead of the BrowserModule 
-<% } %> 
-
-## Common file structure for the module
+## File structure for the module
 ```
 moduleName = <%= className %>
 root/
@@ -85,9 +63,8 @@ root/
  │   │   │   ├──<%= fileName %>.module.ts                
  │   │   │   ├──<%= fileName %>.routing.module.ts        
  │   │   │   ├──<%= fileName %>.service.ts               
- │   │   │   ├──<%= fileName %>.pages.ts                 
- │   │   │   ├──<%= fileName %>.models.ts               
- │   │   │   └──<%= fileName %>.components.ts            
+ │   │   │   ├──<%= fileName %>.exports.ts                 
+          
 ```
 
 ## File explanations
@@ -101,13 +78,11 @@ root/
 You could (I wont use should) place all your components in the folder/directory. 
 This will add a good structure and as your project grows it will make it easier to locate file.
 
-Optionally you can also add an export * from './components/<%= fileName %>.component';
+Optionally you can also add an export * from './components/<%= fileName %>..component';
 That will make it easy to import your component in a module or any other place you need
 to import the component.
 
 e.g in the module file you import the <%= fileName %>.components and not each individual component.
-
-### components directory
 
 #### component file.
 According to the Angular 2 style guide you should place each component in their own file. I fully support this
