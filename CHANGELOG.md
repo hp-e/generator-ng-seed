@@ -1,23 +1,25 @@
 # generator-ng-seed - Changelog
 
-## 0.4.0
+## 1.0.0
 ### new features
 * added a ng-seed config. If not exists a ng-seed.json file will be created. Read more in the config section of readme.md
+* Added angular 4 RC1 as an option (select in start wizard)
+* Added a directive and pipe sub generator
+* Webpack 2 (2.2.1) is used as default
 
-### changes to page and component generator
+### changes sub generators
 * Removed adding a style page by default. Use --scss or -css to add a separate file
-* Added --s option for adding style file. This will override any settings in the config file
-* Added --t option for adding template file. This will override any settings in the config file
+* Added new options for adding items with a module (see the readme.md for more info)
 
 ### Module bundlers and loaders
 * Added webpack 2 (version 2.2.1)
 * Updated all webpack config files to new standard
-* Updated awesome-typescript-loader to 3.0.0-beta.18
+* Updated awesome-typescript-loader to 3.0.8
 
 ### misc
-* updated angular to 2.4.5
-* updated zone.js to 0.7.6
-* updated rxjs to 5.1.0
+* updated angular to 2.4.8
+* updated zone.js to 0.7.7
+* updated rxjs to 5.2.0
 * updated 
 * bug fixes
 

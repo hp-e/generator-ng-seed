@@ -1,24 +1,16 @@
 {
     "moduleBundler": "webpack",
     "uiFramework": "none",    
-    "styleType": "scss",
+    "defaultStyle": "scss",
     "fileNameCasing": "kebab",
     "folderNameCasing": "kebab",
     "rootPath": "src/app",
     "selectorPrefix": "app-",
-    "connections": {
-        "server": "",
-        "database": "",
-        "userid": "",
-        "password": ""
-    },
+    "itemFolderStructure": "type",
     "module": {
         "filePostfix": ".module",
-        "classNamePostfix": "Module",
-        "addIndexPage": false,
-        "addComponent": false,
-        "addRouting": false,
-        "addModel": false,
+        "classNamePostfix": "Module",        
+        "addRouting": false,        
         "addService": true,
         "useBarrelFile": true,
         "barrelFilePostfix": ".exports"
@@ -50,15 +42,13 @@
         "classNamePostfix": "Page"        
     },
     "directive": {
-        "useSelectorPrefix": true,
+        "useNamePrefix": true,
         "filePostfix": ".directive",
-        "subDirectory": "directives",
-        "addTemplateFile": false,
-        "addStyleFile": false,
+        "subDirectory": "directives",        
         "classNamePostfix": "Directive"
     },  
     "pipe": {
-        "useSelectorPrefix": false,
+        "useNamePrefix": false,
         "filePostfix": ".pipe",
         "subDirectory": "pipes",
         "classNamePostfix": "Pipe"

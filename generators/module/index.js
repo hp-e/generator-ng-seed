@@ -43,6 +43,15 @@ module.exports = yeoman.Base.extend({
       type: Boolean,
       default: false
     });
+    this.option('no-barrel', {
+      type: Boolean,
+      default: false
+    });
+
+    this.option('v', {
+      type: Boolean,
+      default: false
+    });
 
 
     this.option('scss', {
@@ -88,19 +97,19 @@ module.exports = yeoman.Base.extend({
 
     let internalConfig = this.fs.readJSON(defaultConfigPath);
 
-    let path = this.inputName.split('/');
-    let hasPath = path.length > 1;
+    let pathParts = this.inputName.split('/');
+    let hasPath = pathParts.length > 1;
 
-    let moduleName = path[path.length - 1];
+    let moduleName = pathParts[pathParts.length - 1];
 
     let pathName = "";
-    let max = path.length - 1;
+    let max = pathParts.length - 1;
 
     for (var i = 0; i < max; i++) {
-      pathName = pathName + path[i] + "/";
+      pathName = pathName + pathParts[i] + "/";
     }
 
-    console.log(pathName);
+    //console.log(pathName);
     // let addPage = this.options['p'] || this.options['all'] ? true : false;
     // let addModel = this.options['m'] || this.options['all'] ? true : false;
     // let addComponent = this.options['c'] || this.options['all'] ? true : false;
@@ -113,6 +122,8 @@ module.exports = yeoman.Base.extend({
     let plural = pluralize(moduleName); // _.camelCase(name) + 's';
     let className = singular[0].toUpperCase() + singular.substr(1); // _.startCase(singular); // singular.replace(' ', '');
     let properPlural = plural[0].toUpperCase() + plural.substr(1);
+
+    let skipRouting = !internalConfig.module.addRouting;
     //let route = 
     let settings = {
       path: pathName,
@@ -128,8 +139,9 @@ module.exports = yeoman.Base.extend({
       singularKebabName: _.kebabCase(singular),
       pluralKebabName: _.kebabCase(plural),
       singularCamel: singular,
-      skipRouting: false,
-      addService: !this.options['s'],
+      skipRouting: skipRouting,
+      useBarrel: this.options['no-barrel'] ? false : internalConfig.module.useBarrel,
+      addService: this.options['s'] ? true : internalConfig.module.addService,
       lazyLoading: this.options['lazy']
     }
 
@@ -170,18 +182,26 @@ module.exports = yeoman.Base.extend({
 
     // root files
     this.fs.copyTpl(this.templatePath(root + '_readme.md'), this.destinationPath(destRoot + 'readme.md'), this.args);
+    this.fs.copyTpl(this.templatePath(root + '_ng2.Module.ts'), this.destinationPath(destRootName + '.module.ts'), this.args);
 
-    if (!this.options['s']) {
+    
+
+    if (this.args.addService) {
       this.fs.copyTpl(this.templatePath(root + '_ng2.Service.ts'), this.destinationPath(destRootName + '.service.ts'), this.args);
     }
 
-    this.fs.copyTpl(this.templatePath(root + '_ng2.Module.ts'), this.destinationPath(destRootName + '.module.ts'), this.args);
-    this.fs.copyTpl(this.templatePath(root + '_exports.ts'), this.destinationPath(destRootName + '.exports.ts'), this.args);
 
+    if (this.args.useBarrel) {
+      this.fs.copyTpl(this.templatePath(root + '_exports.ts'), this.destinationPath(destRootName + '.exports.ts'), this.args);
+    }
+
+    if (!this.args.skipRouting) {
+      this.fs.copyTpl(this.templatePath(root + '_ng2.Routing.Module.ts'), this.destinationPath(destRootName + '.routing.module.ts'), this.args);
+    }
     //if (!args.skipRouting) {
-    this.fs.copyTpl(this.templatePath(root + '_ng2.Routing.Module.ts'), this.destinationPath(destRootName + '.routing.module.ts'), this.args);
 
-    let loadSubmodule = this.options['p'] || this.options['m'] || this.options['s'] || this.options['c'];
+
+    let loadSubmodule = this.options['p'] || this.options['m'] || this.options['s'] || this.options['c'] || this.options['d'] || this.options['pipe'];
     if (loadSubmodule) {
       this.composeWith(require.resolve('../item'), { args: [this.args.modulePath, this.args.singularKebabName], options: this.options });
     }

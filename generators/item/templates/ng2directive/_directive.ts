@@ -1,7 +1,7 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 
-@Directive({selector: '[<%= itemName %>]'})
-export class <%= className %><%= classPostfix %> {
+@Directive({selector: '[<%= selectorName %>]'})
+export class <%= fullClassName %> {
 
   constructor(private el: ElementRef) { }
   

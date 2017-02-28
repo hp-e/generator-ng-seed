@@ -8,8 +8,8 @@
   "license": "MIT",
   "devDependencies": {
     "@types/core-js": "^0.9.35",
-    "@types/node": "^6.0.48",        
-    "typescript": "^2.1.4"    
+    "@types/node": "^7.0.5",        
+    "typescript": "^2.2.1"    
   },
   "dependencies": {
     "@angular/common": "~2.4.1",
@@ -24,8 +24,8 @@
     "@angular/upgrade": "~2.4.1",    
     "core-js": "^2.4.1",
     "ie-shim": "^0.1.0",
-    "reflect-metadata": "^0.1.8",        
-    "rxjs": "^5.0.1",
-    "zone.js": "~0.7.2"
+    "reflect-metadata": "^0.1.10",        
+    "rxjs": "^5.2.0",
+    "zone.js": "~0.7.7"
   }
 }

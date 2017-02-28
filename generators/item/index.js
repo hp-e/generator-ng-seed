@@ -56,6 +56,11 @@ module.exports = yeoman.Base.extend({
             default: false
         });
 
+        // this.option('structure-flat', {
+        //     type: Boolean,
+        //     default: false
+        // });
+
         this.option('scss', {
             desc: 'adds a scss layout file for the component',
             type: Boolean,
@@ -96,6 +101,19 @@ module.exports = yeoman.Base.extend({
         var sp = this.subpath && this.subpath.length > 0 ? this.subpath : "";
         let prompts = [];
 
+
+        if (this.options['structure-ask']) {
+            let structurePrompt = {
+                name: 'userDefinedDirectory',
+                message: 'Please provide a name for the sub-directory to place the item in?',
+                require: true,
+
+            };
+
+            prompts.push(structurePrompt);
+        }
+
+
         if (this.options['p']) {
             let pagePrompt = {
                 name: 'pageName',
@@ -106,6 +124,7 @@ module.exports = yeoman.Base.extend({
 
             prompts.push(pagePrompt);
         }
+
         if (this.options['c']) {
             let componentPrompt = {
                 name: 'componentName',
@@ -196,392 +215,308 @@ module.exports = yeoman.Base.extend({
         // //this.moduleName = this.props.moduleName ? this.props.moduleName : lastItem;       
         this.writeToExport = [];
 
+        let rootPath = this.internalConfig.rootPath;
+        let styleExt = this.options['scss'] ? 'scss' : this.internalConfig.defaultStyle;
+        let selectorPrefix = this.internalConfig.component.useSelectorPrefix && this.internalConfig.selectorPrefix ? this.internalConfig.selectorPrefix : "";
+        let useBarrel = this.internalConfig.module.useBarrel;
+        let barrelPostfix = this.internalConfig.module.barrelFilePostfix;
+        let itemFolderStructure = this.options['structure-flat'] ? 'flat' :
+            this.options['structure-self'] ? 'self' :
+                this.options['structure-ask'] && this.answers.userDefinedDirectory.length > 0 ? 'ask' :
+                    this.internalConfig.itemFolderStructure;
+
+        var barrelFilePath = this.destinationPath(rootPath + "/" + this.subpath + '/' + this.moduleName + barrelPostfix + '.ts');
+        var modulePath = rootPath + "/" + this.subpath; // + "/" + this.moduleName + '/';
+
+        let itemOptions = {
+            useBarrel: true,
+            itemFolderStructure: itemFolderStructure,
+            rootPath: rootPath,
+            selectorPrefix: selectorPrefix,
+            barrelFile: barrelFilePath,
+            defaultStyle: styleExt,
+            modulePath: modulePath,
+            styleExt: styleExt
+        };
+
         if (this.options['p'] && this.answers.pageName) {
             //itemsArray.push({ "type": 'page', "names": this.answers.pageName.split(' ') });
-            this._writePage(this.subpath, this.moduleName, this.answers.pageName);
+            this._writePage(this.subpath, this.moduleName, this.answers.pageName, itemOptions);
         }
         if (this.options['c'] && this.answers.componentName) {
             //itemsArray.push({ "type": 'component', "names": this.answers.componentName.split(' ') });
-            this._writeComponent(this.subpath, this.moduleName, this.answers.componentName);
+            this._writeComponent(this.subpath, this.moduleName, this.answers.componentName, itemOptions);
         }
         if (this.options['m'] && this.answers.modelName) {
             //itemsArray.push({ "type": 'model', "names": this.answers.modelName.split(' ') });
-            this._writeModel(this.subpath, this.moduleName, this.answers.modelName);
+            this._writeModel(this.subpath, this.moduleName, this.answers.modelName, itemOptions);
         }
         if (this.options['s'] && this.answers.serviceName) {
             //itemsArray.push({ "type": 'service', "names": this.answers.serviceName.split(' ') });
-            this._writeService(this.subpath, this.moduleName, this.answers.serviceName);
+            this._writeService(this.subpath, this.moduleName, this.answers.serviceName, itemOptions);
         }
 
         if (this.options['d'] && this.answers.directiveName) {
             //itemsArray.push({ "type": 'service', "names": this.answers.serviceName.split(' ') });
-            this._writeDirectives(this.subpath, this.moduleName, this.answers.directiveName);
+            this._writeDirectives(this.subpath, this.moduleName, this.answers.directiveName, itemOptions);
         }
 
         if (this.options['pipe'] && this.answers.pipeName) {
             //itemsArray.push({ "type": 'service', "names": this.answers.serviceName.split(' ') });
-            this._writePipes(this.subpath, this.moduleName, this.answers.pipeName);
+            this._writePipes(this.subpath, this.moduleName, this.answers.pipeName, itemOptions);
         }
 
         //this._writeNg2App(this.rootPath, this.moduleName);
     },
 
-    _writePage(rootPath, moduleName, pageNames) {
-        //console.log("page", rootPath, moduleName, pageNames);
-        let pages = pageNames.split(' ');
-        let styleExt = this.options['scss'] ? 'scss' : this.internalConfig.styleType;;
-        let selectorPrefix = this.internalConfig.component.useSelectorPrefix && this.internalConfig.selectorPrefix ? this.internalConfig.selectorPrefix : "";
+    _writePage(rootPath, moduleName, pageNames, itemOptions) {
+        let items = pageNames.split(' ');
+
+        let root = 'ng2page/';
         let addStyle = !this.internalConfig.page.addStyleFile ? this.options['css'] || this.options['scss'] : this.internalConfig.page.addStyleFile;
         let addTemplate = !this.internalConfig.page.addTemplateFile ? this.options['tpl'] : this.internalConfig.page.addTemplateFile;
-        let classPostfix = this.internalConfig.page.classNamePostfix;
+        let classPostfix = this.options['dlg'] ? "Dialog" : this.internalConfig.page.classNamePostfix;
+        let filePostfix = this.internalConfig.page.filePostfix;
+        let subDir = this.internalConfig.page.subDirectory;
+
+
         let isDialog = this.options['dlg'];
 
-        for (var i = 0; i < pages.length; i++) {
-            var currentPage = pages[i];
+        for (var i = 0; i < items.length; i++) {
 
-            var page = _.camelCase(currentPage);
-            var kebabPageName = _.kebabCase(page);
-            var pageName = page[0].toUpperCase() + page.substr(1);
+            var currentItem = items[i];
 
-            var stylePage = kebabPageName + '.page.' + styleExt;
+            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);
 
-            var args = {
-                moduleName: moduleName,
-                pageName: kebabPageName, //_.kebabCase(page),
-                className: pageName,
-                prefix: selectorPrefix,
-                addStyle: addStyle,
-                addTemplate: addTemplate,
-                stylePage: stylePage,
-                classPostfix: classPostfix,
-                styleExt: styleExt
+            let styleFileName = args.fileName + '.' + itemOptions.styleExt;
+            let templateFileName = args.fileName + '.html';
+
+            let destRoot = args.destinationRoot;
+
+
+            args.addStyle = addStyle;
+            args.addTemplate = addTemplate;
+            args.stylePage = styleFileName;
+            args.templatePage = templateFileName;
+            args.styleExt = itemOptions.styleExt;
+
+
+            if (addTemplate) {
+                this.fs.copyTpl(this.templatePath(root + '_ng2.page.html'), this.destinationPath(destRoot + templateFileName), args);
             }
 
+            if (addStyle) {
+                this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(destRoot + styleFileName), args);
+            }
 
             if (!isDialog) {
-                this._writeSinglePage(rootPath, kebabPageName, moduleName, args);
+                this.fs.copyTpl(this.templatePath(root + '_ng2.page.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
             } else {
-                this._writeSingleDialog(rootPath, kebabPageName, moduleName, args);
+                this.fs.copyTpl(this.templatePath(root + '_md-dialog.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
             }
 
+            if (itemOptions.useBarrel) {
+                this._addToBarrel(args.subDirectory, args.fileName, itemOptions.barrelFile);
+            }
+
+        }
+    },
+
+    _getSubDirectory(selectedStyle) {
+
+    },
+    _addToBarrel(subDir, fileName, barrelFile) {
+        var barrelFilePath = this.destinationPath(barrelFile);
+        var content = `\nexport * from './${subDir}/${fileName}';`
+
+        this.writeToExport.push({
+            path: barrelFilePath,
+            content: content
+        });
+    },
+    _writeComponent(rootPath, moduleName, componentNames, itemOptions) {
+        let items = componentNames.split(' ');
+
+        let root = 'ng2component/';
+        let addStyle = !this.internalConfig.component.addStyleFile ? this.options['css'] || this.options['scss'] : this.internalConfig.component.addStyleFile;
+        let addTemplate = !this.internalConfig.component.addTemplateFile ? this.options['tpl'] : this.internalConfig.component.addTemplateFile;
+        let classPostfix = this.internalConfig.component.classNamePostfix;
+        let filePostfix = this.internalConfig.component.filePostfix;
+        let subDir = this.internalConfig.component.subDirectory;
+
+        for (var i = 0; i < items.length; i++) {
+
+            var currentItem = items[i];
+
+            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);
+
+            let styleFileName = args.fileName + '.' + itemOptions.styleExt;
+            let templateFileName = args.fileName + '.html';
+
+            let destRoot = args.destinationRoot;
+
+            args.addStyle = addStyle;
+            args.addTemplate = addTemplate;
+            args.stylePage = styleFileName;
+            args.templatePage = templateFileName;
+            args.styleExt = itemOptions.styleExt;
+            args.prefix = itemOptions.selectorPrefix;
+            args.selectorName = args.itemKebabCase;
             
+            this.fs.copyTpl(this.templatePath(root + '_component.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
 
-        }
-    },
-
-    _writeComponent(rootPath, moduleName, componentNames) {
-        let components = componentNames.split(' ');
-
-        let styleExt = this.options['scss'] ? 'scss' : this.internalConfig.styleType;;
-        let selectorPrefix = this.internalConfig.component.useSelectorPrefix && this.internalConfig.selectorPrefix ? this.internalConfig.selectorPrefix : "";
-        let addStyle = !this.internalConfig.component.addStyleFile ? this.options['css'] || this.options['scss'] : this.internalConfig.component.addStyleFile;
-        let addTemplate = !this.internalConfig.component.addTemplateFile ? this.options['tpl'] : this.internalConfig.component.addTemplateFile;
-        let classPostfix = this.internalConfig.component.classNamePostfix;
-
-        for (var i = 0; i < components.length; i++) {
-            var currentComponent = components[i];
-
-            var page = _.camelCase(currentComponent);
-            var kebabPageName = _.kebabCase(page);
-            var pageName = page[0].toUpperCase() + page.substr(1);
-
-
-            var stylePage = kebabPageName + '.component.' + styleExt;
-
-            var args = {
-                moduleName: moduleName,
-                fileName: kebabPageName, //_.kebabCase(page),
-                pageName: kebabPageName, //_.kebabCase(page),
-                className: pageName,
-                prefix: selectorPrefix,
-                addStyle: addStyle,
-                addTemplate: addTemplate,
-                stylePage: stylePage,
-                classPostfix: classPostfix,
-                styleExt: styleExt
+            if (args.addTemplate) {
+                this.fs.copyTpl(this.templatePath('_blanc-file.ts'), this.destinationPath(destRoot + templateFileName), args);
             }
 
-            this._writeSingleComponent(rootPath, kebabPageName, moduleName, args);
-
-        }
-    },
-
-    _writeDirectives(rootPath, moduleName, names) {
-        let directives = names.split(' ');
-
-        let styleExt = this.options['scss'] ? 'scss' : this.internalConfig.styleType;;
-        let selectorPrefix = this.internalConfig.component.useSelectorPrefix && this.internalConfig.selectorPrefix ? this.internalConfig.selectorPrefix : "";
-        let addStyle = !this.internalConfig.component.addStyleFile ? this.options['css'] || this.options['scss'] : this.internalConfig.component.addStyleFile;
-        let addTemplate = !this.internalConfig.component.addTemplateFile ? this.options['tpl'] : this.internalConfig.component.addTemplateFile;
-        let classPostfix = this.internalConfig.component.classNamePostfix;
-        let subDirectory = "directives/"; //this.internalConfig.directive ? this.internalConfig.selectorPrefix : "directives";
-        let filePostfix = ".directive";
-
-        for (var i = 0; i < directives.length; i++) {
-            var current = directives[i];
-
-            var page = _.camelCase(current);
-            var kebabPageName = _.kebabCase(page);
-            var pageName = page[0].toUpperCase() + page.substr(1);
-            let directiveName = _.camelCase(selectorPrefix + current);
-
-            var stylePage = kebabPageName + '.component.' + styleExt;
-
-            var args = {
-                moduleName: moduleName,
-                fileName: kebabPageName, //_.kebabCase(page),
-                pageName: kebabPageName, //_.kebabCase(page),
-                className: pageName,
-                prefix: selectorPrefix,
-                addStyle: addStyle,
-                addTemplate: addTemplate,
-                stylePage: stylePage,
-                classPostfix: classPostfix,
-                styleExt: styleExt,
-                subDirectory: subDirectory,
-                filePostfix: filePostfix,
-                itemName: directiveName
+            if (args.addStyle) {
+                this.fs.copyTpl(this.templatePath('_blanc-file.ts'), this.destinationPath(destRoot + styleFileName), args);
             }
 
-            this._writeSingleDirective(rootPath, kebabPageName, moduleName, args);
-
-        }
-    },
-
-    _writePipes(rootPath, moduleName, names) {
-        let directives = names.split(' ');
-
-
-        let selectorPrefix = this.internalConfig.pipe.useSelectorPrefix && this.internalConfig.selectorPrefix ? this.internalConfig.selectorPrefix : "";
-        let addStyle = false;
-        let addTemplate = false;
-        let classPostfix = this.internalConfig.pipe.classNamePostfix;
-        let subDirectory = "pipes/"; //this.internalConfig.directive ? this.internalConfig.selectorPrefix : "directives";
-        let filePostfix = ".pipe";
-
-        for (var i = 0; i < directives.length; i++) {
-            var current = directives[i];
-
-            var page = _.camelCase(current);
-            var kebabPageName = _.kebabCase(page);
-            var pageName = page[0].toUpperCase() + page.substr(1);
-            let pipeName = _.camelCase(selectorPrefix + current);
-
-            var args = {
-                moduleName: moduleName,
-                fileName: kebabPageName, //_.kebabCase(page),
-                pageName: kebabPageName, //_.kebabCase(page),
-                className: pageName,
-                prefix: selectorPrefix,
-                addStyle: addStyle,
-                addTemplate: addTemplate,
-                stylePage: '',
-                classPostfix: classPostfix,
-                styleExt: '',
-                subDirectory: subDirectory,
-                filePostfix: filePostfix,
-                itemName: pipeName
+            if (itemOptions.useBarrel) {
+                this._addToBarrel(args.subDirectory, args.fileName, itemOptions.barrelFile);
             }
 
-            this._writeSinglePipe(rootPath, kebabPageName, moduleName, args);
-
         }
     },
 
-    _writeModel(rootPath, moduleName, modelNames) {
+    _writeDirectives(rootPath, moduleName, names, itemOptions) {
+        let items = names.split(' ');
 
-        let models = modelNames.split(' ');
-        for (var i = 0; i < models.length; i++) {
-            var currentComponent = models[i];
+        let root = 'ng2directive/';
+        let classPostfix = this.internalConfig.directive.classNamePostfix;
+        let filePostfix = this.internalConfig.directive.filePostfix;
+        let subDir = this.internalConfig.directive.subDirectory;
 
-            var page = _.camelCase(currentComponent);
-            var kebabPageName = _.kebabCase(page);
-            var pageName = page[0].toUpperCase() + page.substr(1);
+        for (var i = 0; i < items.length; i++) {
 
-            var args = {
-                moduleName: moduleName,
-                pageName: kebabPageName, //_.kebabCase(page),
-                className: pageName,
-                addStyle: false,
-                addTemplate: false,
-                stylePage: ''
+            var currentItem = items[i];
+
+            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);
+            let selectorName = _.camelCase(itemOptions.selectorPrefix + args.className);           
+            let destRoot = args.destinationRoot;
+
+            args.selectorName = args.itemKebabCase;            
+
+            this.fs.copyTpl(this.templatePath(root + '_directive.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
+
+            if (itemOptions.useBarrel) {
+                this._addToBarrel(args.subDirectory, args.fileName, itemOptions.barrelFile);
             }
 
-            this._writeSingleModel(rootPath, kebabPageName, moduleName, args);
+        }
+
+    },
+
+    _writePipes(rootPath, moduleName, names, itemOptions) {
+        let items = names.split(' ');
+
+        let root = 'ng2pipe/';
+        let classPostfix = this.internalConfig.directive.classNamePostfix;
+        let filePostfix = this.internalConfig.directive.filePostfix;
+        let subDir = this.internalConfig.directive.subDirectory;
+
+        for (var i = 0; i < items.length; i++) {
+
+            var currentItem = items[i];
+
+             let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);
+            let selectorName = _.camelCase(itemOptions.selectorPrefix + args.className);           
+            let destRoot = args.destinationRoot;
+
+            args.selectorName = args.itemKebabCase;     
+
+            this.fs.copyTpl(this.templatePath(root + '_pipe.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
+
+            if (itemOptions.useBarrel) {
+                this._addToBarrel(args.subDirectory, args.fileName, itemOptions.barrelFile);
+            }
 
         }
     },
 
-    _writeService(rootPath, moduleName, serviceNames) {
+    _writeModel(rootPath, moduleName, modelNames, itemOptions) {
+
+        let items = modelNames.split(' ');
+
+        let root = 'ng2model/';
+
+        let classPostfix = this.internalConfig.model.classNamePostfix;
+        let filePostfix = this.internalConfig.model.filePostfix;
+        let subDir = this.internalConfig.model.subDirectory;
+
+        for (var i = 0; i < items.length; i++) {
+
+            var currentItem = items[i];
+
+            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);              
+            let destRoot = args.destinationRoot;
+
+            this.fs.copyTpl(this.templatePath(root + '_model.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
+
+            if (itemOptions.useBarrel) {
+                this._addToBarrel(args.subDirectory, args.fileName, itemOptions.barrelFile);
+            }
+        }
+    },
+
+    _writeService(rootPath, moduleName, serviceNames, itemOptions) {
         //console.log("Service", rootPath, moduleName, serviceNames);
-        let services = serviceNames.split(' ');
+        let items = serviceNames.split(' ');
 
+        let root = 'ng2service/';
 
-        for (var i = 0; i < services.length; i++) {
-            var currentService = services[i];
+        let classPostfix = this.internalConfig.service.classNamePostfix;
+        let filePostfix = this.internalConfig.service.filePostfix;
+        let subDir = this.internalConfig.service.subDirectory;
 
-            var page = _.camelCase(currentService);
-            var kebabPageName = _.kebabCase(page);
-            var pageName = page[0].toUpperCase() + page.substr(1);
+        for (var i = 0; i < items.length; i++) {
 
-            var args = {
-                moduleName: moduleName,
-                pageName: kebabPageName, //_.kebabCase(page),
-                className: pageName,
-                addStyle: false,
-                addTemplate: false,
-                stylePage: ''
-            }
+            var currentItem = items[i];
 
-            this._writeSingleService(rootPath, kebabPageName, moduleName, args);
+            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);              
+            let destRoot = args.destinationRoot;
 
+            this.fs.copyTpl(this.templatePath(root + '_service.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
+
+            // if (itemOptions.useBarrel) {
+            //     this._addToBarrel(subDir, itemFileName, itemOptions.barrelFile);
+            // }
         }
     },
 
-    _writeSinglePage(modulePath, pageName, moduleName, args) {
-        var root = "ng2page/";
-        let pageRoot = this.destinationPath(modulePath + '/pages/');
-        let destRoot = "src/app/" + modulePath + 'pages/';
+    _getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions) {
 
-        if (this.options['inline']) {
-            this.fs.copyTpl(this.templatePath(root + '_ng2.page-inline.ts'), this.destinationPath(destRoot + pageName + '.page.ts'), args);
-        } else {
-            this.fs.copyTpl(this.templatePath(root + '_ng2.page.ts'), this.destinationPath(destRoot + pageName + '.page.ts'), args);
-            this.fs.copyTpl(this.templatePath(root + '_ng2.page.html'), this.destinationPath(destRoot + pageName + '.page.html'), args);
+        var itemCamelCase = _.camelCase(currentItem);
+        var itemKebabCase = _.kebabCase(itemCamelCase);
+        var className = itemCamelCase[0].toUpperCase() + itemCamelCase.substr(1);
+        var itemFileName = itemKebabCase + filePostfix; // + postfix
 
-            if (this.options['css']) {
-                this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(destRoot + pageName + '.page.css'), args);
-            } else if (this.options['scss']) {
-                this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(destRoot + pageName + '.page.scss'), args);
-            }
+        var fullClassName = className + classPostfix;
+
+        switch (itemOptions.itemFolderStructure) {
+            case 'flat':
+                subDir = '';
+                break;
+            case 'self':
+                subDir = itemKebabCase;
+                break;
+            case 'ask':
+                subDir = _.kebabCase(this.answers.userDefinedDirectory);
+                break;
         }
 
-        var pagesFilePath = this.destinationPath("src/app/" + modulePath + '/' + moduleName + '.exports.ts')
-        var content = `\nexport * from './pages/${pageName}.page';`
+        let destRoot = itemOptions.modulePath + subDir + '/';
 
-        this.writeToExport.push({
-            path: pagesFilePath,
-            content: content
-        });
-
-    },
-
-_writeSingleDialog(modulePath, pageName, moduleName, args) {
-        var root = "ng2page/";
-        let pageRoot = this.destinationPath(modulePath + '/pages/');
-        let destRoot = "src/app/" + modulePath + 'pages/';
-
-
-            this.fs.copyTpl(this.templatePath(root + '_md-dialog.ts'), this.destinationPath(destRoot + pageName + '.dialog.ts'), args);
-            this.fs.copyTpl(this.templatePath(root + '_ng2.page.html'), this.destinationPath(destRoot + pageName + '.dialog.html'), args);
-
-            if (this.options['css']) {
-                this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(destRoot + pageName + '.dialog.css'), args);
-            } else if (this.options['scss']) {
-                this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(destRoot + pageName + '.dialog.scss'), args);
-            }
-        
-
-        var pagesFilePath = this.destinationPath("src/app/" + modulePath + '/' + moduleName + '.exports.ts')
-        var content = `\nexport * from './pages/${pageName}.dialog';`
-
-        this.writeToExport.push({
-            path: pagesFilePath,
-            content: content
-        });
-
-    },
-
-    _writeSingleService(modulePath, serviceName, moduleName, args) {
-        var root = "ng2service/";
-        let pageRoot = this.destinationPath(modulePath + '/services/');
-        let destRoot = "src/app/" + modulePath + 'services/';
-
-        this.fs.copyTpl(this.templatePath(root + '_service.ts'), this.destinationPath(destRoot + serviceName + '.service.ts'), args);
-
-        var pagesFilePath = this.destinationPath("src/app/" + modulePath + '/' + moduleName + '.exports.ts')
-        var content = `\nexport * from './services/${serviceName}.service';`
-
-        this.writeToExport.push({
-            path: pagesFilePath,
-            content: content
-        });
-
-    },
-    _writeSingleModel(modulePath, modelName, moduleName, args) {
-        var root = "ng2model/";
-        let pageRoot = this.destinationPath(modulePath + '/models/');
-        let destRoot = "src/app/" + modulePath + 'models/';
-
-        this.fs.copyTpl(this.templatePath(root + '_model.ts'), this.destinationPath(destRoot + modelName + '.model.ts'), args);
-
-        var pagesFilePath = this.destinationPath("src/app/" + modulePath + '/' + moduleName + '.exports.ts')
-        var content = `\nexport * from './models/${modelName}.model';`
-
-        this.writeToExport.push({
-            path: pagesFilePath,
-            content: content
-        });
-
-    },
-    _writeSingleComponent(modulePath, componentName, moduleName, args) {
-        var root = "ng2component/";
-        let pageRoot = this.destinationPath(modulePath + '/components/');
-        let destRoot = "src/app/" + modulePath + 'components/';
-
-        this.fs.copyTpl(this.templatePath(root + '_component.ts'), this.destinationPath(destRoot + componentName + '.component.ts'), args);
-
-        if (args.addTemplate) {
-            this.fs.copyTpl(this.templatePath('_blanc-file.ts'), this.destinationPath(destRoot + componentName + '.component.html'), args);
+        var args = {
+            fileName: itemFileName, //_.kebabCase(page),                
+            className: fullClassName,
+            fullClassName: className,
+            subDirectory: subDir,
+            destinationRoot: destRoot,
+            itemKebabCase: itemKebabCase
         }
-
-        if (args.addStyle) {
-            this.fs.copyTpl(this.templatePath('_blanc-file.ts'), this.destinationPath(destRoot + componentName + '.component.' + args.styleExt), args);
-        }
-
-
-        var pagesFilePath = this.destinationPath("src/app/" + modulePath + '/' + moduleName + '.exports.ts')
-        var content = `\nexport * from './components/${componentName}.component';`
-
-        this.writeToExport.push({
-            path: pagesFilePath,
-            content: content
-        });
-
-    },
-
-    _writeSingleDirective(modulePath, itemName, moduleName, args) {
-        var root = "ng2directive/";
-        let pageRoot = this.destinationPath(modulePath + '/' + args.subDirectory);
-        let destRoot = "src/app/" + modulePath + args.subDirectory;
-
-        this.fs.copyTpl(this.templatePath(root + '_directive.ts'), this.destinationPath(destRoot + itemName + args.filePostfix + '.ts'), args);
-
-        var pagesFilePath = this.destinationPath("src/app/" + modulePath + '/' + moduleName + '.exports.ts')
-        var content = `\nexport * from './${args.subDirectory}${itemName}${args.filePostfix}';`
-
-        this.writeToExport.push({
-            path: pagesFilePath,
-            content: content
-        });
-
-    },
-
-    _writeSinglePipe(modulePath, itemName, moduleName, args) {
-        var root = "ng2pipe/";
-        let pageRoot = this.destinationPath(modulePath + '/' + args.subDirectory);
-        let destRoot = "src/app/" + modulePath + args.subDirectory;
-
-        this.fs.copyTpl(this.templatePath(root + '_pipe.ts'), this.destinationPath(destRoot + itemName + args.filePostfix + '.ts'), args);
-
-        var pagesFilePath = this.destinationPath("src/app/" + modulePath + '/' + moduleName + '.exports.ts')
-        var content = `\nexport * from './${args.subDirectory}${itemName}${args.filePostfix}';`
-
-        this.writeToExport.push({
-            path: pagesFilePath,
-            content: content
-        });
-
+        return args;
     },
     end() {
         //write to files...    

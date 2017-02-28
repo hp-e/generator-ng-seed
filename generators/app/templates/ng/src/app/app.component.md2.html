@@ -14,15 +14,13 @@
 </md-menu>
 
 <main>
-  <md-sidenav-layout class="sidenav-layout">
+  <md-sidenav-container class="sidenav-layout">
     <md-sidenav #start2 opened mode="side">
       <md-nav-list>
         <h3 md-subheader>Navigation</h3>
         <md-list-item>
-          <a md-line href="...">Home</a>
-          <button md-icon-button (click)="showInfo(link)">
+          <a md-line [routerLink]="['home']">Home</a>
           <md-icon>info</md-icon>
-        </button>
         </md-list-item>
       </md-nav-list>
     </md-sidenav>
@@ -30,9 +28,9 @@
     <div class="sidenav-content">
       <router-outlet></router-outlet>
     </div>
-  </md-sidenav-layout>
+  </md-sidenav-container>
 </main>
 
 <footer>
-  © 2016
+  © 2017
 </footer>

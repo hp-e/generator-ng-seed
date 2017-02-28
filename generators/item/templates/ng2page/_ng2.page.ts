@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 
-@Component({  
-  templateUrl: './<%= pageName %>.page.html',
+@Component({    
+  <% if (addTemplate) { %>templateUrl: './<%= templatePage %>', <% } else { %>template: [``], <% } %>
   <% if (addStyle) { %>styleUrls: ['./<%= stylePage %>']<% } else { %>styles: [``]<% } %>
 })
-export class <%= className %>Page {
+export class <%= fullClassName %> {
 
   constructor() { }
 }

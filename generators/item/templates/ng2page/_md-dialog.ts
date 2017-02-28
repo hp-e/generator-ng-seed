@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
 @Component({
-    templateUrl: './<%= pageName %>.dialog.html',
-    <% if (addStyle) { %>styleUrls: ['./<%= stylePage %>'] <% } else { %>styles: [``] <% } %>
+    <% if (addTemplate) { %>templateUrl: './<%= templatePage %>', <% } else { %>template: [``], <% } %>
+    <% if (addStyle) { %>styleUrls: ['./<%= stylePage %>']<% } else { %>styles: [``]<% } %>
 })
-export class <%= className %>Dialog {
+export class <%= fullClassName %> {
+
 
     title: string;
 
