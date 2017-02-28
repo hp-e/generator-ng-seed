@@ -18,11 +18,6 @@ module.exports = yeoman.Base.extend({
       default: false
     });
 
-    this.option('dlg', {
-      type: Boolean,
-      default: false
-    });
-
     this.option('css', {
       desc: 'adds a css layout file for the component',
       type: Boolean,
@@ -68,11 +63,12 @@ module.exports = yeoman.Base.extend({
 
   },
   writing() {
-    this.options['p'] = true;
+    this.options['p'] = false;
     this.options['m'] = false;
     this.options['s'] = false;
     this.options['d'] = false;
     this.options['c'] = false;
+    this.options['pipe'] = true;
     this.composeWith(require.resolve('../item'), { args: [this.args.modulePath, this.args.singularKebabName], options: this.options });
   },
   end() {

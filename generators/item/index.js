@@ -41,7 +41,17 @@ module.exports = yeoman.Base.extend({
             default: false
         });
 
+        this.option('d', {
+            type: Boolean,
+            default: false
+        });
+
         this.option('tpl', {
+            type: Boolean,
+            default: false
+        });
+
+        this.option('dlg', {
             type: Boolean,
             default: false
         });
@@ -57,7 +67,7 @@ module.exports = yeoman.Base.extend({
             type: Boolean,
             default: false
         });
-        
+
     },
 
     initialize() {
@@ -116,6 +126,17 @@ module.exports = yeoman.Base.extend({
 
             prompts.push(modelPrompt);
         }
+        if (this.options['d']) {
+            let servicePrompt = {
+                name: 'directiveName',
+                message: 'What is the directive name(s) (separate more with SPACE)?',
+                require: true,
+
+            };
+
+            prompts.push(servicePrompt);
+        }
+
         if (this.options['s']) {
             let servicePrompt = {
                 name: 'serviceName',
@@ -126,6 +147,18 @@ module.exports = yeoman.Base.extend({
 
             prompts.push(servicePrompt);
         }
+
+        if (this.options['pipe']) {
+            let servicePrompt = {
+                name: 'pipeName',
+                message: 'Name that pipe (separate more with SPACE)?',
+                require: true,
+
+            };
+
+            prompts.push(servicePrompt);
+        }
+
 
         return this.prompt(prompts).then(function (props) {
             // To access props later use this.props.someAnswer;
@@ -151,9 +184,9 @@ module.exports = yeoman.Base.extend({
         }
 
         this.internalConfig = this.fs.readJSON(defaultConfigPath);
-        
 
-        
+
+
     },
     writing() {
 
@@ -180,6 +213,16 @@ module.exports = yeoman.Base.extend({
             this._writeService(this.subpath, this.moduleName, this.answers.serviceName);
         }
 
+        if (this.options['d'] && this.answers.directiveName) {
+            //itemsArray.push({ "type": 'service', "names": this.answers.serviceName.split(' ') });
+            this._writeDirectives(this.subpath, this.moduleName, this.answers.directiveName);
+        }
+
+        if (this.options['pipe'] && this.answers.pipeName) {
+            //itemsArray.push({ "type": 'service', "names": this.answers.serviceName.split(' ') });
+            this._writePipes(this.subpath, this.moduleName, this.answers.pipeName);
+        }
+
         //this._writeNg2App(this.rootPath, this.moduleName);
     },
 
@@ -191,6 +234,7 @@ module.exports = yeoman.Base.extend({
         let addStyle = !this.internalConfig.page.addStyleFile ? this.options['css'] || this.options['scss'] : this.internalConfig.page.addStyleFile;
         let addTemplate = !this.internalConfig.page.addTemplateFile ? this.options['tpl'] : this.internalConfig.page.addTemplateFile;
         let classPostfix = this.internalConfig.page.classNamePostfix;
+        let isDialog = this.options['dlg'];
 
         for (var i = 0; i < pages.length; i++) {
             var currentPage = pages[i];
@@ -198,7 +242,7 @@ module.exports = yeoman.Base.extend({
             var page = _.camelCase(currentPage);
             var kebabPageName = _.kebabCase(page);
             var pageName = page[0].toUpperCase() + page.substr(1);
-            
+
             var stylePage = kebabPageName + '.page.' + styleExt;
 
             var args = {
@@ -213,14 +257,21 @@ module.exports = yeoman.Base.extend({
                 styleExt: styleExt
             }
 
-            this._writeSinglePage(rootPath, kebabPageName, moduleName, args);
+
+            if (!isDialog) {
+                this._writeSinglePage(rootPath, kebabPageName, moduleName, args);
+            } else {
+                this._writeSingleDialog(rootPath, kebabPageName, moduleName, args);
+            }
+
+            
 
         }
     },
 
     _writeComponent(rootPath, moduleName, componentNames) {
         let components = componentNames.split(' ');
-        
+
         let styleExt = this.options['scss'] ? 'scss' : this.internalConfig.styleType;;
         let selectorPrefix = this.internalConfig.component.useSelectorPrefix && this.internalConfig.selectorPrefix ? this.internalConfig.selectorPrefix : "";
         let addStyle = !this.internalConfig.component.addStyleFile ? this.options['css'] || this.options['scss'] : this.internalConfig.component.addStyleFile;
@@ -234,7 +285,7 @@ module.exports = yeoman.Base.extend({
             var kebabPageName = _.kebabCase(page);
             var pageName = page[0].toUpperCase() + page.substr(1);
 
-            
+
             var stylePage = kebabPageName + '.component.' + styleExt;
 
             var args = {
@@ -251,6 +302,88 @@ module.exports = yeoman.Base.extend({
             }
 
             this._writeSingleComponent(rootPath, kebabPageName, moduleName, args);
+
+        }
+    },
+
+    _writeDirectives(rootPath, moduleName, names) {
+        let directives = names.split(' ');
+
+        let styleExt = this.options['scss'] ? 'scss' : this.internalConfig.styleType;;
+        let selectorPrefix = this.internalConfig.component.useSelectorPrefix && this.internalConfig.selectorPrefix ? this.internalConfig.selectorPrefix : "";
+        let addStyle = !this.internalConfig.component.addStyleFile ? this.options['css'] || this.options['scss'] : this.internalConfig.component.addStyleFile;
+        let addTemplate = !this.internalConfig.component.addTemplateFile ? this.options['tpl'] : this.internalConfig.component.addTemplateFile;
+        let classPostfix = this.internalConfig.component.classNamePostfix;
+        let subDirectory = "directives/"; //this.internalConfig.directive ? this.internalConfig.selectorPrefix : "directives";
+        let filePostfix = ".directive";
+
+        for (var i = 0; i < directives.length; i++) {
+            var current = directives[i];
+
+            var page = _.camelCase(current);
+            var kebabPageName = _.kebabCase(page);
+            var pageName = page[0].toUpperCase() + page.substr(1);
+            let directiveName = _.camelCase(selectorPrefix + current);
+
+            var stylePage = kebabPageName + '.component.' + styleExt;
+
+            var args = {
+                moduleName: moduleName,
+                fileName: kebabPageName, //_.kebabCase(page),
+                pageName: kebabPageName, //_.kebabCase(page),
+                className: pageName,
+                prefix: selectorPrefix,
+                addStyle: addStyle,
+                addTemplate: addTemplate,
+                stylePage: stylePage,
+                classPostfix: classPostfix,
+                styleExt: styleExt,
+                subDirectory: subDirectory,
+                filePostfix: filePostfix,
+                itemName: directiveName
+            }
+
+            this._writeSingleDirective(rootPath, kebabPageName, moduleName, args);
+
+        }
+    },
+
+    _writePipes(rootPath, moduleName, names) {
+        let directives = names.split(' ');
+
+
+        let selectorPrefix = this.internalConfig.pipe.useSelectorPrefix && this.internalConfig.selectorPrefix ? this.internalConfig.selectorPrefix : "";
+        let addStyle = false;
+        let addTemplate = false;
+        let classPostfix = this.internalConfig.pipe.classNamePostfix;
+        let subDirectory = "pipes/"; //this.internalConfig.directive ? this.internalConfig.selectorPrefix : "directives";
+        let filePostfix = ".pipe";
+
+        for (var i = 0; i < directives.length; i++) {
+            var current = directives[i];
+
+            var page = _.camelCase(current);
+            var kebabPageName = _.kebabCase(page);
+            var pageName = page[0].toUpperCase() + page.substr(1);
+            let pipeName = _.camelCase(selectorPrefix + current);
+
+            var args = {
+                moduleName: moduleName,
+                fileName: kebabPageName, //_.kebabCase(page),
+                pageName: kebabPageName, //_.kebabCase(page),
+                className: pageName,
+                prefix: selectorPrefix,
+                addStyle: addStyle,
+                addTemplate: addTemplate,
+                stylePage: '',
+                classPostfix: classPostfix,
+                styleExt: '',
+                subDirectory: subDirectory,
+                filePostfix: filePostfix,
+                itemName: pipeName
+            }
+
+            this._writeSinglePipe(rootPath, kebabPageName, moduleName, args);
 
         }
     },
@@ -333,6 +466,32 @@ module.exports = yeoman.Base.extend({
 
     },
 
+_writeSingleDialog(modulePath, pageName, moduleName, args) {
+        var root = "ng2page/";
+        let pageRoot = this.destinationPath(modulePath + '/pages/');
+        let destRoot = "src/app/" + modulePath + 'pages/';
+
+
+            this.fs.copyTpl(this.templatePath(root + '_md-dialog.ts'), this.destinationPath(destRoot + pageName + '.dialog.ts'), args);
+            this.fs.copyTpl(this.templatePath(root + '_ng2.page.html'), this.destinationPath(destRoot + pageName + '.dialog.html'), args);
+
+            if (this.options['css']) {
+                this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(destRoot + pageName + '.dialog.css'), args);
+            } else if (this.options['scss']) {
+                this.fs.copyTpl(this.templatePath(root + '_ng2.page.css'), this.destinationPath(destRoot + pageName + '.dialog.scss'), args);
+            }
+        
+
+        var pagesFilePath = this.destinationPath("src/app/" + modulePath + '/' + moduleName + '.exports.ts')
+        var content = `\nexport * from './pages/${pageName}.dialog';`
+
+        this.writeToExport.push({
+            path: pagesFilePath,
+            content: content
+        });
+
+    },
+
     _writeSingleService(modulePath, serviceName, moduleName, args) {
         var root = "ng2service/";
         let pageRoot = this.destinationPath(modulePath + '/services/');
@@ -391,6 +550,39 @@ module.exports = yeoman.Base.extend({
 
     },
 
+    _writeSingleDirective(modulePath, itemName, moduleName, args) {
+        var root = "ng2directive/";
+        let pageRoot = this.destinationPath(modulePath + '/' + args.subDirectory);
+        let destRoot = "src/app/" + modulePath + args.subDirectory;
+
+        this.fs.copyTpl(this.templatePath(root + '_directive.ts'), this.destinationPath(destRoot + itemName + args.filePostfix + '.ts'), args);
+
+        var pagesFilePath = this.destinationPath("src/app/" + modulePath + '/' + moduleName + '.exports.ts')
+        var content = `\nexport * from './${args.subDirectory}${itemName}${args.filePostfix}';`
+
+        this.writeToExport.push({
+            path: pagesFilePath,
+            content: content
+        });
+
+    },
+
+    _writeSinglePipe(modulePath, itemName, moduleName, args) {
+        var root = "ng2pipe/";
+        let pageRoot = this.destinationPath(modulePath + '/' + args.subDirectory);
+        let destRoot = "src/app/" + modulePath + args.subDirectory;
+
+        this.fs.copyTpl(this.templatePath(root + '_pipe.ts'), this.destinationPath(destRoot + itemName + args.filePostfix + '.ts'), args);
+
+        var pagesFilePath = this.destinationPath("src/app/" + modulePath + '/' + moduleName + '.exports.ts')
+        var content = `\nexport * from './${args.subDirectory}${itemName}${args.filePostfix}';`
+
+        this.writeToExport.push({
+            path: pagesFilePath,
+            content: content
+        });
+
+    },
     end() {
         //write to files...    
 

@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 
-@Component({
-  selector: '<%= pageName %>-page',  
+@Component({  
   templateUrl: './<%= pageName %>.page.html',
   <% if (addStyle) { %>styleUrls: ['./<%= stylePage %>']<% } else { %>styles: [``]<% } %>
 })
