@@ -296,8 +296,7 @@ module.exports = yeoman.Base.extend({
 
 
   },
-  writing() {
-    this.log(this.args);
+  writing() {    
     this._writeNgApp();
   },
 
@@ -341,9 +340,10 @@ module.exports = yeoman.Base.extend({
     if (this.args.includeLinting) {
       this.copy(root + '_tslint.json', 'tslint.json');
     }
-    
-    this.copy(root + 'README.md', 'README.md');
+        
     this.copy(root + 'CHANGELOG.md', 'CHANGELOG.md');
+
+    this.fs.copyTpl(this.templatePath(root + 'README.md'), this.destinationPath('README.md'), this.args);
 
     this.fs.copyTpl(this.templatePath(root + 'src/vendor.browser.ts'), this.destinationPath('src/vendor.ts'), this.args);
     this.fs.copyTpl(this.templatePath(root + 'src/main.browser.ts'), this.destinationPath('src/main.ts'), this.args);
@@ -589,5 +589,13 @@ module.exports = yeoman.Base.extend({
 
   _writeTestingFiles: function (root) {
 
+  },
+
+  end() {
+    this.log('Be sure to read the ' + chalk.cyan('README.md') + 'README.md for further instruction and');
+    this.log('try out the sub generators to speed up the development');
+    this.log('');
+    this.log("Well... That's it. Thank you for using the ng-seed to generate your Angular project");
+    
   }
 });
