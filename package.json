@@ -1,7 +1,7 @@
 {
   "name": "generator-ng-seed",
   "version": "1.0.0",
-  "description": "A Yeoman generator for scaffolding an Angular project with Typescript and webpack",  
+  "description": "A Yeoman generator for scaffolding an Angular project with Typescript 2 and webpack 2",  
   "author": {
     "name": "Hans-Petter Eitvet",    
     "url": ""
@@ -22,10 +22,14 @@
   "keywords": [   
     "yeoman-generator",
     "typescript",
+    "typescript2",
     "angular",
     "angular2",
+    "angular4",
     "webpack",
+    "webpack2",
     "generators",
+    "yeoman",
     "scaffold"
   ],
   "dependencies": {
