@@ -17,8 +17,6 @@ $ npm install -g yo
 
 ### Run the generator
 
-```yo ng-seed [--q] [--structure-flat | --structure-self | --structure-ask] [--css] [--no-barrel] [--no-linting] [--no-bundler] ```
-
 To install this generator from npm, run:
 
 ```cmd
