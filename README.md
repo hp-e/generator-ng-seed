@@ -46,7 +46,6 @@ $ yo ng-seed --q
 | --q|optional|q for quick start. If all you want is a basic structure. This will scaffold the files with all default settings|
 | --structure-flat|optional|Changes the itemFolderStructure to flat. The subgenerators will place all created files at the root of the selected folder|
 | --structure-self|optional|Changes the itemFolderStructure to self. The subgenerators will place all created files with the items name and place the item in this folder. Overrides the default setting |
-| --structure-ask|optional|Changes the itemFolderStructure to ask. The subgenerators will ask where to place the files |
 | --css|optional|Changes the defaultStyle to css (default is scss) |
 | --no-barrel|optional|Changes the module.useBarrelFile to false and will not write items to the barrel file |
 | --no-linting|optional|Will not add the linting.json settings file to the root |

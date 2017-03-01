@@ -6,11 +6,11 @@
     "folderNameCasing": "kebab",
     "rootPath": "src/app",
     "selectorPrefix": "app-",
-    "itemFolderStructure": "type",
+    "itemFolderStructure": "settings",
     "module": {
         "filePostfix": ".module",
         "classNamePostfix": "Module",        
-        "addRouting": false,        
+        "addRouting": true,        
         "addService": true,
         "useBarrelFile": true,
         "barrelFilePostfix": ".exports"

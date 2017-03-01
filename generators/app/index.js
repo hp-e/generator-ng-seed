@@ -274,6 +274,7 @@ module.exports = yeoman.Base.extend({
 
         if (!this.options['q']) {
           this.args.appName = props.appName,
+          this.args.port = props.port,
             this.args.appNameKebab = _.kebabCase(props.appName),
             this.args.addFontAwesome = _.includes(props.jslibs, 'fontawesome'),
             this.args.addLodash = _.includes(props.jslibs, 'lodash'),
@@ -357,8 +358,9 @@ module.exports = yeoman.Base.extend({
 
 
     // src/app files
-    this.copy(root + 'src/app/App.Settings.ts', 'src/app/app.settings.ts');
-    this.copy(root + 'src/app/App.routes.ts', 'src/app/app.routes.ts');
+    this.copy(root + 'src/app/App.Settings.ts', 'src/app/app.settings.ts');    
+    this.fs.copyTpl(this.templatePath(root + 'src/app/App.routes.ts'), this.destinationPath('src/app/app.routes.ts'), this.args);
+
     this.fs.copyTpl(this.templatePath(root + 'src/app/App.module.ts'), this.destinationPath('src/app/app.module.ts'), this.args);
     this.copy(root + 'src/app/App.component.ts', 'src/app/app.component.ts');
 
@@ -434,7 +436,7 @@ module.exports = yeoman.Base.extend({
 
     if (this.args.moduleBundler === 'webpack1' || this.args.moduleBundler === 'webpack2') {
       packageJson.devDependencies["angular2-template-loader"] = "^0.6.2";
-      packageJson.devDependencies["angular2-router-loader"] = "^0.3.5";
+      packageJson.devDependencies["angular-router-loader"] = "^0.5.0";
       packageJson.devDependencies["url-loader"] = "^0.5.8";
       packageJson.devDependencies["file-loader"] = "0.10.1";
       packageJson.devDependencies["awesome-typescript-loader"] = "^3.0.8";
@@ -461,10 +463,10 @@ module.exports = yeoman.Base.extend({
     switch (this.args.front) {
       case "mdl":
         packageJson.devDependencies['@types/material-design-lite'] = '^1.1.14';
-        packageJson.dependencies['material-design-lite'] = '~1.2.1';
+        packageJson.dependencies['material-design-lite'] = '~1.3.0';
         break;
       case "md2":
-        packageJson.devDependencies['@types/hammerjs'] = '^2.0.33';
+        packageJson.devDependencies['@types/hammerjs'] = '^2.0.34';
         packageJson.dependencies['@angular/material'] = '^2.0.0-beta.2';
         packageJson.dependencies['hammerjs'] = '^2.0.8';
         break;
@@ -475,20 +477,20 @@ module.exports = yeoman.Base.extend({
     }
 
     if (this.args.addLodash) {
-      packageJson.dependencies['lodash'] = '~4.17.2';
-      packageJson.devDependencies['@types/lodash'] = '^4.14.43';
+      packageJson.dependencies['lodash'] = '~4.17.4';
+      packageJson.devDependencies['@types/lodash'] = '^4.14.53';
     }
 
     if (this.args.addMoment) {
       packageJson.devDependencies['@types/moment'] = '^2.13.0';
       packageJson.dependencies['moment'] = '^2.17.1';
-      packageJson.dependencies['angular2-moment'] = '^1.0.0';
+      packageJson.dependencies['angular2-moment'] = '^1.2.0';
     }
 
     if (this.args.addHighchart) {
-      packageJson.devDependencies['@types/highcharts'] = '^4.2.44';
-      packageJson.dependencies['angular2-highcharts'] = '^0.4.1';
-      packageJson.dependencies['highcharts'] = '^5.0.6';
+      packageJson.devDependencies['@types/highcharts'] = '^4.2.47';
+      packageJson.dependencies['angular2-highcharts'] = '^0.5.5';
+      packageJson.dependencies['highcharts'] = '^5.0.7';
     }
 
     if (this.args.addFontAwesome) {
@@ -592,10 +594,11 @@ module.exports = yeoman.Base.extend({
   },
 
   end() {
-    this.log('Be sure to read the ' + chalk.cyan('README.md') + 'README.md for further instruction and');
-    this.log('try out the sub generators to speed up the development');
+    
     this.log('');
     this.log("Well... That's it. Thank you for using the ng-seed to generate your Angular project");
-    
+    this.log('');
+    this.log('Be sure to read the ' + chalk.cyan('README.md') + ' for further instruction and');
+    this.log('try out the sub generators to speed up the development');
   }
 });

@@ -21,7 +21,7 @@ var webpackConfig = {
 
     module: {
         rules: [
-            { test: /\.ts$/, use: ['awesome-typescript-loader', 'angular2-template-loader', 'angular2-router-loader'] },
+            { test: /\.ts$/, use: ['awesome-typescript-loader', 'angular2-template-loader', 'angular-router-loader'] },
             { test: /\.css$/, use: ['to-string-loader', 'style-loader', 'css-loader'] },
             { test: /\.scss$/, exclude: /node_modules/, use: ['to-string-loader', 'style-loader', 'css-loader', 'sass-loader'] },
             { test: /\.html$/, use: ['raw-loader'] },

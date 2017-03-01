@@ -495,6 +495,9 @@ module.exports = yeoman.Base.extend({
         var fullClassName = className + classPostfix;
 
         switch (itemOptions.itemFolderStructure) {
+            case 'settings':
+                subDir = subDir;
+                break;
             case 'flat':
                 subDir = '';
                 break;
@@ -510,8 +513,8 @@ module.exports = yeoman.Base.extend({
 
         var args = {
             fileName: itemFileName, //_.kebabCase(page),                
-            className: fullClassName,
-            fullClassName: className,
+            className: className,
+            fullClassName: fullClassName,
             subDirectory: subDir,
             destinationRoot: destRoot,
             itemKebabCase: itemKebabCase

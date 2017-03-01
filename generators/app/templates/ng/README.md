@@ -1,4 +1,4 @@
-# Info about 
+# Info about <%= appName %>
 
 A small and simple application using Angular, TypeScript 2 and Webpack 2
 This project has been created with help of the Yeoman generator-ng-seed (```yo ng-seed```).
@@ -11,13 +11,13 @@ It's recommended that Windows users install Webpack, TypeScript and Webpack-dev-
 npm install -g typescript webpack-dev-server webpack
 ```
 
-If not done already run ```npm install``` to install all dependencies.
+If not done already, run ```npm install``` to install all dependencies.
 
 then run ```npm start``` to fire up the dev server.
 
-Finally, open browser to http://localhost:<% port %>
+Finally, open browser to http://localhost:<%= port %>
 
-***if you want to use a different port, open package.json file, then change port in --port 3000 script***
+***if you want to use a different port, open package.json file, then change port in --port <%= port %> script***
 
 ## Using the ng-seed generator to expand the project
 The ng-seed generator provides a set of sub generators to create code.

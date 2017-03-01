@@ -54,7 +54,7 @@ export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full'},  
   { path: 'home', component: HomeComponent},  
   // enter this:
-  { path: '<%= pluralLowerName %>', loadChildren: 'app/<%= path %><%= singularKebabName %>/<%= singularKebabName %>.module#<%= className %>Module', pathMatch: 'full' },
+  { path: '<%= pluralLowerName %>', loadChildren: './<%= path %><%= singularKebabName %>/<%= singularKebabName %>.module#<%= className %>Module', pathMatch: 'full' },
   //----
   { path: '**', pathMatch: 'full', component: PageNotFound },
 ];
