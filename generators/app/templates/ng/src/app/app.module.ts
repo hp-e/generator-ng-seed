@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { AppRoutingModule } from "./app.routes";
 import { AppComponent } from "./app.component";
 import { FormsModule } from "@angular/forms";
-import { BrowserModule } from "@angular/platform-browser";
+import { BrowserModule, Title } from "@angular/platform-browser";
 import { HttpModule } from "@angular/http";
 import { LocationStrategy, HashLocationStrategy,PathLocationStrategy } from "@angular/common";
 import "./core/rxjs-extensions";
@@ -35,7 +35,7 @@ import "font-awesome/css/font-awesome.css";
     AppRoutingModule
   ],
   providers: [
-    AppSettings,
+    AppSettings, Title,
     { provide: LocationStrategy, useClass: PathLocationStrategy }
   ],
   bootstrap: [AppComponent]
