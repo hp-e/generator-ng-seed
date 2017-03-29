@@ -46,6 +46,11 @@ module.exports = yeoman.Base.extend({
             default: false
         });
 
+        this.option('r', {
+            type: Boolean,
+            default: false
+        });
+
         this.option('tpl', {
             type: Boolean,
             default: false
@@ -102,7 +107,7 @@ module.exports = yeoman.Base.extend({
         let prompts = [];
 
 
-        if (this.options['structure-ask']) {
+        if (this.options['structure-ask'] || this.options['ask']) {
             let structurePrompt = {
                 name: 'userDefinedDirectory',
                 message: 'Please provide a name for the sub-directory to place the item in?',
@@ -220,9 +225,9 @@ module.exports = yeoman.Base.extend({
         let selectorPrefix = this.internalConfig.component.useSelectorPrefix && this.internalConfig.selectorPrefix ? this.internalConfig.selectorPrefix : "";
         let useBarrel = this.internalConfig.module.useBarrel;
         let barrelPostfix = this.internalConfig.module.barrelFilePostfix;
-        let itemFolderStructure = this.options['structure-flat'] ? 'flat' :
-            this.options['structure-self'] ? 'self' :
-                this.options['structure-ask'] && this.answers.userDefinedDirectory.length > 0 ? 'ask' :
+        let itemFolderStructure = (this.options['structure-flat'] || this.options['flat']) ? 'flat' :
+            (this.options['structure-self'] || this.options['self']) ? 'self' :
+                (this.options['structure-ask'] || this.options['ask']) && this.answers.userDefinedDirectory.length > 0 ? 'ask' :
                     this.internalConfig.itemFolderStructure;
 
         var barrelFilePath = this.destinationPath(rootPath + "/" + this.subpath + '/' + this.moduleName + barrelPostfix + '.ts');
@@ -260,6 +265,12 @@ module.exports = yeoman.Base.extend({
             //itemsArray.push({ "type": 'service', "names": this.answers.serviceName.split(' ') });
             this._writeDirectives(this.subpath, this.moduleName, this.answers.directiveName, itemOptions);
         }
+
+        if (this.options['r']) {
+            //itemsArray.push({ "type": 'service', "names": this.answers.serviceName.split(' ') });
+            this._writeRoute(this.subpath, this.moduleName, this.answers.directiveName, itemOptions);
+        }
+
 
         if (this.options['pipe'] && this.answers.pipeName) {
             //itemsArray.push({ "type": 'service', "names": this.answers.serviceName.split(' ') });
@@ -362,7 +373,7 @@ module.exports = yeoman.Base.extend({
             args.styleExt = itemOptions.styleExt;
             args.prefix = itemOptions.selectorPrefix;
             args.selectorName = args.itemKebabCase;
-            
+
             this.fs.copyTpl(this.templatePath(root + '_component.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
 
             if (args.addTemplate) {
@@ -393,10 +404,10 @@ module.exports = yeoman.Base.extend({
             var currentItem = items[i];
 
             let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);
-            let selectorName = _.camelCase(itemOptions.selectorPrefix + args.className);           
+            let selectorName = _.camelCase(itemOptions.selectorPrefix + args.className);
             let destRoot = args.destinationRoot;
 
-            args.selectorName = args.itemKebabCase;            
+            args.selectorName = args.itemKebabCase;
 
             this.fs.copyTpl(this.templatePath(root + '_directive.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
 
@@ -405,6 +416,26 @@ module.exports = yeoman.Base.extend({
             }
 
         }
+
+    },
+
+    _writeRoute(rootPath, moduleName, name, itemOptions) {
+        
+        let root = 'ng2directive/';
+        let classPostfix = this.internalConfig.directive.classNamePostfix;
+        let filePostfix = this.internalConfig.directive.filePostfix;
+        let subDir = this.internalConfig.directive.subDirectory;
+
+        
+            var currentItem = items[i];
+
+            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);
+            let selectorName = _.camelCase(itemOptions.selectorPrefix + args.className);
+            let destRoot = args.destinationRoot;
+
+            args.selectorName = args.itemKebabCase;
+
+            this.fs.copyTpl(this.templatePath(root + '_directive.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
 
     },
 
@@ -420,11 +451,11 @@ module.exports = yeoman.Base.extend({
 
             var currentItem = items[i];
 
-             let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);
-            let selectorName = _.camelCase(itemOptions.selectorPrefix + args.className);           
+            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);
+            let selectorName = _.camelCase(itemOptions.selectorPrefix + args.className);
             let destRoot = args.destinationRoot;
 
-            args.selectorName = args.itemKebabCase;     
+            args.selectorName = args.itemKebabCase;
 
             this.fs.copyTpl(this.templatePath(root + '_pipe.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
 
@@ -449,7 +480,7 @@ module.exports = yeoman.Base.extend({
 
             var currentItem = items[i];
 
-            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);              
+            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);
             let destRoot = args.destinationRoot;
 
             this.fs.copyTpl(this.templatePath(root + '_model.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);
@@ -474,7 +505,7 @@ module.exports = yeoman.Base.extend({
 
             var currentItem = items[i];
 
-            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);              
+            let args = this._getCommonArguments(currentItem, filePostfix, classPostfix, subDir, itemOptions);
             let destRoot = args.destinationRoot;
 
             this.fs.copyTpl(this.templatePath(root + '_service.ts'), this.destinationPath(destRoot + args.fileName + '.ts'), args);

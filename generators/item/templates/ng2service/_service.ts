@@ -4,7 +4,7 @@ import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import { AppSettings } from '../../app.settings';
 
 @Injectable()
-export class <%= className %> {
+export class <%= fullClassName %> {
 
     constructor(private http: Http, private settings: AppSettings) {  }
 

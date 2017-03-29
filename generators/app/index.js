@@ -162,8 +162,8 @@ module.exports = yeoman.Base.extend({
           message: 'Please select an Angular Version:',
           default: this.args.ngVersion,
           choices: [
-            { name: 'Version 2.4.8', value: 'ng2' },
-            { name: 'Version 4.0.0-rc.1', value: 'ng4' }
+            { name: 'Version 2.4.10', value: 'ng2' },
+            { name: 'Version 4.0.0', value: 'ng4' }
           ],
 
         },
@@ -399,8 +399,8 @@ module.exports = yeoman.Base.extend({
     var packageJson = this.fs.readJSON(this.templatePath(root + '_package-default.json'));
     packageJson.name = this.args.appNameKebab;
 
-    let angularVersion = this.args.ngVersion === 'ng2' ? '~2.4.8' : '~4.0.0-rc.1';
-    let angularRouterVersion = this.args.ngVersion === 'ng2' ? '~3.4.8' : angularVersion;
+    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.0.0';
+    let angularRouterVersion = this.args.ngVersion === 'ng2' ? '3.4.10' : angularVersion;
 
     packageJson.dependencies['@angular/common'] = angularVersion;
     packageJson.dependencies['@angular/compiler'] = angularVersion;
@@ -411,23 +411,28 @@ module.exports = yeoman.Base.extend({
     packageJson.dependencies['@angular/platform-browser-dynamic'] = angularVersion;
     packageJson.dependencies['@angular/platform-server'] = angularVersion;
     packageJson.dependencies['@angular/router'] = angularRouterVersion;
-    packageJson.dependencies['@angular/upgrade'] = angularVersion;
+    //packageJson.dependencies['@angular/upgrade'] = angularVersion;
+
+    if (this.args.ngVersion === 'ng4') {        
+        packageJson.dependencies['@angular/flex-layout'] = '2.0.0-rc.1';
+        packageJson.dependencies['@angular/animations'] = angularVersion;        
+    }
 
     switch (this.args.moduleBundler) {
       case "webpack1":
-        packageJson.devDependencies['webpack'] = '^1.14.0';
-        packageJson.devDependencies['extract-text-webpack-plugin'] = '^1.0.1';
-        packageJson.devDependencies['webpack-dev-server'] = '^1.16.2';
-        packageJson.devDependencies['webpack-merge'] = '^1.1.0';
+        packageJson.devDependencies['webpack'] = '1.14.0';
+        packageJson.devDependencies['extract-text-webpack-plugin'] = '1.0.1';
+        packageJson.devDependencies['webpack-dev-server'] = '1.16.2';
+        packageJson.devDependencies['webpack-merge'] = '1.1.0';
 
         packageJson.scripts["server"] = `webpack-dev-server --hot --inline --colors --progress --display-error-details --display-cached --port ${this.args.port}  --content-base src`;
         packageJson.scripts["prod"] = `webpack -p --config config/prod.config.js`;
         break;
       case "webpack2":
-        packageJson.devDependencies['webpack'] = '^2.2.1';
-        packageJson.devDependencies['extract-text-webpack-plugin'] = '^2.0.0';
-        packageJson.devDependencies['webpack-dev-server'] = '^2.4.1';
-        packageJson.devDependencies['webpack-merge'] = '^3.0.0';
+        packageJson.devDependencies['webpack'] = '2.2.1';
+        packageJson.devDependencies['extract-text-webpack-plugin'] = '2.1.0';
+        packageJson.devDependencies['webpack-dev-server'] = '2.4.2';
+        packageJson.devDependencies['webpack-merge'] = '4.0.0';
 
         packageJson.scripts["server"] = `webpack-dev-server --inline --colors --progress --port ${this.args.port}  --content-base src`;
         packageJson.scripts["prod"] = `webpack -p --config config/prod.config.js `;
@@ -435,18 +440,18 @@ module.exports = yeoman.Base.extend({
     }
 
     if (this.args.moduleBundler === 'webpack1' || this.args.moduleBundler === 'webpack2') {
-      packageJson.devDependencies["angular2-template-loader"] = "^0.6.2";
-      packageJson.devDependencies["angular-router-loader"] = "^0.5.0";
-      packageJson.devDependencies["url-loader"] = "^0.5.8";
+      packageJson.devDependencies["angular2-template-loader"] = "0.6.2";
+      packageJson.devDependencies["angular-router-loader"] = "0.5.0";
+      packageJson.devDependencies["url-loader"] = "0.5.8";
       packageJson.devDependencies["file-loader"] = "0.10.1";
-      packageJson.devDependencies["awesome-typescript-loader"] = "^3.0.8";
-      packageJson.devDependencies["css-loader"] = "^0.26.2";
-      packageJson.devDependencies["node-sass"] = "^4.5.0";
-      packageJson.devDependencies["raw-loader"] = "^0.5.1";
-      packageJson.devDependencies["sass-loader"] = "^6.0.2";
-      packageJson.devDependencies["strip-loader"] = "^0.1.2";
-      packageJson.devDependencies["style-loader"] = "^0.13.2";
-      packageJson.devDependencies["to-string-loader"] = "^1.1.5";
+      packageJson.devDependencies["awesome-typescript-loader"] = "3.0.8";
+      packageJson.devDependencies["css-loader"] = "0.26.2";
+      packageJson.devDependencies["node-sass"] = "4.5.0";
+      packageJson.devDependencies["raw-loader"] = "0.5.1";
+      packageJson.devDependencies["sass-loader"] = "6.0.2";
+      packageJson.devDependencies["strip-loader"] = "0.1.2";
+      packageJson.devDependencies["style-loader"] = "0.13.2";
+      packageJson.devDependencies["to-string-loader"] = "1.1.5";
 
       // packageJson.scripts["build"] = "webpack --inline --colors --progress --display-error-details --display-cached";
       // packageJson.scripts["watch"] = "npm run build -- --watch";
@@ -462,13 +467,13 @@ module.exports = yeoman.Base.extend({
 
     switch (this.args.front) {
       case "mdl":
-        packageJson.devDependencies['@types/material-design-lite'] = '^1.1.14';
-        packageJson.dependencies['material-design-lite'] = '~1.3.0';
+        packageJson.devDependencies['@types/material-design-lite'] = '1.1.14';
+        packageJson.dependencies['material-design-lite'] = '1.3.0';
         break;
       case "md2":
-        packageJson.devDependencies['@types/hammerjs'] = '^2.0.34';
-        packageJson.dependencies['@angular/material'] = '^2.0.0-beta.2';
-        packageJson.dependencies['hammerjs'] = '^2.0.8';
+        packageJson.devDependencies['@types/hammerjs'] = '2.0.34';
+        packageJson.dependencies['@angular/material'] = '2.0.0-beta.2';
+        packageJson.dependencies['hammerjs'] = '2.0.8';
         break;
     }
 

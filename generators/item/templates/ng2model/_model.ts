@@ -1,2 +1,2 @@
-export class <%= className %> {
+export class <%= fullClassName %> {
 }

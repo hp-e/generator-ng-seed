@@ -5,9 +5,12 @@ import { AppComponent } from "./app.component";
 import { FormsModule } from "@angular/forms";
 import { BrowserModule, Title } from "@angular/platform-browser";
 import { HttpModule } from "@angular/http";
-import { LocationStrategy, HashLocationStrategy,PathLocationStrategy } from "@angular/common";
+import { LocationStrategy, HashLocationStrategy, PathLocationStrategy } from "@angular/common";
 import "./core/rxjs-extensions";
 <% if (front === 'md2') { %>import { MaterialModule } from "@angular/material";<% } %>
+<% if (ngVersion === 'ng4') { %>import { FlexLayoutModule } from "@angular/flex-layout"; <% } %>
+
+
 // feature modules - our own
 import { HomeComponent } from "./home/home.component";
 import { AppSettings } from "./app.settings";
@@ -32,6 +35,7 @@ import "font-awesome/css/font-awesome.css";
     FormsModule,
     HttpModule,
     <% if (front === 'md2') { %>MaterialModule.forRoot(),<% } %>
+    <% if (ngVersion === 'ng4') { %>FlexLayoutModule.forRoot(), <% } %>
     AppRoutingModule
   ],
   providers: [
