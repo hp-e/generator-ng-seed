@@ -1,5 +1,22 @@
 # generator-ng-seed - Changelog
 
+## 1.1.0
+### new features
+
+### changes sub generators
+
+
+### Module bundlers and loaders
+* Updated webpack 2 (version 2.2.1)
+* Updated awesome-typescript-loader to 3.1.2
+
+### misc
+* updated angular 4rc1 to release 4.0.1 as the default option (select in start wizard)
+* updated angular to 2.4.10
+* updated zone.js to 0.7.7
+* updated rxjs to 5.3.0
+* bug fixes
+
 ## 1.0.0
 ### new features
 * added a ng-seed config. If not exists a ng-seed.json file will be created. Read more in the config section of readme.md
@@ -20,7 +37,6 @@
 * updated angular to 2.4.8
 * updated zone.js to 0.7.7
 * updated rxjs to 5.2.0
-* updated 
 * bug fixes
 
 

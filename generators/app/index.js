@@ -122,7 +122,7 @@ module.exports = yeoman.Base.extend({
       addMaterialDesignIcons: false,
       defaultStyle: this.options['css'] ? 'css' : 'scss',
       front: 'none',
-      ngVersion: 'ng2',
+      ngVersion: 'ng4',
       includeTesting: false,
       includeLinting: !this.options['no-linting'],
       includeInternationalization: false,
@@ -163,7 +163,7 @@ module.exports = yeoman.Base.extend({
           default: this.args.ngVersion,
           choices: [
             { name: 'Version 2.4.10', value: 'ng2' },
-            { name: 'Version 4.0.0', value: 'ng4' }
+            { name: 'Version 4.0.1', value: 'ng4' }
           ],
 
         },
@@ -232,7 +232,7 @@ module.exports = yeoman.Base.extend({
           default: this.args.front,
           choices: [
             { name: 'None', value: 'none' },
-            { name: 'Material Design Lite (1.2.1)', value: 'mdl' },
+            { name: 'Material Design Lite (1.3.0)', value: 'mdl' },
             { name: 'Angular Material 2.0.0 (beta.2)', value: 'md2' },
             { name: 'Simple flexbox layout', value: 'flex' },
           ],
@@ -399,7 +399,7 @@ module.exports = yeoman.Base.extend({
     var packageJson = this.fs.readJSON(this.templatePath(root + '_package-default.json'));
     packageJson.name = this.args.appNameKebab;
 
-    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.0.0';
+    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.0.1';
     let angularRouterVersion = this.args.ngVersion === 'ng2' ? '3.4.10' : angularVersion;
 
     packageJson.dependencies['@angular/common'] = angularVersion;
@@ -414,50 +414,54 @@ module.exports = yeoman.Base.extend({
     //packageJson.dependencies['@angular/upgrade'] = angularVersion;
 
     if (this.args.ngVersion === 'ng4') {        
-        packageJson.dependencies['@angular/flex-layout'] = '2.0.0-rc.1';
+        packageJson.dependencies['@angular/flex-layout'] = '2.0.0-beta.7';
         packageJson.dependencies['@angular/animations'] = angularVersion;        
     }
 
-    switch (this.args.moduleBundler) {
-      case "webpack1":
-        packageJson.devDependencies['webpack'] = '1.14.0';
-        packageJson.devDependencies['extract-text-webpack-plugin'] = '1.0.1';
-        packageJson.devDependencies['webpack-dev-server'] = '1.16.2';
-        packageJson.devDependencies['webpack-merge'] = '1.1.0';
 
-        packageJson.scripts["server"] = `webpack-dev-server --hot --inline --colors --progress --display-error-details --display-cached --port ${this.args.port}  --content-base src`;
-        packageJson.scripts["prod"] = `webpack -p --config config/prod.config.js`;
-        break;
-      case "webpack2":
-        packageJson.devDependencies['webpack'] = '2.2.1';
-        packageJson.devDependencies['extract-text-webpack-plugin'] = '2.1.0';
-        packageJson.devDependencies['webpack-dev-server'] = '2.4.2';
-        packageJson.devDependencies['webpack-merge'] = '4.0.0';
+    packageJson.scripts["server"] = `webpack-dev-server --inline --colors --progress --port ${this.args.port}  --content-base src`;
 
-        packageJson.scripts["server"] = `webpack-dev-server --inline --colors --progress --port ${this.args.port}  --content-base src`;
-        packageJson.scripts["prod"] = `webpack -p --config config/prod.config.js `;
-        break;
-    }
+    // switch (this.args.moduleBundler) {
+    //   case "webpack1":
+    //     packageJson.devDependencies['webpack'] = '1.14.0';
+    //     packageJson.devDependencies['extract-text-webpack-plugin'] = '1.0.1';
+    //     packageJson.devDependencies['webpack-dev-server'] = '1.16.2';
+    //     packageJson.devDependencies['webpack-merge'] = '1.1.0';
 
-    if (this.args.moduleBundler === 'webpack1' || this.args.moduleBundler === 'webpack2') {
-      packageJson.devDependencies["angular2-template-loader"] = "0.6.2";
-      packageJson.devDependencies["angular-router-loader"] = "0.5.0";
-      packageJson.devDependencies["url-loader"] = "0.5.8";
-      packageJson.devDependencies["file-loader"] = "0.10.1";
-      packageJson.devDependencies["awesome-typescript-loader"] = "3.0.8";
-      packageJson.devDependencies["css-loader"] = "0.26.2";
-      packageJson.devDependencies["node-sass"] = "4.5.0";
-      packageJson.devDependencies["raw-loader"] = "0.5.1";
-      packageJson.devDependencies["sass-loader"] = "6.0.2";
-      packageJson.devDependencies["strip-loader"] = "0.1.2";
-      packageJson.devDependencies["style-loader"] = "0.13.2";
-      packageJson.devDependencies["to-string-loader"] = "1.1.5";
+    //     packageJson.scripts["server"] = `webpack-dev-server --hot --inline --colors --progress --display-error-details --display-cached --port ${this.args.port}  --content-base src`;
+    //     packageJson.scripts["prod"] = `webpack -p --config config/prod.config.js`;
+    //     break;
+    //   case "webpack2":
+    //     packageJson.devDependencies['webpack'] = '2.2.1';
+    //     packageJson.devDependencies['extract-text-webpack-plugin'] = '2.1.0';
+    //     packageJson.devDependencies['webpack-dev-server'] = '2.4.2';
+    //     packageJson.devDependencies['webpack-merge'] = '4.0.0';
 
-      // packageJson.scripts["build"] = "webpack --inline --colors --progress --display-error-details --display-cached";
-      // packageJson.scripts["watch"] = "npm run build -- --watch";
-      packageJson.scripts["start"] = "npm run server";
+    //     packageJson.scripts["server"] = `webpack-dev-server --inline --colors --progress --port ${this.args.port}  --content-base src`;
+    //     packageJson.scripts["prod"] = `webpack -p --config config/prod.config.js `;
+    //     break;
+    // }
 
-    }
+    // if (this.args.moduleBundler === 'webpack1' || this.args.moduleBundler === 'webpack2') {
+    //   packageJson.devDependencies["angular2-template-loader"] = "0.6.2";
+    //   packageJson.devDependencies["angular-router-loader"] = "0.5.0";
+    //   packageJson.devDependencies["url-loader"] = "0.5.8";
+    //   packageJson.devDependencies["file-loader"] = "0.10.1";
+    //   packageJson.devDependencies["awesome-typescript-loader"] = "3.0.8";
+    //   packageJson.devDependencies["css-loader"] = "0.26.2";
+    //   packageJson.devDependencies["node-sass"] = "4.5.0";
+    //   packageJson.devDependencies["raw-loader"] = "0.5.1";
+    //   packageJson.devDependencies["sass-loader"] = "6.0.2";
+    //   packageJson.devDependencies["strip-loader"] = "0.1.2";
+    //   packageJson.devDependencies["style-loader"] = "0.13.2";
+    //   packageJson.devDependencies["to-string-loader"] = "1.1.5";
+
+    //   // packageJson.scripts["build"] = "webpack --inline --colors --progress --display-error-details --display-cached";
+    //   // packageJson.scripts["watch"] = "npm run build -- --watch";
+    //   packageJson.scripts["start"] = "npm run server";
+
+    // }
+
     switch (this.args.taskRunner) {
       case "gulp":
         break;
@@ -482,28 +486,26 @@ module.exports = yeoman.Base.extend({
     }
 
     if (this.args.addLodash) {
-      packageJson.dependencies['lodash'] = '~4.17.4';
-      packageJson.devDependencies['@types/lodash'] = '^4.14.53';
+      packageJson.dependencies['lodash'] = '4.17.4';
+      packageJson.devDependencies['@types/lodash'] = '4.14.53';
     }
 
-    if (this.args.addMoment) {
-      packageJson.devDependencies['@types/moment'] = '^2.13.0';
-      packageJson.dependencies['moment'] = '^2.17.1';
-      packageJson.dependencies['angular2-moment'] = '^1.2.0';
+    if (this.args.addMoment) {  
+      packageJson.dependencies['moment'] = '2.18.1';      
     }
 
     if (this.args.addHighchart) {
-      packageJson.devDependencies['@types/highcharts'] = '^4.2.47';
-      packageJson.dependencies['angular2-highcharts'] = '^0.5.5';
-      packageJson.dependencies['highcharts'] = '^5.0.7';
+      packageJson.devDependencies['@types/highcharts'] = '4.2.52';
+      packageJson.dependencies['angular2-highcharts'] = '0.5.5';
+      packageJson.dependencies['highcharts'] = '5.0.10';
     }
 
     if (this.args.addFontAwesome) {
-      packageJson.dependencies['font-awesome'] = '~4.7.0';
+      packageJson.dependencies['font-awesome'] = '4.7.0';
     }
 
     if (this.args.addMaterialDesignIcons) {
-      packageJson.dependencies['material-design-icons'] = '~3.0.1';
+      packageJson.dependencies['material-design-icons'] = '3.0.1';
     }
 
     this.fs.writeJSON('package.json', packageJson);
