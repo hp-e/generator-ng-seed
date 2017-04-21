@@ -4,8 +4,7 @@
   "description": "",
   "scripts": {
     "build:prod": "npm run clean:prod && webpack --env=prod --colors --progress",    
-    "build:dev": "npm run clean:dev && webpack --env=dev --colors --progress && npm run serve:dev",
-    "bundle:dev": "webpack --env=dev --colors --progress",    
+    "build:dev": "npm run clean:dev && webpack --env=dev --colors --progress && npm run serve:dev",    
     "clean:prod": "rimraf dist/prod",
     "clean:dev": "rimraf dist/dev",    
     "clean:dist": "rimraf dist",

@@ -1,0 +1,43 @@
+<div class="" *ngIf="enabled && form != null">
+    <strong>{{title}}:</strong>
+    
+    <table>
+        <!--<thead>
+            <tr>
+                <th>Property</th>
+                <th>Value</th>
+            </tr>
+        </thead>-->
+        <tbody>
+            <tr>
+                <td>Reactive Form</td>
+                <td>:</td>
+                <td>{{isReactiveForm}}</td>
+            </tr>
+            <tr>
+                <td>Valid</td>
+                <td>:</td>
+                <td>{{form?.valid}}</td>
+            </tr>
+            <tr>
+                <td>Dirty</td>
+                <td>:</td>
+                <td>{{form?.dirty}}</td>
+            </tr>
+            <tr>
+                <td>Touched</td>
+                <td>:</td>
+                <td>{{form?.touched}}</td>
+            </tr>
+
+            <!--<tr *ngIf="isReactiveForm">
+                <td>Has errors</td>
+                <td>:</td>
+                <td>{{form?.hasError}}</td>
+            </tr>-->
+
+        </tbody>
+    </table>
+<br />
+<pre *ngIf="isReactiveForm">{{form.value | json}}</pre>
+</div>

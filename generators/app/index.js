@@ -162,8 +162,8 @@ module.exports = yeoman.Base.extend({
           message: 'Please select an Angular Version:',
           default: this.args.ngVersion,
           choices: [
-            { name: 'Version 2.4.10', value: 'ng2' },
-            { name: 'Version 4.0.1', value: 'ng4' }
+            { name: 'Version 4.0.2', value: 'ng4' },
+            { name: 'Version 2.4.10', value: 'ng2' }
           ],
 
         },
@@ -173,7 +173,7 @@ module.exports = yeoman.Base.extend({
           message: 'Which additional environments would you like to include?',
           choices: [
             { name: 'dev', value: 'dev', checked: false },
-            { name: 'prod', value: 'prod', checked: false }            
+            { name: 'prod', value: 'prod', checked: false }
           ]
         },
 
@@ -243,7 +243,7 @@ module.exports = yeoman.Base.extend({
           choices: [
             { name: 'None', value: 'none' },
             { name: 'Material Design Lite (1.3.0)', value: 'mdl' },
-            { name: 'Angular Material 2.0.0 (beta.2)', value: 'md2' },
+            { name: 'Angular Material 2.0.0 (beta.3)', value: 'md2' },
             { name: 'Simple flexbox layout', value: 'flex' },
           ],
 
@@ -284,7 +284,7 @@ module.exports = yeoman.Base.extend({
 
         if (!this.options['q']) {
           this.args.appName = props.appName,
-          this.args.port = props.port,
+            this.args.port = props.port,
             this.args.appNameKebab = _.kebabCase(props.appName),
             this.args.addFontAwesome = _.includes(props.jslibs, 'fontawesome'),
             this.args.addLodash = _.includes(props.jslibs, 'lodash'),
@@ -293,7 +293,9 @@ module.exports = yeoman.Base.extend({
             this.args.addMaterialDesignIcons = props.ui === 'md2' ? true : _.includes(props.jslibs, 'mdicons'),
             this.args.front = props.ui,
             this.args.ngVersion = props.ngVersion,
-            this.args.includeLinting = !this.options['no-linting']
+            this.args.includeLinting = !this.options['no-linting'],
+            this.args.includeProdEnv = _.includes(props.builldEnvironment, 'prod'),
+            this.args.includeDevEnv = _.includes(props.builldEnvironment, 'dev')
         }
 
 
@@ -307,7 +309,7 @@ module.exports = yeoman.Base.extend({
 
 
   },
-  writing() {    
+  writing() {
     this._writeNgApp();
   },
 
@@ -347,11 +349,11 @@ module.exports = yeoman.Base.extend({
     this._writeConfigurationFile();
 
     this._writeBundlerFile()
-    
+
     if (this.args.includeLinting) {
       this.copy(root + '_tslint.json', 'tslint.json');
     }
-        
+
     this.copy(root + 'CHANGELOG.md', 'CHANGELOG.md');
 
     this.fs.copyTpl(this.templatePath(root + 'README.md'), this.destinationPath('README.md'), this.args);
@@ -362,25 +364,40 @@ module.exports = yeoman.Base.extend({
     //this.copy(root + 'src/main.browser.ts', 'src/main.browser.ts');
     this.copy(root + 'src/custom-typings.d.ts', 'src/custom-typings.d.ts');
     this.copy(root + 'src/favicon.ico', 'src/favicon.ico');
-    this.fs.copyTpl(this.templatePath(root + 'src/index.html'), this.destinationPath('src/index.html'), this.args);
+    this.fs.copyTpl(this.templatePath(root + 'src/_index.html'), this.destinationPath('src/index.html'), this.args);
 
     // src/assets files
 
 
     // src/app files
-    this.copy(root + 'src/app/App.Settings.ts', 'src/app/app.settings.ts');    
+    this.copy(root + 'src/app/App.Settings.ts', 'src/app/app.settings.ts');
+    this.copy(root + 'src/app/settings/_interface.ts', 'src/app/settings/app.settings.interface.ts');
+    this.copy(root + 'src/app/settings/_app.local.settings.ts', 'src/app/settings/app.local.settings.ts');
+    
+    if (this.args.includeDevEnv) {
+      this.copy(root + 'src/app/settings/_app.dev.settings.ts', 'src/app/settings/app.dev.settings.ts');
+    }
+    if (this.args.includeProdEnv) {
+      this.copy(root + 'src/app/settings/_app.prod.settings.ts', 'src/app/settings/app.prod.settings.ts');
+    }
+
+
     this.fs.copyTpl(this.templatePath(root + 'src/app/App.routes.ts'), this.destinationPath('src/app/app.routes.ts'), this.args);
 
     this.fs.copyTpl(this.templatePath(root + 'src/app/App.module.ts'), this.destinationPath('src/app/app.module.ts'), this.args);
     this.copy(root + 'src/app/App.component.ts', 'src/app/app.component.ts');
 
     this._writeStyleFiles(root);
-  
+
     // shared
     this.copy(root + 'src/app/shared/_PageNotFound.ts', 'src/app/shared/page-not-found.ts');
 
     // core
     this.copy(root + 'src/app/core/rxjs-extensions.ts', 'src/app/core/rxjs-extensions.ts');
+    this.copy(root + 'src/app/core/dev-tools/_developer-info.component.html', 'src/app/core/dev-tools/developer-info.component.html');
+    this.copy(root + 'src/app/core/dev-tools/_developer-info.component.ts', 'src/app/core/dev-tools/developer-info.component.ts');
+    this.copy(root + 'src/app/core/dev-tools/_form-info.component.ts', 'src/app/core/dev-tools/form-info.component.ts');
+    this.copy(root + 'src/app/core/dev-tools/_form-info.component.html', 'src/app/core/dev-tools/form-info.component.html');
 
     // scr/app/home files
     this.copy(root + 'src/app/home/home.component.html', 'src/app/home/home.component.html');
@@ -409,7 +426,7 @@ module.exports = yeoman.Base.extend({
     var packageJson = this.fs.readJSON(this.templatePath(root + '_package-default.json'));
     packageJson.name = this.args.appNameKebab;
 
-    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.0.1';
+    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.0.2';
     let angularRouterVersion = this.args.ngVersion === 'ng2' ? '3.4.10' : angularVersion;
 
     packageJson.dependencies['@angular/common'] = angularVersion;
@@ -423,13 +440,40 @@ module.exports = yeoman.Base.extend({
     packageJson.dependencies['@angular/router'] = angularRouterVersion;
     //packageJson.dependencies['@angular/upgrade'] = angularVersion;
 
-    if (this.args.ngVersion === 'ng4') {        
-        packageJson.dependencies['@angular/flex-layout'] = '2.0.0-beta.7';
-        packageJson.dependencies['@angular/animations'] = angularVersion;        
+    if (this.args.ngVersion === 'ng4') {
+      packageJson.dependencies['@angular/flex-layout'] = '2.0.0-beta.8';
+      packageJson.dependencies['@angular/animations'] = angularVersion;
     }
 
 
     packageJson.scripts["server"] = `webpack-dev-server --inline --colors --progress --port ${this.args.port}  --content-base src`;
+
+    if (this.args.includeProdEnv) {
+      packageJson.scripts["build:prod"] = "npm run clean:prod && npm run bundle:prod";
+      packageJson.scripts["clean:prod"] = "rimraf dist/prod";
+      packageJson.scripts["bundle:prod"] = "webpack --env=prod --colors --progress";
+      packageJson.scripts["serve:prod"] = "lite-server -c config/server.prod.js";
+    }
+
+    if (this.args.includeDevEnv) {
+      packageJson.scripts["build:dev"] = "npm run clean:dev && npm run bundle:dev";
+      packageJson.scripts["clean:dev"] = "rimraf dist/dev";
+      packageJson.scripts["bundle:dev"] = "webpack --env=prod --colors --progress";
+      packageJson.scripts["serve:dev"] = "lite-server -c config/server.dev.js";
+      packageJson.scripts["explore:dev"] = "source-map-explorer dist/dev/js/main.bundle.js";
+    }
+    /*
+    
+    "build:prod": "npm run clean:prod && webpack --env=prod --colors --progress",    
+        "build:dev": "npm run clean:dev && webpack --env=dev --colors --progress && npm run serve:dev",    
+        "clean:prod": "rimraf dist/prod",
+        "clean:dev": "rimraf dist/dev",    
+        "clean:dist": "rimraf dist",
+        "explore:dev": "source-map-explorer dist/dev/js/main.bundle.js",
+        "serve:dev": "lite-server -c config/server-config.dev.json",
+        "serve:prod": "lite-server -c config/server-config.prod.js",     
+    */
+
 
     // switch (this.args.moduleBundler) {
     //   case "webpack1":
@@ -486,7 +530,7 @@ module.exports = yeoman.Base.extend({
         break;
       case "md2":
         packageJson.devDependencies['@types/hammerjs'] = '2.0.34';
-        packageJson.dependencies['@angular/material'] = '2.0.0-beta.2';
+        packageJson.dependencies['@angular/material'] = '2.0.0-beta.3';
         packageJson.dependencies['hammerjs'] = '2.0.8';
         break;
     }
@@ -500,8 +544,8 @@ module.exports = yeoman.Base.extend({
       packageJson.devDependencies['@types/lodash'] = '4.14.53';
     }
 
-    if (this.args.addMoment) {  
-      packageJson.dependencies['moment'] = '2.18.1';      
+    if (this.args.addMoment) {
+      packageJson.dependencies['moment'] = '2.18.1';
     }
 
     if (this.args.addHighchart) {
@@ -562,7 +606,21 @@ module.exports = yeoman.Base.extend({
       case "webpack2":
         this.fs.copyTpl(this.templatePath('webpack/_wp2.rootConfig.js'), this.destinationPath('webpack.config.js'), this.args);
         // config
-        this.copy('webpack/config/_wp2.prod.config.js', 'config/prod.config.js');
+
+        this.copy('webpack/config/_helpers.js', 'config/helpers.js');
+        this.copy('webpack/config/_wp2.local.config.js', 'config/webpack.local.js');
+
+        if (this.args.includeProdEnv) {
+          this.copy('webpack/config/_server.prod.js', 'config/server.prod.js');
+          this.copy('webpack/config/_wp2.prod.config.js', 'config/webpack.prod.js');
+        }
+
+        if (this.args.includeDevEnv) {
+          this.copy('webpack/config/_server.dev.json', 'config/server.dev.json');
+          this.copy('webpack/config/_wp2.dev.config.js', 'config/webpack.dev.js');
+        }
+
+        
         break;
     }
 
@@ -611,7 +669,7 @@ module.exports = yeoman.Base.extend({
   },
 
   end() {
-    
+
     this.log('');
     this.log("Well... That's it. Thank you for using the ng-seed to generate your Angular project");
     this.log('');
