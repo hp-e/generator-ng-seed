@@ -4,19 +4,16 @@
 ### new features
 * Build for different environment
 * Use lite-server to test various builds
-
-### changes sub generators
-* Add environment scripts and settings files ```yo ng-seed:env <name>```
-
-### Module bundlers and loaders
-* Updated webpack 2 (version 2.2.1)
-* Updated awesome-typescript-loader to 3.1.2
+* Angular 4
 
 ### misc
-* updated angular 4rc1 to release 4.0.1 as the default option (select in start wizard)
-* updated angular to 2.4.10
-* updated zone.js to 0.7.7
+* Locked versions in package.json by removing ^ and ~ 
+* updated angular 4rc1 to release 4.0.2 as the default option (select in start wizard)
+* updated angular material 2 to beta 3
+* updated zone.js to 0.8.5
 * updated rxjs to 5.3.0
+* Updated webpack 2 (version 2.4.1)
+* Updated awesome-typescript-loader to 3.1.2
 * bug fixes
 
 ## 1.0.0
