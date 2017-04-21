@@ -456,10 +456,10 @@ module.exports = yeoman.Base.extend({
     }
 
     if (this.args.includeDevEnv) {
-      packageJson.scripts["build:dev"] = "npm run clean:dev && npm run bundle:dev";
+      packageJson.scripts["build:dev"] = "npm run clean:dev && npm run bundle:dev && npm run serve:dev";
       packageJson.scripts["clean:dev"] = "rimraf dist/dev";
-      packageJson.scripts["bundle:dev"] = "webpack --env=prod --colors --progress";
-      packageJson.scripts["serve:dev"] = "lite-server -c config/server.dev.js";
+      packageJson.scripts["bundle:dev"] = "webpack --env=dev --colors --progress";
+      packageJson.scripts["serve:dev"] = "lite-server -c config/server.dev.json";
       packageJson.scripts["explore:dev"] = "source-map-explorer dist/dev/js/main.bundle.js";
     }
     /*

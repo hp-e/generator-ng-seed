@@ -13,7 +13,8 @@ import "./core/rxjs-extensions";
 import { AppLocalSettings } from './settings/app.local.settings';
 <% if (includeDevEnv === true){ %>import { AppDevSettings } from './settings/app.dev.settings';<% } %>
 
-// feature modules - our own
+import { DeveloperInfoComponent} from './core/dev-tools/developer-info.component';
+import { FormInfoComponent} from './core/dev-tools/form-info.component';
 import { HomeComponent } from "./home/home.component";
 import { AppSettings } from "./app.settings";
 import { PageNotFound } from "./shared/page-not-found";
@@ -31,6 +32,8 @@ import "font-awesome/css/font-awesome.css";
     AppComponent,
     HomeComponent,
     PageNotFound,
+    DeveloperInfoComponent,
+    FormInfoComponent
   ],
   imports: [
     BrowserModule,

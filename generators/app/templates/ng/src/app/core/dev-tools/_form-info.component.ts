@@ -3,7 +3,7 @@ import { AppSettings } from "../../app.settings";
 import { FormGroup } from "@angular/forms";
 
 @Component({
-  selector: 'ga-form-info',  
+  selector: 'form-info',  
   templateUrl: './form-info.component.html', 
   styles: [``]
 })
