@@ -8,8 +8,10 @@ import { HttpModule } from "@angular/http";
 import { LocationStrategy, HashLocationStrategy, PathLocationStrategy } from "@angular/common";
 import "./core/rxjs-extensions";
 <% if (front === 'md2') { %>import { MaterialModule } from "@angular/material"; <% } %>
-  <% if (ngVersion === 'ng4') { %>import { FlexLayoutModule } from "@angular/flex-layout"; <% } %>
-
+<% if (ngVersion === 'ng4') { %>import { FlexLayoutModule } from "@angular/flex-layout"; <% } %>
+<% if (includeProdEnv === true){ %>import { AppProdSettings } from './settings/app.prod.settings';<% } %>
+import { AppLocalSettings } from './settings/app.local.settings';
+<% if (includeDevEnv === true){ %>import { AppDevSettings } from './settings/app.dev.settings';<% } %>
 
 // feature modules - our own
 import { HomeComponent } from "./home/home.component";
@@ -35,7 +37,7 @@ import "font-awesome/css/font-awesome.css";
     FormsModule,
     HttpModule,
     <% if (front === 'md2') { %>MaterialModule.forRoot(), <% } %>
-    <% if (ngVersion === 'ng4') { %>FlexLayoutModule.forRoot(), <% } %>
+    <% if (ngVersion === 'ng4') { %>FlexLayoutModule, <% } %>
     AppRoutingModule
   ],
 providers: [

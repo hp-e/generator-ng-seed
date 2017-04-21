@@ -1,9 +1,4 @@
-<div class="content-container" *ngIf="enabled">
-    <div class="container-element" *ngIf="showUserAccess">
-        <strong>User information: </strong>
-        <pre>{{ userService.access | json }}</pre>
-    </div>
-
+<div class="content-container" *ngIf="enabled">    
     <div class="container-element" *ngIf="showAppSettings">
         <strong>App Settings: </strong>
         <pre>{{ settings | json }}</pre>

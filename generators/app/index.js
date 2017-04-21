@@ -608,6 +608,7 @@ module.exports = yeoman.Base.extend({
         // config
 
         this.copy('webpack/config/_helpers.js', 'config/helpers.js');
+        this.copy('webpack/config/_wp.common.config.js', 'config/webpack.common.js');
         this.copy('webpack/config/_wp2.local.config.js', 'config/webpack.local.js');
 
         if (this.args.includeProdEnv) {
