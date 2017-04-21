@@ -2,9 +2,11 @@
 
 ## 1.1.0
 ### new features
+* Build for different environment
+* Use lite-server to test various builds
 
 ### changes sub generators
-
+* Add environment scripts and settings files ```yo ng-seed:env <name>```
 
 ### Module bundlers and loaders
 * Updated webpack 2 (version 2.2.1)

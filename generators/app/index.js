@@ -167,6 +167,16 @@ module.exports = yeoman.Base.extend({
           ],
 
         },
+        {
+          type: 'checkbox',
+          name: 'builldEnvironment',
+          message: 'Which additional environments would you like to include?',
+          choices: [
+            { name: 'dev', value: 'dev', checked: false },
+            { name: 'prod', value: 'prod', checked: false }            
+          ]
+        },
+
         //Application Configuration
         // {
         //   type: 'checkbox',
