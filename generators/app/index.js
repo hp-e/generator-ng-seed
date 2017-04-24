@@ -394,10 +394,10 @@ module.exports = yeoman.Base.extend({
 
     // core
     this.copy(root + 'src/app/core/rxjs-extensions.ts', 'src/app/core/rxjs-extensions.ts');
-    this.copy(root + 'src/app/core/dev-tools/_developer-info.component.html', 'src/app/core/dev-tools/developer-info.component.html');
-    this.copy(root + 'src/app/core/dev-tools/_developer-info.component.ts', 'src/app/core/dev-tools/developer-info.component.ts');
-    this.copy(root + 'src/app/core/dev-tools/_form-info.component.ts', 'src/app/core/dev-tools/form-info.component.ts');
-    this.copy(root + 'src/app/core/dev-tools/_form-info.component.html', 'src/app/core/dev-tools/form-info.component.html');
+    // this.copy(root + 'src/app/core/dev-tools/_developer-info.component.html', 'src/app/core/dev-tools/developer-info.component.html');
+    // this.copy(root + 'src/app/core/dev-tools/_developer-info.component.ts', 'src/app/core/dev-tools/developer-info.component.ts');
+    // this.copy(root + 'src/app/core/dev-tools/_form-info.component.ts', 'src/app/core/dev-tools/form-info.component.ts');
+    // this.copy(root + 'src/app/core/dev-tools/_form-info.component.html', 'src/app/core/dev-tools/form-info.component.html');
 
     // scr/app/home files
     this.copy(root + 'src/app/home/home.component.html', 'src/app/home/home.component.html');
