@@ -426,7 +426,7 @@ module.exports = yeoman.Base.extend({
     var packageJson = this.fs.readJSON(this.templatePath(root + '_package-default.json'));
     packageJson.name = this.args.appNameKebab;
 
-    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.0.2';
+    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.0.3';
     let angularRouterVersion = this.args.ngVersion === 'ng2' ? '3.4.10' : angularVersion;
 
     packageJson.dependencies['@angular/common'] = angularVersion;
