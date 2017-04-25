@@ -42,8 +42,8 @@ $ yo ng-seed --q
 |Option ||Description|
 | -|-|-|
 | --q|optional|q for quick start. If all you want is a basic structure. This will scaffold the files with all default settings|
-| --structure-flat|optional|Changes the itemFolderStructure to flat. The subgenerators will place all created files at the root of the selected folder|
-| --structure-self|optional|Changes the itemFolderStructure to self. The subgenerators will place all created files with the items name and place the item in this folder. Overrides the default setting |
+| --flat|optional|Changes the itemFolderStructure to flat. The subgenerators will place all created files at the root of the selected folder|
+| --self|optional|Changes the itemFolderStructure to self. The subgenerators will place all created files with the items name and place the item in this folder. Overrides the default setting |
 | --css|optional|Changes the defaultStyle to css (default is scss) |
 | --no-barrel|optional|Changes the module.useBarrelFile to false and will not write items to the barrel file |
 | --no-linting|optional|Will not add the linting.json settings file to the root |
@@ -149,9 +149,9 @@ $ yo ng-seed:module moduleName
 | --d|optional|Adds a set of pages to the module. You wil be asked about the directive name. |
 | --pipe|optional|Adds a set of pipes to the module. You wil be asked about the page name. |
 | --lazy|optional|Uses the CommonModule instead of BrowserModule so that it could be lazy loaded |
-| --structure-flat|optional|Adds the items to the same folder as the module. Overrides the default setting |
-| --structure-self|optional|Creates a folder with the items name and place the item in this folder. Overrides the default setting |
-| --structure-ask|optional|You will be asked where to place the items. Overrides the default setting |
+| --flat|optional|Adds the items to the same folder as the module. Overrides the default setting |
+| --self|optional|Creates a folder with the items name and place the item in this folder. Overrides the default setting |
+| --ask|optional|You will be asked where to place the items. Overrides the default setting |
 | --tpl|optional|Adds a template file to the component or page. Overrides the default setting |
 | --scss|optional|Adds a scss style page for each item (component or page). Overrides the default setting |
 | --css|optional|Adds a css style page for each item (component or page). Overrides the default setting |
