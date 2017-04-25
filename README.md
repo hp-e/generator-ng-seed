@@ -2,8 +2,8 @@
 The goal of this generator is to provide a very simple scaffolding tool for an Angular project.
 
 **Supported Angular versions:**
-* Angular 2.4.8
-* Angular 4.0.0-rc.1
+* Angular 2.4.10
+* Angular 4.0.3
 
 NB! Version 1 of Angular is not and will not be supported in this generator.
 
