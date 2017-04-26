@@ -28,6 +28,13 @@ module.exports = yeoman.Base.extend({
       default: false
     });
 
+    this.option('lib', {
+      desc: 'scaffold the project as an angular library, ready to build and deploy on npm',
+      type: Boolean,
+      default: false
+    });
+
+
     this.option('v', {
       type: Boolean,
       default: false
