@@ -27,8 +27,7 @@ module.exports = function (options) {
                 NODE_ENV: 'dev', 
                 DEBUG: false
             }),
-            new CopyWebpackPlugin([
-                { from: 'src/assets/images', to: 'assets/images' },
+            new CopyWebpackPlugin([                
                 { from: 'src/index.html' },
                 { from: 'src/favicon.ico' },                
             ]),

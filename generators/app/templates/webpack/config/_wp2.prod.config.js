@@ -60,12 +60,9 @@ module.exports = function (options) {
                 threshold: 0,
                 minRatio: 0.8
             }),
-            new CopyWebpackPlugin([
-                { from: 'src/assets/images', to: 'assets/images' },
+            new CopyWebpackPlugin([                
                 { from: 'src/index.html' },
-                { from: 'src/favicon.ico' },
-                { from: 'src/assets/emoticons', to: 'assets/emoticons' },
-                { from: 'src/assets/icons', to: 'assets/icons' },
+                { from: 'src/favicon.ico' }                
             ])
         ]
     });
