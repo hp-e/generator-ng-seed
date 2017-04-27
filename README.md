@@ -3,7 +3,7 @@ The goal of this generator is to provide a very simple scaffolding tool for an A
 
 **Supported Angular versions:**
 * Angular 2.4.10
-* Angular 4.0.3
+* Angular 4.1.0
 
 NB! Version 1 of Angular is not and will not be supported in this generator.
 

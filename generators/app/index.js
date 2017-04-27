@@ -156,7 +156,8 @@ module.exports = yeoman.Base.extend({
     } else {
 
       this.log("We will now ask a bunch of questions ");
-      this.log("so that we can scaffold a really nice application for you");
+      let label = this.options['lib'] ? 'library' : 'application';
+      this.log("so that we can scaffold a really nice " + label + " for you");
       this.log("");
 
 
@@ -169,7 +170,7 @@ module.exports = yeoman.Base.extend({
           message: 'Please select an Angular Version:',
           default: this.args.ngVersion,
           choices: [
-            { name: 'Version 4.0.2', value: 'ng4' },
+            { name: 'Version 4.1.0', value: 'ng4' },
             { name: 'Version 2.4.10', value: 'ng2' }
           ],
 
@@ -433,7 +434,7 @@ module.exports = yeoman.Base.extend({
     var packageJson = this.fs.readJSON(this.templatePath(root + '_package-default.json'));
     packageJson.name = this.args.appNameKebab;
 
-    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.0.3';
+    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.1.0';
     let angularRouterVersion = this.args.ngVersion === 'ng2' ? '3.4.10' : angularVersion;
 
     packageJson.dependencies['@angular/common'] = angularVersion;
@@ -615,7 +616,7 @@ module.exports = yeoman.Base.extend({
         // config
 
         this.copy('webpack/config/_helpers.js', 'config/helpers.js');
-        this.copy('webpack/config/_wp.common.config.js', 'config/webpack.common.js');
+        this.copy('webpack/config/_wp.common.js', 'config/webpack.common.js');
         this.copy('webpack/config/_wp2.local.config.js', 'config/webpack.local.js');
 
         if (this.args.includeProdEnv) {
