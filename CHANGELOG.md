@@ -1,5 +1,8 @@
 # generator-ng-seed - Changelog
 
+## 1.1.1
+* last minute bugfix :-|
+
 ## 1.1.0
 ### new features
 * Build for different environment
