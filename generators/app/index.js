@@ -177,7 +177,7 @@ module.exports = yeoman.Base.extend({
         },
         {
           type: 'checkbox',
-          name: 'builldEnvironment',
+          name: 'buildEnvironment',
           message: 'Which additional environments would you like to include?',
           choices: [
             { name: 'dev', value: 'dev', checked: false },
@@ -302,8 +302,8 @@ module.exports = yeoman.Base.extend({
             this.args.front = props.ui,
             this.args.ngVersion = props.ngVersion,
             this.args.includeLinting = !this.options['no-linting'],
-            this.args.includeProdEnv = _.includes(props.builldEnvironment, 'prod'),
-            this.args.includeDevEnv = _.includes(props.builldEnvironment, 'dev')
+            this.args.includeProdEnv = _.includes(props.buildEnvironment, 'prod'),
+            this.args.includeDevEnv = _.includes(props.buildEnvironment, 'dev')
         }
 
 
@@ -434,7 +434,7 @@ module.exports = yeoman.Base.extend({
     var packageJson = this.fs.readJSON(this.templatePath(root + '_package-default.json'));
     packageJson.name = this.args.appNameKebab;
 
-    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.1.0';
+    let angularVersion = this.args.ngVersion === 'ng2' ? '2.4.10' : '4.1.1';
     let angularRouterVersion = this.args.ngVersion === 'ng2' ? '3.4.10' : angularVersion;
 
     packageJson.dependencies['@angular/common'] = angularVersion;
@@ -470,59 +470,6 @@ module.exports = yeoman.Base.extend({
       packageJson.scripts["serve:dev"] = "lite-server -c config/server.dev.json";
       packageJson.scripts["explore:dev"] = "source-map-explorer dist/dev/js/main.bundle.js";
     }
-    /*
-    
-    "build:prod": "npm run clean:prod && webpack --env=prod --colors --progress",    
-        "build:dev": "npm run clean:dev && webpack --env=dev --colors --progress && npm run serve:dev",    
-        "clean:prod": "rimraf dist/prod",
-        "clean:dev": "rimraf dist/dev",    
-        "clean:dist": "rimraf dist",
-        "explore:dev": "source-map-explorer dist/dev/js/main.bundle.js",
-        "serve:dev": "lite-server -c config/server-config.dev.json",
-        "serve:prod": "lite-server -c config/server-config.prod.js",     
-    */
-
-
-    // switch (this.args.moduleBundler) {
-    //   case "webpack1":
-    //     packageJson.devDependencies['webpack'] = '1.14.0';
-    //     packageJson.devDependencies['extract-text-webpack-plugin'] = '1.0.1';
-    //     packageJson.devDependencies['webpack-dev-server'] = '1.16.2';
-    //     packageJson.devDependencies['webpack-merge'] = '1.1.0';
-
-    //     packageJson.scripts["server"] = `webpack-dev-server --hot --inline --colors --progress --display-error-details --display-cached --port ${this.args.port}  --content-base src`;
-    //     packageJson.scripts["prod"] = `webpack -p --config config/prod.config.js`;
-    //     break;
-    //   case "webpack2":
-    //     packageJson.devDependencies['webpack'] = '2.2.1';
-    //     packageJson.devDependencies['extract-text-webpack-plugin'] = '2.1.0';
-    //     packageJson.devDependencies['webpack-dev-server'] = '2.4.2';
-    //     packageJson.devDependencies['webpack-merge'] = '4.0.0';
-
-    //     packageJson.scripts["server"] = `webpack-dev-server --inline --colors --progress --port ${this.args.port}  --content-base src`;
-    //     packageJson.scripts["prod"] = `webpack -p --config config/prod.config.js `;
-    //     break;
-    // }
-
-    // if (this.args.moduleBundler === 'webpack1' || this.args.moduleBundler === 'webpack2') {
-    //   packageJson.devDependencies["angular2-template-loader"] = "0.6.2";
-    //   packageJson.devDependencies["angular-router-loader"] = "0.5.0";
-    //   packageJson.devDependencies["url-loader"] = "0.5.8";
-    //   packageJson.devDependencies["file-loader"] = "0.10.1";
-    //   packageJson.devDependencies["awesome-typescript-loader"] = "3.0.8";
-    //   packageJson.devDependencies["css-loader"] = "0.26.2";
-    //   packageJson.devDependencies["node-sass"] = "4.5.0";
-    //   packageJson.devDependencies["raw-loader"] = "0.5.1";
-    //   packageJson.devDependencies["sass-loader"] = "6.0.2";
-    //   packageJson.devDependencies["strip-loader"] = "0.1.2";
-    //   packageJson.devDependencies["style-loader"] = "0.13.2";
-    //   packageJson.devDependencies["to-string-loader"] = "1.1.5";
-
-    //   // packageJson.scripts["build"] = "webpack --inline --colors --progress --display-error-details --display-cached";
-    //   // packageJson.scripts["watch"] = "npm run build -- --watch";
-    //   packageJson.scripts["start"] = "npm run server";
-
-    // }
 
     switch (this.args.taskRunner) {
       case "gulp":

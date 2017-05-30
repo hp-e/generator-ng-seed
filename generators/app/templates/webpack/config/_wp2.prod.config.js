@@ -60,7 +60,8 @@ module.exports = function (options) {
                 threshold: 0,
                 minRatio: 0.8
             }),
-            new CopyWebpackPlugin([                
+            new CopyWebpackPlugin([           
+                { from: 'src/assets', to: 'assets' },       
                 { from: 'src/index.html' },
                 { from: 'src/favicon.ico' }                
             ])
