@@ -139,7 +139,8 @@ module.exports = yeoman.Base.extend({
       useBarrelFile: !this.options['no-barrel'],
       taskRunner: "none",
       moduleBundler: this.options['no-bundler'] ? 'none' : 'webpack2',
-      environment: "none"
+      environment: "none",
+      appType: this.optons['lib'] ? "lib" : 'app'
     }
   },
 
@@ -160,7 +161,17 @@ module.exports = yeoman.Base.extend({
       this.log("so that we can scaffold a really nice " + label + " for you");
       this.log("");
 
+      var appNamePrompt = { name: 'appName', message: 'What is your ' + label + ' name?', default: this.args.appName };
+      var portPrompt = { name: 'port', message: 'Please specify the port you want the localhost to use?', default: this.args.port };
+      var portQ = { name: 'port', message: 'Please specify the port you want the localhost to use?', default: this.args.port };
 
+      if (this.args.appType === 'app') {
+
+      } else if (this.args.appType === 'lib') {
+
+      } else {
+        // no prompt
+      }
       var prompts = [
         { name: 'appName', message: 'What is your application name?', default: this.args.appName },
         { name: 'port', message: 'Please specify the port you want the localhost to use?', default: this.args.port },
@@ -170,8 +181,8 @@ module.exports = yeoman.Base.extend({
           message: 'Please select an Angular Version:',
           default: this.args.ngVersion,
           choices: [
-            { name: 'Version 4.1.0', value: 'ng4' },
-            { name: 'Version 2.4.10', value: 'ng2' }
+            { name: 'Version 4 (angular LTS)', value: 'ng4' },
+            { name: 'Version 2', value: 'ng2' }
           ],
 
         },
