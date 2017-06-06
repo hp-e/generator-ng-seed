@@ -1,5 +1,5 @@
 
-import "./assets/styles.css";
+import "./design/main-style.scss";
 <% if ( front==='md2') { %>import "./assets/main-theme.scss"; <% } %>
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {AppModule} from "./app/app.module";

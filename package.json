@@ -1,9 +1,9 @@
 {
   "name": "generator-ng-seed",
   "version": "1.1.1",
-  "description": "A Yeoman generator for scaffolding an Angular project with Typescript 2 and webpack 2",  
+  "description": "A Yeoman generator for scaffolding an Angular project with Typescript 2 and webpack 2",
   "author": {
-    "name": "Hans-Petter Eitvet",    
+    "name": "Hans-Petter Eitvet",
     "url": ""
   },
   "files": [
@@ -20,7 +20,7 @@
     "generators/version"
   ],
   "main": "generators/index.js",
-  "keywords": [   
+  "keywords": [
     "yeoman-generator",
     "typescript",
     "typescript2",
@@ -40,7 +40,7 @@
     "yeoman-generator": "^0.23.0",
     "yosay": "^1.0.0"
   },
-  "devDependencies": {    
+  "devDependencies": {
     "@types/ejs": "^2.3.33",
     "eslint": "^3.1.1",
     "eslint-config-xo-space": "^0.15.0",
@@ -66,7 +66,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/hp-e/generator-ng-seed.git"
-  },  
+  },
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp"
